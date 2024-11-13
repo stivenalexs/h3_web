@@ -1,0 +1,740 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="DB_MedicosModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Administrador">
+          <Key>
+            <PropertyRef Name="ID_Persona" />
+          </Key>
+          <Property Name="ID_Persona" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Clave" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Cita">
+          <Key>
+            <PropertyRef Name="Cod_Cita" />
+          </Key>
+          <Property Name="Cod_Cita" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Doc_Paciente" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Doc_Profesional" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Fecha_Cita" Type="date" Nullable="false" />
+          <Property Name="Hora_Cita" Type="time" Precision="7" Nullable="false" />
+          <Property Name="Estado" Type="varchar" MaxLength="255" Nullable="false" />
+        </EntityType>
+        <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'DB_Medicos.dbo.Historial_Clinico' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+        <EntityType Name="Historial_Clinico">
+          <Key>
+            <PropertyRef Name="Doc_Paciente" />
+            <PropertyRef Name="Orden" />
+          </Key>
+          <Property Name="Doc_Paciente" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Orden" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Horario">
+          <Key>
+            <PropertyRef Name="ID_Horario" />
+          </Key>
+          <Property Name="ID_Horario" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Hora_Entrada" Type="time" Precision="7" Nullable="false" />
+          <Property Name="Hora_Salida" Type="time" Precision="7" Nullable="false" />
+          <Property Name="Especialidad" Type="varchar" MaxLength="80" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Nomina">
+          <Key>
+            <PropertyRef Name="ID_Nomina" />
+          </Key>
+          <Property Name="ID_Nomina" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Doc_Pro" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Salario" Type="decimal" Precision="10" Scale="2" Nullable="false" />
+          <Property Name="Fecha_Pago" Type="date" Nullable="false" />
+          <Property Name="Estado" Type="varchar" MaxLength="40" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Orden">
+          <Key>
+            <PropertyRef Name="Cod_Orden" />
+          </Key>
+          <Property Name="Cod_Orden" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Cod_Cita" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Diagnostico" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="Medicamento" Type="varchar" MaxLength="255" />
+          <Property Name="Recomendacion" Type="varchar" MaxLength="255" />
+          <Property Name="Remision" Type="varchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="Paciente">
+          <Key>
+            <PropertyRef Name="Doc_Paciente" />
+          </Key>
+          <Property Name="Doc_Paciente" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Tipo_documento" Type="varchar" MaxLength="30" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Persona">
+          <Key>
+            <PropertyRef Name="ID_Persona" />
+          </Key>
+          <Property Name="ID_Persona" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Documento" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="Nombre" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Fecha_Nacimiento" Type="date" Nullable="false" />
+          <Property Name="Telefono" Type="varchar" MaxLength="15" />
+          <Property Name="Correo" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Contraseña" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="Foto" Type="varchar" MaxLength="255" />
+          <Property Name="Tipo_Sangre" Type="varchar" MaxLength="10" />
+        </EntityType>
+        <EntityType Name="Procedimiento">
+          <Key>
+            <PropertyRef Name="Cod_Procedimiento" />
+          </Key>
+          <Property Name="Cod_Procedimiento" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Tipo_P" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Fecha_P" Type="date" />
+          <Property Name="Hora_P" Type="time" Precision="7" />
+          <Property Name="Estado_P" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Pro_Asignado" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Profesional">
+          <Key>
+            <PropertyRef Name="Doc_Pro" />
+          </Key>
+          <Property Name="Doc_Pro" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Horario" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <Association Name="FK__Administr__ID_Pe__398D8EEE">
+          <End Role="Persona" Type="Self.Persona" Multiplicity="1" />
+          <End Role="Administrador" Type="Self.Administrador" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Persona">
+              <PropertyRef Name="ID_Persona" />
+            </Principal>
+            <Dependent Role="Administrador">
+              <PropertyRef Name="ID_Persona" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Cita__Doc_Pacien__44FF419A">
+          <End Role="Paciente" Type="Self.Paciente" Multiplicity="1" />
+          <End Role="Cita" Type="Self.Cita" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Paciente">
+              <PropertyRef Name="Doc_Paciente" />
+            </Principal>
+            <Dependent Role="Cita">
+              <PropertyRef Name="Doc_Paciente" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Cita__Doc_Profes__45F365D3">
+          <End Role="Profesional" Type="Self.Profesional" Multiplicity="1" />
+          <End Role="Cita" Type="Self.Cita" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Profesional">
+              <PropertyRef Name="Doc_Pro" />
+            </Principal>
+            <Dependent Role="Cita">
+              <PropertyRef Name="Doc_Profesional" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Historial__Doc_P__4AB81AF0">
+          <End Role="Paciente" Type="Self.Paciente" Multiplicity="1" />
+          <End Role="Historial_Clinico" Type="Self.Historial_Clinico" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Paciente">
+              <PropertyRef Name="Doc_Paciente" />
+            </Principal>
+            <Dependent Role="Historial_Clinico">
+              <PropertyRef Name="Doc_Paciente" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Historial__Orden__4BAC3F29">
+          <End Role="Orden" Type="Self.Orden" Multiplicity="1" />
+          <End Role="Historial_Clinico" Type="Self.Historial_Clinico" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Orden">
+              <PropertyRef Name="Cod_Orden" />
+            </Principal>
+            <Dependent Role="Historial_Clinico">
+              <PropertyRef Name="Orden" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Nomina__Doc_Pro__52593CB8">
+          <End Role="Profesional" Type="Self.Profesional" Multiplicity="1" />
+          <End Role="Nomina" Type="Self.Nomina" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Profesional">
+              <PropertyRef Name="Doc_Pro" />
+            </Principal>
+            <Dependent Role="Nomina">
+              <PropertyRef Name="Doc_Pro" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Orden__Cod_Cita__48CFD27E">
+          <End Role="Cita" Type="Self.Cita" Multiplicity="1" />
+          <End Role="Orden" Type="Self.Orden" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cita">
+              <PropertyRef Name="Cod_Cita" />
+            </Principal>
+            <Dependent Role="Orden">
+              <PropertyRef Name="Cod_Cita" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Paciente__Doc_Pa__3C69FB99">
+          <End Role="Persona" Type="Self.Persona" Multiplicity="1" />
+          <End Role="Paciente" Type="Self.Paciente" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Persona">
+              <PropertyRef Name="ID_Persona" />
+            </Principal>
+            <Dependent Role="Paciente">
+              <PropertyRef Name="Doc_Paciente" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Procedimi__Cod_P__4E88ABD4">
+          <End Role="Orden" Type="Self.Orden" Multiplicity="1" />
+          <End Role="Procedimiento" Type="Self.Procedimiento" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Orden">
+              <PropertyRef Name="Cod_Orden" />
+            </Principal>
+            <Dependent Role="Procedimiento">
+              <PropertyRef Name="Cod_Procedimiento" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Procedimi__Pro_A__4F7CD00D">
+          <End Role="Profesional" Type="Self.Profesional" Multiplicity="1" />
+          <End Role="Procedimiento" Type="Self.Procedimiento" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Profesional">
+              <PropertyRef Name="Doc_Pro" />
+            </Principal>
+            <Dependent Role="Procedimiento">
+              <PropertyRef Name="Pro_Asignado" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Profesion__Doc_P__412EB0B6">
+          <End Role="Persona" Type="Self.Persona" Multiplicity="1" />
+          <End Role="Profesional" Type="Self.Profesional" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Persona">
+              <PropertyRef Name="ID_Persona" />
+            </Principal>
+            <Dependent Role="Profesional">
+              <PropertyRef Name="Doc_Pro" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Profesion__Horar__4222D4EF">
+          <End Role="Horario" Type="Self.Horario" Multiplicity="1" />
+          <End Role="Profesional" Type="Self.Profesional" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Horario">
+              <PropertyRef Name="ID_Horario" />
+            </Principal>
+            <Dependent Role="Profesional">
+              <PropertyRef Name="Horario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="DB_MedicosModelStoreContainer">
+          <EntitySet Name="Administrador" EntityType="Self.Administrador" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Cita" EntityType="Self.Cita" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Horario" EntityType="Self.Horario" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Nomina" EntityType="Self.Nomina" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Orden" EntityType="Self.Orden" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Paciente" EntityType="Self.Paciente" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Persona" EntityType="Self.Persona" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Procedimiento" EntityType="Self.Procedimiento" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Profesional" EntityType="Self.Profesional" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Historial_Clinico" EntityType="Self.Historial_Clinico" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+[Historial_Clinico].[Doc_Paciente] AS [Doc_Paciente], 
+[Historial_Clinico].[Orden] AS [Orden]
+FROM [dbo].[Historial_Clinico] AS [Historial_Clinico]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK__Administr__ID_Pe__398D8EEE" Association="Self.FK__Administr__ID_Pe__398D8EEE">
+            <End Role="Persona" EntitySet="Persona" />
+            <End Role="Administrador" EntitySet="Administrador" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Cita__Doc_Pacien__44FF419A" Association="Self.FK__Cita__Doc_Pacien__44FF419A">
+            <End Role="Paciente" EntitySet="Paciente" />
+            <End Role="Cita" EntitySet="Cita" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Cita__Doc_Profes__45F365D3" Association="Self.FK__Cita__Doc_Profes__45F365D3">
+            <End Role="Profesional" EntitySet="Profesional" />
+            <End Role="Cita" EntitySet="Cita" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Historial__Doc_P__4AB81AF0" Association="Self.FK__Historial__Doc_P__4AB81AF0">
+            <End Role="Paciente" EntitySet="Paciente" />
+            <End Role="Historial_Clinico" EntitySet="Historial_Clinico" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Historial__Orden__4BAC3F29" Association="Self.FK__Historial__Orden__4BAC3F29">
+            <End Role="Orden" EntitySet="Orden" />
+            <End Role="Historial_Clinico" EntitySet="Historial_Clinico" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Nomina__Doc_Pro__52593CB8" Association="Self.FK__Nomina__Doc_Pro__52593CB8">
+            <End Role="Profesional" EntitySet="Profesional" />
+            <End Role="Nomina" EntitySet="Nomina" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Orden__Cod_Cita__48CFD27E" Association="Self.FK__Orden__Cod_Cita__48CFD27E">
+            <End Role="Cita" EntitySet="Cita" />
+            <End Role="Orden" EntitySet="Orden" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Paciente__Doc_Pa__3C69FB99" Association="Self.FK__Paciente__Doc_Pa__3C69FB99">
+            <End Role="Persona" EntitySet="Persona" />
+            <End Role="Paciente" EntitySet="Paciente" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Procedimi__Cod_P__4E88ABD4" Association="Self.FK__Procedimi__Cod_P__4E88ABD4">
+            <End Role="Orden" EntitySet="Orden" />
+            <End Role="Procedimiento" EntitySet="Procedimiento" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Procedimi__Pro_A__4F7CD00D" Association="Self.FK__Procedimi__Pro_A__4F7CD00D">
+            <End Role="Profesional" EntitySet="Profesional" />
+            <End Role="Procedimiento" EntitySet="Procedimiento" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Profesion__Doc_P__412EB0B6" Association="Self.FK__Profesion__Doc_P__412EB0B6">
+            <End Role="Persona" EntitySet="Persona" />
+            <End Role="Profesional" EntitySet="Profesional" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Profesion__Horar__4222D4EF" Association="Self.FK__Profesion__Horar__4222D4EF">
+            <End Role="Horario" EntitySet="Horario" />
+            <End Role="Profesional" EntitySet="Profesional" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="DB_MedicosModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Administrador">
+          <Key>
+            <PropertyRef Name="ID_Persona" />
+          </Key>
+          <Property Name="ID_Persona" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Clave" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Persona" Relationship="Self.FK__Administr__ID_Pe__398D8EEE" FromRole="Administrador" ToRole="Persona" />
+        </EntityType>
+        <EntityType Name="Cita">
+          <Key>
+            <PropertyRef Name="Cod_Cita" />
+          </Key>
+          <Property Name="Cod_Cita" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Doc_Paciente" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Doc_Profesional" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Fecha_Cita" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Hora_Cita" Type="Time" Nullable="false" Precision="7" />
+          <Property Name="Estado" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Paciente" Relationship="Self.FK__Cita__Doc_Pacien__44FF419A" FromRole="Cita" ToRole="Paciente" />
+          <NavigationProperty Name="Profesional" Relationship="Self.FK__Cita__Doc_Profes__45F365D3" FromRole="Cita" ToRole="Profesional" />
+          <NavigationProperty Name="Orden" Relationship="Self.FK__Orden__Cod_Cita__48CFD27E" FromRole="Cita" ToRole="Orden" />
+        </EntityType>
+        <EntityType Name="Horario">
+          <Key>
+            <PropertyRef Name="ID_Horario" />
+          </Key>
+          <Property Name="ID_Horario" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Hora_Entrada" Type="Time" Nullable="false" Precision="7" />
+          <Property Name="Hora_Salida" Type="Time" Nullable="false" Precision="7" />
+          <Property Name="Especialidad" Type="String" MaxLength="80" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Profesional" Relationship="Self.FK__Profesion__Horar__4222D4EF" FromRole="Horario" ToRole="Profesional" />
+        </EntityType>
+        <EntityType Name="Nomina">
+          <Key>
+            <PropertyRef Name="ID_Nomina" />
+          </Key>
+          <Property Name="ID_Nomina" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Doc_Pro" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Salario" Type="Decimal" Precision="10" Scale="2" Nullable="false" />
+          <Property Name="Fecha_Pago" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Estado" Type="String" MaxLength="40" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Profesional" Relationship="Self.FK__Nomina__Doc_Pro__52593CB8" FromRole="Nomina" ToRole="Profesional" />
+        </EntityType>
+        <EntityType Name="Orden">
+          <Key>
+            <PropertyRef Name="Cod_Orden" />
+          </Key>
+          <Property Name="Cod_Orden" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Cod_Cita" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Diagnostico" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Medicamento" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Recomendacion" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Remision" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Cita" Relationship="Self.FK__Orden__Cod_Cita__48CFD27E" FromRole="Orden" ToRole="Cita" />
+          <NavigationProperty Name="Procedimiento" Relationship="Self.FK__Procedimi__Cod_P__4E88ABD4" FromRole="Orden" ToRole="Procedimiento" />
+          <NavigationProperty Name="Paciente" Relationship="Self.Historial_Clinico" FromRole="Orden" ToRole="Paciente" />
+        </EntityType>
+        <EntityType Name="Paciente">
+          <Key>
+            <PropertyRef Name="Doc_Paciente" />
+          </Key>
+          <Property Name="Doc_Paciente" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Tipo_documento" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Cita" Relationship="Self.FK__Cita__Doc_Pacien__44FF419A" FromRole="Paciente" ToRole="Cita" />
+          <NavigationProperty Name="Persona" Relationship="Self.FK__Paciente__Doc_Pa__3C69FB99" FromRole="Paciente" ToRole="Persona" />
+          <NavigationProperty Name="Orden" Relationship="Self.Historial_Clinico" FromRole="Paciente" ToRole="Orden" />
+        </EntityType>
+        <EntityType Name="Persona">
+          <Key>
+            <PropertyRef Name="ID_Persona" />
+          </Key>
+          <Property Name="ID_Persona" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Documento" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Fecha_Nacimiento" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Telefono" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="Correo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Contraseña" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Foto" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Tipo_Sangre" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Administrador" Relationship="Self.FK__Administr__ID_Pe__398D8EEE" FromRole="Persona" ToRole="Administrador" />
+          <NavigationProperty Name="Paciente" Relationship="Self.FK__Paciente__Doc_Pa__3C69FB99" FromRole="Persona" ToRole="Paciente" />
+          <NavigationProperty Name="Profesional" Relationship="Self.FK__Profesion__Doc_P__412EB0B6" FromRole="Persona" ToRole="Profesional" />
+        </EntityType>
+        <EntityType Name="Procedimiento">
+          <Key>
+            <PropertyRef Name="Cod_Procedimiento" />
+          </Key>
+          <Property Name="Cod_Procedimiento" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Tipo_P" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Fecha_P" Type="DateTime" Precision="0" />
+          <Property Name="Hora_P" Type="Time" Precision="7" />
+          <Property Name="Estado_P" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Pro_Asignado" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Orden" Relationship="Self.FK__Procedimi__Cod_P__4E88ABD4" FromRole="Procedimiento" ToRole="Orden" />
+          <NavigationProperty Name="Profesional" Relationship="Self.FK__Procedimi__Pro_A__4F7CD00D" FromRole="Procedimiento" ToRole="Profesional" />
+        </EntityType>
+        <EntityType Name="Profesional">
+          <Key>
+            <PropertyRef Name="Doc_Pro" />
+          </Key>
+          <Property Name="Doc_Pro" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Horario" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Cita" Relationship="Self.FK__Cita__Doc_Profes__45F365D3" FromRole="Profesional" ToRole="Cita" />
+          <NavigationProperty Name="Horario1" Relationship="Self.FK__Profesion__Horar__4222D4EF" FromRole="Profesional" ToRole="Horario" />
+          <NavigationProperty Name="Nomina" Relationship="Self.FK__Nomina__Doc_Pro__52593CB8" FromRole="Profesional" ToRole="Nomina" />
+          <NavigationProperty Name="Persona" Relationship="Self.FK__Profesion__Doc_P__412EB0B6" FromRole="Profesional" ToRole="Persona" />
+          <NavigationProperty Name="Procedimiento" Relationship="Self.FK__Procedimi__Pro_A__4F7CD00D" FromRole="Profesional" ToRole="Procedimiento" />
+        </EntityType>
+        <Association Name="FK__Administr__ID_Pe__398D8EEE">
+          <End Role="Persona" Type="Self.Persona" Multiplicity="1" />
+          <End Role="Administrador" Type="Self.Administrador" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Persona">
+              <PropertyRef Name="ID_Persona" />
+            </Principal>
+            <Dependent Role="Administrador">
+              <PropertyRef Name="ID_Persona" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Cita__Doc_Pacien__44FF419A">
+          <End Role="Paciente" Type="Self.Paciente" Multiplicity="1" />
+          <End Role="Cita" Type="Self.Cita" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Paciente">
+              <PropertyRef Name="Doc_Paciente" />
+            </Principal>
+            <Dependent Role="Cita">
+              <PropertyRef Name="Doc_Paciente" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Cita__Doc_Profes__45F365D3">
+          <End Role="Profesional" Type="Self.Profesional" Multiplicity="1" />
+          <End Role="Cita" Type="Self.Cita" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Profesional">
+              <PropertyRef Name="Doc_Pro" />
+            </Principal>
+            <Dependent Role="Cita">
+              <PropertyRef Name="Doc_Profesional" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Orden__Cod_Cita__48CFD27E">
+          <End Role="Cita" Type="Self.Cita" Multiplicity="1" />
+          <End Role="Orden" Type="Self.Orden" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cita">
+              <PropertyRef Name="Cod_Cita" />
+            </Principal>
+            <Dependent Role="Orden">
+              <PropertyRef Name="Cod_Cita" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Profesion__Horar__4222D4EF">
+          <End Role="Horario" Type="Self.Horario" Multiplicity="1" />
+          <End Role="Profesional" Type="Self.Profesional" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Horario">
+              <PropertyRef Name="ID_Horario" />
+            </Principal>
+            <Dependent Role="Profesional">
+              <PropertyRef Name="Horario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Nomina__Doc_Pro__52593CB8">
+          <End Role="Profesional" Type="Self.Profesional" Multiplicity="1" />
+          <End Role="Nomina" Type="Self.Nomina" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Profesional">
+              <PropertyRef Name="Doc_Pro" />
+            </Principal>
+            <Dependent Role="Nomina">
+              <PropertyRef Name="Doc_Pro" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Procedimi__Cod_P__4E88ABD4">
+          <End Role="Orden" Type="Self.Orden" Multiplicity="1" />
+          <End Role="Procedimiento" Type="Self.Procedimiento" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Orden">
+              <PropertyRef Name="Cod_Orden" />
+            </Principal>
+            <Dependent Role="Procedimiento">
+              <PropertyRef Name="Cod_Procedimiento" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Paciente__Doc_Pa__3C69FB99">
+          <End Role="Persona" Type="Self.Persona" Multiplicity="1" />
+          <End Role="Paciente" Type="Self.Paciente" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Persona">
+              <PropertyRef Name="ID_Persona" />
+            </Principal>
+            <Dependent Role="Paciente">
+              <PropertyRef Name="Doc_Paciente" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Profesion__Doc_P__412EB0B6">
+          <End Role="Persona" Type="Self.Persona" Multiplicity="1" />
+          <End Role="Profesional" Type="Self.Profesional" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Persona">
+              <PropertyRef Name="ID_Persona" />
+            </Principal>
+            <Dependent Role="Profesional">
+              <PropertyRef Name="Doc_Pro" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Procedimi__Pro_A__4F7CD00D">
+          <End Role="Profesional" Type="Self.Profesional" Multiplicity="1" />
+          <End Role="Procedimiento" Type="Self.Procedimiento" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Profesional">
+              <PropertyRef Name="Doc_Pro" />
+            </Principal>
+            <Dependent Role="Procedimiento">
+              <PropertyRef Name="Pro_Asignado" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Historial_Clinico">
+          <End Role="Paciente" Type="Self.Paciente" Multiplicity="*" />
+          <End Role="Orden" Type="Self.Orden" Multiplicity="*" />
+        </Association>
+        <EntityContainer Name="DB_Medicos_Models" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Administrador" EntityType="Self.Administrador" />
+          <EntitySet Name="Cita" EntityType="Self.Cita" />
+          <EntitySet Name="Horario" EntityType="Self.Horario" />
+          <EntitySet Name="Nomina" EntityType="Self.Nomina" />
+          <EntitySet Name="Orden" EntityType="Self.Orden" />
+          <EntitySet Name="Paciente" EntityType="Self.Paciente" />
+          <EntitySet Name="Persona" EntityType="Self.Persona" />
+          <EntitySet Name="Procedimiento" EntityType="Self.Procedimiento" />
+          <EntitySet Name="Profesional" EntityType="Self.Profesional" />
+          <AssociationSet Name="FK__Administr__ID_Pe__398D8EEE" Association="Self.FK__Administr__ID_Pe__398D8EEE">
+            <End Role="Persona" EntitySet="Persona" />
+            <End Role="Administrador" EntitySet="Administrador" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Cita__Doc_Pacien__44FF419A" Association="Self.FK__Cita__Doc_Pacien__44FF419A">
+            <End Role="Paciente" EntitySet="Paciente" />
+            <End Role="Cita" EntitySet="Cita" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Cita__Doc_Profes__45F365D3" Association="Self.FK__Cita__Doc_Profes__45F365D3">
+            <End Role="Profesional" EntitySet="Profesional" />
+            <End Role="Cita" EntitySet="Cita" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Orden__Cod_Cita__48CFD27E" Association="Self.FK__Orden__Cod_Cita__48CFD27E">
+            <End Role="Cita" EntitySet="Cita" />
+            <End Role="Orden" EntitySet="Orden" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Profesion__Horar__4222D4EF" Association="Self.FK__Profesion__Horar__4222D4EF">
+            <End Role="Horario" EntitySet="Horario" />
+            <End Role="Profesional" EntitySet="Profesional" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Nomina__Doc_Pro__52593CB8" Association="Self.FK__Nomina__Doc_Pro__52593CB8">
+            <End Role="Profesional" EntitySet="Profesional" />
+            <End Role="Nomina" EntitySet="Nomina" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Procedimi__Cod_P__4E88ABD4" Association="Self.FK__Procedimi__Cod_P__4E88ABD4">
+            <End Role="Orden" EntitySet="Orden" />
+            <End Role="Procedimiento" EntitySet="Procedimiento" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Paciente__Doc_Pa__3C69FB99" Association="Self.FK__Paciente__Doc_Pa__3C69FB99">
+            <End Role="Persona" EntitySet="Persona" />
+            <End Role="Paciente" EntitySet="Paciente" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Profesion__Doc_P__412EB0B6" Association="Self.FK__Profesion__Doc_P__412EB0B6">
+            <End Role="Persona" EntitySet="Persona" />
+            <End Role="Profesional" EntitySet="Profesional" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Procedimi__Pro_A__4F7CD00D" Association="Self.FK__Procedimi__Pro_A__4F7CD00D">
+            <End Role="Profesional" EntitySet="Profesional" />
+            <End Role="Procedimiento" EntitySet="Procedimiento" />
+          </AssociationSet>
+          <AssociationSet Name="Historial_Clinico" Association="Self.Historial_Clinico">
+            <End Role="Paciente" EntitySet="Paciente" />
+            <End Role="Orden" EntitySet="Orden" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="DB_MedicosModelStoreContainer" CdmEntityContainer="DB_Medicos_Models">
+          <EntitySetMapping Name="Administrador">
+            <EntityTypeMapping TypeName="DB_MedicosModel.Administrador">
+              <MappingFragment StoreEntitySet="Administrador">
+                <ScalarProperty Name="ID_Persona" ColumnName="ID_Persona" />
+                <ScalarProperty Name="Clave" ColumnName="Clave" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Cita">
+            <EntityTypeMapping TypeName="DB_MedicosModel.Cita">
+              <MappingFragment StoreEntitySet="Cita">
+                <ScalarProperty Name="Cod_Cita" ColumnName="Cod_Cita" />
+                <ScalarProperty Name="Doc_Paciente" ColumnName="Doc_Paciente" />
+                <ScalarProperty Name="Doc_Profesional" ColumnName="Doc_Profesional" />
+                <ScalarProperty Name="Fecha_Cita" ColumnName="Fecha_Cita" />
+                <ScalarProperty Name="Hora_Cita" ColumnName="Hora_Cita" />
+                <ScalarProperty Name="Estado" ColumnName="Estado" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Horario">
+            <EntityTypeMapping TypeName="DB_MedicosModel.Horario">
+              <MappingFragment StoreEntitySet="Horario">
+                <ScalarProperty Name="ID_Horario" ColumnName="ID_Horario" />
+                <ScalarProperty Name="Hora_Entrada" ColumnName="Hora_Entrada" />
+                <ScalarProperty Name="Hora_Salida" ColumnName="Hora_Salida" />
+                <ScalarProperty Name="Especialidad" ColumnName="Especialidad" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Nomina">
+            <EntityTypeMapping TypeName="DB_MedicosModel.Nomina">
+              <MappingFragment StoreEntitySet="Nomina">
+                <ScalarProperty Name="ID_Nomina" ColumnName="ID_Nomina" />
+                <ScalarProperty Name="Doc_Pro" ColumnName="Doc_Pro" />
+                <ScalarProperty Name="Salario" ColumnName="Salario" />
+                <ScalarProperty Name="Fecha_Pago" ColumnName="Fecha_Pago" />
+                <ScalarProperty Name="Estado" ColumnName="Estado" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Orden">
+            <EntityTypeMapping TypeName="DB_MedicosModel.Orden">
+              <MappingFragment StoreEntitySet="Orden">
+                <ScalarProperty Name="Cod_Orden" ColumnName="Cod_Orden" />
+                <ScalarProperty Name="Cod_Cita" ColumnName="Cod_Cita" />
+                <ScalarProperty Name="Diagnostico" ColumnName="Diagnostico" />
+                <ScalarProperty Name="Medicamento" ColumnName="Medicamento" />
+                <ScalarProperty Name="Recomendacion" ColumnName="Recomendacion" />
+                <ScalarProperty Name="Remision" ColumnName="Remision" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Paciente">
+            <EntityTypeMapping TypeName="DB_MedicosModel.Paciente">
+              <MappingFragment StoreEntitySet="Paciente">
+                <ScalarProperty Name="Doc_Paciente" ColumnName="Doc_Paciente" />
+                <ScalarProperty Name="Tipo_documento" ColumnName="Tipo_documento" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Persona">
+            <EntityTypeMapping TypeName="DB_MedicosModel.Persona">
+              <MappingFragment StoreEntitySet="Persona">
+                <ScalarProperty Name="ID_Persona" ColumnName="ID_Persona" />
+                <ScalarProperty Name="Documento" ColumnName="Documento" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Fecha_Nacimiento" ColumnName="Fecha_Nacimiento" />
+                <ScalarProperty Name="Telefono" ColumnName="Telefono" />
+                <ScalarProperty Name="Correo" ColumnName="Correo" />
+                <ScalarProperty Name="Contraseña" ColumnName="Contraseña" />
+                <ScalarProperty Name="Foto" ColumnName="Foto" />
+                <ScalarProperty Name="Tipo_Sangre" ColumnName="Tipo_Sangre" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Procedimiento">
+            <EntityTypeMapping TypeName="DB_MedicosModel.Procedimiento">
+              <MappingFragment StoreEntitySet="Procedimiento">
+                <ScalarProperty Name="Cod_Procedimiento" ColumnName="Cod_Procedimiento" />
+                <ScalarProperty Name="Tipo_P" ColumnName="Tipo_P" />
+                <ScalarProperty Name="Fecha_P" ColumnName="Fecha_P" />
+                <ScalarProperty Name="Hora_P" ColumnName="Hora_P" />
+                <ScalarProperty Name="Estado_P" ColumnName="Estado_P" />
+                <ScalarProperty Name="Pro_Asignado" ColumnName="Pro_Asignado" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Profesional">
+            <EntityTypeMapping TypeName="DB_MedicosModel.Profesional">
+              <MappingFragment StoreEntitySet="Profesional">
+                <ScalarProperty Name="Doc_Pro" ColumnName="Doc_Pro" />
+                <ScalarProperty Name="Horario" ColumnName="Horario" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="Historial_Clinico" TypeName="DB_MedicosModel.Historial_Clinico" StoreEntitySet="Historial_Clinico">
+            <EndProperty Name="Paciente">
+              <ScalarProperty Name="Doc_Paciente" ColumnName="Doc_Paciente" />
+            </EndProperty>
+            <EndProperty Name="Orden">
+              <ScalarProperty Name="Cod_Orden" ColumnName="Orden" />
+            </EndProperty>
+          </AssociationSetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="true" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Ninguno" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
