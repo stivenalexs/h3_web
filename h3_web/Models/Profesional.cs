@@ -11,7 +11,8 @@ namespace h3_web.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+
     public partial class Profesional
     {
         public Profesional()
@@ -20,8 +21,9 @@ namespace h3_web.Models
             this.Nomina = new HashSet<Nomina>();
             this.Procedimiento = new HashSet<Procedimiento>();
         }
-    
+        [Display(Name = "Documento Profesional")]
         public string Doc_Pro { get; set; }
+        [Display(Name = "Horario")]
         public string Horario { get; set; }
     
         public virtual ICollection<Cita> Cita { get; set; }

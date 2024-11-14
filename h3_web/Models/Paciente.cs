@@ -11,7 +11,8 @@ namespace h3_web.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+
     public partial class Paciente
     {
         public Paciente()
@@ -19,8 +20,9 @@ namespace h3_web.Models
             this.Cita = new HashSet<Cita>();
             this.Orden = new HashSet<Orden>();
         }
-    
+        [Display(Name = "Documento Paciente")]
         public string Doc_Paciente { get; set; }
+        [Display(Name = "Tipo Documento")]
         public string Tipo_documento { get; set; }
     
         public virtual ICollection<Cita> Cita { get; set; }
