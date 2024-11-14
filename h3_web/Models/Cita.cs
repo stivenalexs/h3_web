@@ -11,19 +11,29 @@ namespace h3_web.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+
     public partial class Cita
     {
         public Cita()
         {
             this.Orden = new HashSet<Orden>();
         }
-    
+        [Display (Name="Codigo Cita")]
         public string Cod_Cita { get; set; }
+        [Display(Name = "Documento Pacinete")]
         public string Doc_Paciente { get; set; }
+        [Display(Name = "Documento Profesional")]
         public string Doc_Profesional { get; set; }
+        [Display(Name = "Fecha Cita")]
+        [DisplayFormat(DataFormatString = "{0:MM/DD/YYYY}", ApplyFormatInEditMode = true)]
+        [DataType(DataType.Date)]
         public System.DateTime Fecha_Cita { get; set; }
+        [Display(Name = "Hora Cita")]
+        [DisplayFormat(DataFormatString = "{0:%h} horas {0:%m} minutos", ApplyFormatInEditMode = true)]
+        [DataType(DataType.Time)]
         public System.TimeSpan Hora_Cita { get; set; }
+        [Display(Name = "Estado")]
         public string Estado { get; set; }
     
         public virtual Paciente Paciente { get; set; }

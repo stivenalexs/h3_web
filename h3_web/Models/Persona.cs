@@ -11,17 +11,29 @@ namespace h3_web.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+
     public partial class Persona
     {
+        [Display(Name = "Codigo Persona")]
         public string ID_Persona { get; set; }
+        [Display(Name = "Documento")]
         public string Documento { get; set; }
+        [Display(Name = "Nombre")]
         public string Nombre { get; set; }
+        [Display(Name = "Fecha Nacimiento")]
+        [DisplayFormat(DataFormatString = "{0:MM/DD/YYYY}", ApplyFormatInEditMode = true)]
+        [DataType(DataType.Date)]
         public System.DateTime Fecha_Nacimiento { get; set; }
+        [Display(Name = "Telefono")]
         public string Telefono { get; set; }
+        [Display(Name = "Correo")]
         public string Correo { get; set; }
+        [Display(Name = "Contraseña")]
         public string Contraseña { get; set; }
+        [Display(Name = "Foto")]
         public string Foto { get; set; }
+        [Display(Name = "Tipo Sangre")]
         public string Tipo_Sangre { get; set; }
     
         public virtual Administrador Administrador { get; set; }
