@@ -1,0 +1,56 @@
+﻿@model h3_web.Models.Horario
+
+@{
+    
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Delete</title>
+</head>
+<body>
+    <h3>Are you sure you want to delete this?</h3>
+    <div>
+        <h4>Horario</h4>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.Hora_Entrada)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.Hora_Entrada)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.Hora_Salida)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.Hora_Salida)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.Especialidad)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.Especialidad)
+            </dd>
+    
+        </dl>
+    
+        @using (Html.BeginForm()) {
+            @Html.AntiForgeryToken()
+    
+            <div class="form-actions no-color">
+                <input type="submit" value="Delete" class="btn btn-default" /> |
+                @Html.ActionLink("Back to List", "Index")
+            </div>
+        }
+    </div>
+</body>
+</html>
