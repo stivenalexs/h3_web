@@ -1,0 +1,101 @@
+﻿@model IEnumerable<h3_web.Models.Persona>
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+</head>
+<body>
+    <p>
+        @Html.ActionLink("Create New", "Create")
+    </p>
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Documento)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Nombre)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Fecha_Nacimiento)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Telefono)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Correo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Contraseña)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Foto)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Tipo_Sangre)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Administrador.Clave)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Paciente.Tipo_documento)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Profesional.Horario)
+            </th>
+            <th></th>
+        </tr>
+    
+    @foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Documento)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Nombre)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Fecha_Nacimiento)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Telefono)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Correo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Contraseña)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Foto)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Tipo_Sangre)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Administrador.Clave)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Paciente.Tipo_documento)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Profesional.Horario)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id=item.ID_Persona }) |
+                @Html.ActionLink("Details", "Details", new { id=item.ID_Persona }) |
+                @Html.ActionLink("Delete", "Delete", new { id=item.ID_Persona })
+            </td>
+        </tr>
+    }
+    
+    </table>
+</body>
+</html>
