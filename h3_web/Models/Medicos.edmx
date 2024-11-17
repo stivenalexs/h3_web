@@ -1,0 +1,1436 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="DB_MedicosModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Administrador">
+          <Key>
+            <PropertyRef Name="ID_Persona" />
+          </Key>
+          <Property Name="ID_Persona" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Clave" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Cita">
+          <Key>
+            <PropertyRef Name="Cod_Cita" />
+          </Key>
+          <Property Name="Cod_Cita" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Doc_Paciente" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Doc_Profesional" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Fecha_Cita" Type="date" Nullable="false" />
+          <Property Name="Hora_Cita" Type="time" Precision="7" Nullable="false" />
+          <Property Name="Estado" Type="varchar" MaxLength="255" Nullable="false" />
+        </EntityType>
+        <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'DB_Medicos.dbo.Historial_Clinico' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+        <EntityType Name="Historial_Clinico">
+          <Key>
+            <PropertyRef Name="Doc_Paciente" />
+            <PropertyRef Name="Orden" />
+          </Key>
+          <Property Name="Doc_Paciente" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Orden" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Horario">
+          <Key>
+            <PropertyRef Name="ID_Horario" />
+          </Key>
+          <Property Name="ID_Horario" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Hora_Entrada" Type="time" Precision="7" Nullable="false" />
+          <Property Name="Hora_Salida" Type="time" Precision="7" Nullable="false" />
+          <Property Name="Especialidad" Type="varchar" MaxLength="80" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Nomina">
+          <Key>
+            <PropertyRef Name="ID_Nomina" />
+          </Key>
+          <Property Name="ID_Nomina" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Doc_Pro" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Salario" Type="decimal" Precision="10" Scale="2" Nullable="false" />
+          <Property Name="Fecha_Pago" Type="date" Nullable="false" />
+          <Property Name="Estado" Type="varchar" MaxLength="40" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Orden">
+          <Key>
+            <PropertyRef Name="Cod_Orden" />
+          </Key>
+          <Property Name="Cod_Orden" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Cod_Cita" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Diagnostico" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="Medicamento" Type="varchar" MaxLength="255" />
+          <Property Name="Recomendacion" Type="varchar" MaxLength="255" />
+          <Property Name="Remision" Type="varchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="Paciente">
+          <Key>
+            <PropertyRef Name="Doc_Paciente" />
+          </Key>
+          <Property Name="Doc_Paciente" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Tipo_documento" Type="varchar" MaxLength="30" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Persona">
+          <Key>
+            <PropertyRef Name="ID_Persona" />
+          </Key>
+          <Property Name="ID_Persona" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Documento" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="Nombre" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Fecha_Nacimiento" Type="date" Nullable="false" />
+          <Property Name="Telefono" Type="varchar" MaxLength="15" />
+          <Property Name="Correo" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Contraseña" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="Foto" Type="varchar" MaxLength="255" />
+          <Property Name="Tipo_Sangre" Type="varchar" MaxLength="10" />
+        </EntityType>
+        <EntityType Name="Procedimiento">
+          <Key>
+            <PropertyRef Name="Cod_Procedimiento" />
+          </Key>
+          <Property Name="Cod_Procedimiento" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Tipo_P" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Fecha_P" Type="date" />
+          <Property Name="Hora_P" Type="time" Precision="7" />
+          <Property Name="Estado_P" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Pro_Asignado" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Profesional">
+          <Key>
+            <PropertyRef Name="Doc_Pro" />
+          </Key>
+          <Property Name="Doc_Pro" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Horario" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <Association Name="FK__Administr__ID_Pe__398D8EEE">
+          <End Role="Persona" Type="Self.Persona" Multiplicity="1" />
+          <End Role="Administrador" Type="Self.Administrador" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Persona">
+              <PropertyRef Name="ID_Persona" />
+            </Principal>
+            <Dependent Role="Administrador">
+              <PropertyRef Name="ID_Persona" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Cita__Doc_Pacien__44FF419A">
+          <End Role="Paciente" Type="Self.Paciente" Multiplicity="1" />
+          <End Role="Cita" Type="Self.Cita" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Paciente">
+              <PropertyRef Name="Doc_Paciente" />
+            </Principal>
+            <Dependent Role="Cita">
+              <PropertyRef Name="Doc_Paciente" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Cita__Doc_Profes__45F365D3">
+          <End Role="Profesional" Type="Self.Profesional" Multiplicity="1" />
+          <End Role="Cita" Type="Self.Cita" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Profesional">
+              <PropertyRef Name="Doc_Pro" />
+            </Principal>
+            <Dependent Role="Cita">
+              <PropertyRef Name="Doc_Profesional" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Historial__Doc_P__4AB81AF0">
+          <End Role="Paciente" Type="Self.Paciente" Multiplicity="1" />
+          <End Role="Historial_Clinico" Type="Self.Historial_Clinico" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Paciente">
+              <PropertyRef Name="Doc_Paciente" />
+            </Principal>
+            <Dependent Role="Historial_Clinico">
+              <PropertyRef Name="Doc_Paciente" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Historial__Orden__4BAC3F29">
+          <End Role="Orden" Type="Self.Orden" Multiplicity="1" />
+          <End Role="Historial_Clinico" Type="Self.Historial_Clinico" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Orden">
+              <PropertyRef Name="Cod_Orden" />
+            </Principal>
+            <Dependent Role="Historial_Clinico">
+              <PropertyRef Name="Orden" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Nomina__Doc_Pro__52593CB8">
+          <End Role="Profesional" Type="Self.Profesional" Multiplicity="1" />
+          <End Role="Nomina" Type="Self.Nomina" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Profesional">
+              <PropertyRef Name="Doc_Pro" />
+            </Principal>
+            <Dependent Role="Nomina">
+              <PropertyRef Name="Doc_Pro" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Orden__Cod_Cita__48CFD27E">
+          <End Role="Cita" Type="Self.Cita" Multiplicity="1" />
+          <End Role="Orden" Type="Self.Orden" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cita">
+              <PropertyRef Name="Cod_Cita" />
+            </Principal>
+            <Dependent Role="Orden">
+              <PropertyRef Name="Cod_Cita" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Paciente__Doc_Pa__3C69FB99">
+          <End Role="Persona" Type="Self.Persona" Multiplicity="1" />
+          <End Role="Paciente" Type="Self.Paciente" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Persona">
+              <PropertyRef Name="ID_Persona" />
+            </Principal>
+            <Dependent Role="Paciente">
+              <PropertyRef Name="Doc_Paciente" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Procedimi__Cod_P__4E88ABD4">
+          <End Role="Orden" Type="Self.Orden" Multiplicity="1" />
+          <End Role="Procedimiento" Type="Self.Procedimiento" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Orden">
+              <PropertyRef Name="Cod_Orden" />
+            </Principal>
+            <Dependent Role="Procedimiento">
+              <PropertyRef Name="Cod_Procedimiento" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Procedimi__Pro_A__4F7CD00D">
+          <End Role="Profesional" Type="Self.Profesional" Multiplicity="1" />
+          <End Role="Procedimiento" Type="Self.Procedimiento" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Profesional">
+              <PropertyRef Name="Doc_Pro" />
+            </Principal>
+            <Dependent Role="Procedimiento">
+              <PropertyRef Name="Pro_Asignado" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Profesion__Doc_P__412EB0B6">
+          <End Role="Persona" Type="Self.Persona" Multiplicity="1" />
+          <End Role="Profesional" Type="Self.Profesional" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Persona">
+              <PropertyRef Name="ID_Persona" />
+            </Principal>
+            <Dependent Role="Profesional">
+              <PropertyRef Name="Doc_Pro" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Profesion__Horar__4222D4EF">
+          <End Role="Horario" Type="Self.Horario" Multiplicity="1" />
+          <End Role="Profesional" Type="Self.Profesional" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Horario">
+              <PropertyRef Name="ID_Horario" />
+            </Principal>
+            <Dependent Role="Profesional">
+              <PropertyRef Name="Horario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="SP_Administrador_Create" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="ID_Persona" Type="varchar" Mode="In" />
+          <Parameter Name="Clave" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="SP_Administrador_Delete" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="ID_Persona" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="SP_Administrador_Index" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="Sp_Administrador_Read" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="ID_Persona" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="SP_Administrador_Update" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="ID_Persona" Type="varchar" Mode="In" />
+          <Parameter Name="Clave" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="SP_Cita_Create" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Cod_Cita" Type="varchar" Mode="In" />
+          <Parameter Name="Doc_Paciente" Type="varchar" Mode="In" />
+          <Parameter Name="Doc_Profesional" Type="varchar" Mode="In" />
+          <Parameter Name="Fecha_Cita" Type="date" Mode="In" />
+          <Parameter Name="Hora_Cita" Type="time" Mode="In" />
+          <Parameter Name="Estado" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="SP_Cita_Delete" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Cod_Cita" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="SP_Cita_Index" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="SP_Cita_Read" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Cod_Cita" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="SP_Cita_Update" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Cod_Cita" Type="varchar" Mode="In" />
+          <Parameter Name="Doc_Paciente" Type="varchar" Mode="In" />
+          <Parameter Name="Doc_Profesional" Type="varchar" Mode="In" />
+          <Parameter Name="Fecha_Cita" Type="date" Mode="In" />
+          <Parameter Name="Hora_Cita" Type="time" Mode="In" />
+          <Parameter Name="Estado" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="SP_Historial_Clinico_Create" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Doc_Paciente" Type="varchar" Mode="In" />
+          <Parameter Name="Orden" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="SP_Historial_Clinico_Delete_o" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Orden" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="SP_Historial_Clinico_Delete_p" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Doc_Paciente" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="SP_Historial_Clinico_Index" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="SP_Historial_Clinico_Read" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Doc_Paciente" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="SP_Historial_Clinico_Update" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Doc_Paciente" Type="varchar" Mode="In" />
+          <Parameter Name="Orden" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="SP_Nomina_Create" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="ID_Nomina" Type="varchar" Mode="In" />
+          <Parameter Name="Doc_Pro" Type="varchar" Mode="In" />
+          <Parameter Name="Salario" Type="decimal" Mode="In" />
+          <Parameter Name="Fecha_Pago" Type="date" Mode="In" />
+          <Parameter Name="Estado" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="SP_Nomina_Delete" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="ID_Nomina" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="SP_Nomina_Index" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="SP_Nomina_Read" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="ID_Nomina" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="SP_Nomina_Update" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="ID_Nomina" Type="varchar" Mode="In" />
+          <Parameter Name="Doc_Pro" Type="varchar" Mode="In" />
+          <Parameter Name="Salario" Type="decimal" Mode="In" />
+          <Parameter Name="Fecha_Pago" Type="date" Mode="In" />
+          <Parameter Name="Estado" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="SP_Orden_Create" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Cod_Orden" Type="varchar" Mode="In" />
+          <Parameter Name="Cod_Cita" Type="varchar" Mode="In" />
+          <Parameter Name="Diagnostico" Type="varchar" Mode="In" />
+          <Parameter Name="Medicamento" Type="varchar" Mode="In" />
+          <Parameter Name="Recomendacion" Type="varchar" Mode="In" />
+          <Parameter Name="Remision" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="SP_Orden_Delete" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Cod_Orden" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="SP_Orden_Index" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="SP_Orden_Read" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Cod_Orden" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="SP_Orden_Update" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Cod_Orden" Type="varchar" Mode="In" />
+          <Parameter Name="Cod_Cita" Type="varchar" Mode="In" />
+          <Parameter Name="Diagnostico" Type="varchar" Mode="In" />
+          <Parameter Name="Medicamento" Type="varchar" Mode="In" />
+          <Parameter Name="Recomendacion" Type="varchar" Mode="In" />
+          <Parameter Name="Remision" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="SP_Paciente_Create" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Doc_Paciente" Type="varchar" Mode="In" />
+          <Parameter Name="Tipo_documento" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="SP_Paciente_Delete" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Doc_Paciente" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="SP_Paciente_Index" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="SP_Paciente_Read" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Doc_Paciente" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="SP_Paciente_Update" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Doc_Paciente" Type="varchar" Mode="In" />
+          <Parameter Name="Tipo_documento" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="SP_Persona_Create" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="ID_Persona" Type="varchar" Mode="In" />
+          <Parameter Name="Documento" Type="varchar" Mode="In" />
+          <Parameter Name="Nombre" Type="varchar" Mode="In" />
+          <Parameter Name="Fecha_Nacimiento" Type="date" Mode="In" />
+          <Parameter Name="Telefono" Type="varchar" Mode="In" />
+          <Parameter Name="Correo" Type="varchar" Mode="In" />
+          <Parameter Name="Contraseña" Type="varchar" Mode="In" />
+          <Parameter Name="Foto" Type="varchar" Mode="In" />
+          <Parameter Name="Tipo_Sangre" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="SP_Persona_Delete" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="ID_Persona" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="SP_Persona_Index" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="Sp_Persona_Read" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="ID_Persona" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="SP_Persona_Update" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="ID_Persona" Type="varchar" Mode="In" />
+          <Parameter Name="Documento" Type="varchar" Mode="In" />
+          <Parameter Name="Nombre" Type="varchar" Mode="In" />
+          <Parameter Name="Fecha_Nacimiento" Type="date" Mode="In" />
+          <Parameter Name="Telefono" Type="varchar" Mode="In" />
+          <Parameter Name="Correo" Type="varchar" Mode="In" />
+          <Parameter Name="Contraseña" Type="varchar" Mode="In" />
+          <Parameter Name="Foto" Type="varchar" Mode="In" />
+          <Parameter Name="Tipo_Sangre" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="SP_Procedimiento_Create" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Cod_Procedimiento" Type="varchar" Mode="In" />
+          <Parameter Name="Tipo_P" Type="varchar" Mode="In" />
+          <Parameter Name="Fecha_P" Type="date" Mode="In" />
+          <Parameter Name="Hora_P" Type="time" Mode="In" />
+          <Parameter Name="Estado_P" Type="varchar" Mode="In" />
+          <Parameter Name="Pro_Asignado" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="SP_Procedimiento_Delete" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Cod_Procedimiento" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="SP_Procedimiento_Index" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="SP_Procedimiento_Read" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Cod_Procedimiento" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="SP_Procedimiento_Update" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Cod_Procedimiento" Type="varchar" Mode="In" />
+          <Parameter Name="Tipo_P" Type="varchar" Mode="In" />
+          <Parameter Name="Fecha_P" Type="date" Mode="In" />
+          <Parameter Name="Hora_P" Type="time" Mode="In" />
+          <Parameter Name="Estado_P" Type="varchar" Mode="In" />
+          <Parameter Name="Pro_Asignado" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="SP_Profesional_Create" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Doc_Pro" Type="varchar" Mode="In" />
+          <Parameter Name="Horario" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="SP_Profesional_Delete" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Doc_Pro" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="SP_Profesional_Index" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="Sp_Profesional_Read" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Doc_Pro" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="SP_Profesional_Update" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Doc_Pro" Type="varchar" Mode="In" />
+          <Parameter Name="Horario" Type="varchar" Mode="In" />
+        </Function>
+        <EntityContainer Name="DB_MedicosModelStoreContainer">
+          <EntitySet Name="Administrador" EntityType="Self.Administrador" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Cita" EntityType="Self.Cita" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Horario" EntityType="Self.Horario" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Nomina" EntityType="Self.Nomina" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Orden" EntityType="Self.Orden" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Paciente" EntityType="Self.Paciente" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Persona" EntityType="Self.Persona" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Procedimiento" EntityType="Self.Procedimiento" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Profesional" EntityType="Self.Profesional" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Historial_Clinico" EntityType="Self.Historial_Clinico" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [Historial_Clinico].[Doc_Paciente] AS [Doc_Paciente], 
+    [Historial_Clinico].[Orden] AS [Orden]
+    FROM [dbo].[Historial_Clinico] AS [Historial_Clinico]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK__Administr__ID_Pe__398D8EEE" Association="Self.FK__Administr__ID_Pe__398D8EEE">
+            <End Role="Persona" EntitySet="Persona" />
+            <End Role="Administrador" EntitySet="Administrador" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Cita__Doc_Pacien__44FF419A" Association="Self.FK__Cita__Doc_Pacien__44FF419A">
+            <End Role="Paciente" EntitySet="Paciente" />
+            <End Role="Cita" EntitySet="Cita" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Cita__Doc_Profes__45F365D3" Association="Self.FK__Cita__Doc_Profes__45F365D3">
+            <End Role="Profesional" EntitySet="Profesional" />
+            <End Role="Cita" EntitySet="Cita" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Historial__Doc_P__4AB81AF0" Association="Self.FK__Historial__Doc_P__4AB81AF0">
+            <End Role="Paciente" EntitySet="Paciente" />
+            <End Role="Historial_Clinico" EntitySet="Historial_Clinico" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Historial__Orden__4BAC3F29" Association="Self.FK__Historial__Orden__4BAC3F29">
+            <End Role="Orden" EntitySet="Orden" />
+            <End Role="Historial_Clinico" EntitySet="Historial_Clinico" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Nomina__Doc_Pro__52593CB8" Association="Self.FK__Nomina__Doc_Pro__52593CB8">
+            <End Role="Profesional" EntitySet="Profesional" />
+            <End Role="Nomina" EntitySet="Nomina" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Orden__Cod_Cita__48CFD27E" Association="Self.FK__Orden__Cod_Cita__48CFD27E">
+            <End Role="Cita" EntitySet="Cita" />
+            <End Role="Orden" EntitySet="Orden" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Paciente__Doc_Pa__3C69FB99" Association="Self.FK__Paciente__Doc_Pa__3C69FB99">
+            <End Role="Persona" EntitySet="Persona" />
+            <End Role="Paciente" EntitySet="Paciente" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Procedimi__Cod_P__4E88ABD4" Association="Self.FK__Procedimi__Cod_P__4E88ABD4">
+            <End Role="Orden" EntitySet="Orden" />
+            <End Role="Procedimiento" EntitySet="Procedimiento" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Procedimi__Pro_A__4F7CD00D" Association="Self.FK__Procedimi__Pro_A__4F7CD00D">
+            <End Role="Profesional" EntitySet="Profesional" />
+            <End Role="Procedimiento" EntitySet="Procedimiento" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Profesion__Doc_P__412EB0B6" Association="Self.FK__Profesion__Doc_P__412EB0B6">
+            <End Role="Persona" EntitySet="Persona" />
+            <End Role="Profesional" EntitySet="Profesional" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Profesion__Horar__4222D4EF" Association="Self.FK__Profesion__Horar__4222D4EF">
+            <End Role="Horario" EntitySet="Horario" />
+            <End Role="Profesional" EntitySet="Profesional" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="DB_MedicosModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Administrador">
+          <Key>
+            <PropertyRef Name="ID_Persona" />
+          </Key>
+          <Property Name="ID_Persona" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Clave" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Persona" Relationship="Self.FK__Administr__ID_Pe__398D8EEE" FromRole="Administrador" ToRole="Persona" />
+        </EntityType>
+        <EntityType Name="Cita">
+          <Key>
+            <PropertyRef Name="Cod_Cita" />
+          </Key>
+          <Property Name="Cod_Cita" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Doc_Paciente" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Doc_Profesional" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Fecha_Cita" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Hora_Cita" Type="Time" Nullable="false" Precision="7" />
+          <Property Name="Estado" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Paciente" Relationship="Self.FK__Cita__Doc_Pacien__44FF419A" FromRole="Cita" ToRole="Paciente" />
+          <NavigationProperty Name="Profesional" Relationship="Self.FK__Cita__Doc_Profes__45F365D3" FromRole="Cita" ToRole="Profesional" />
+          <NavigationProperty Name="Orden" Relationship="Self.FK__Orden__Cod_Cita__48CFD27E" FromRole="Cita" ToRole="Orden" />
+        </EntityType>
+        <EntityType Name="Horario">
+          <Key>
+            <PropertyRef Name="ID_Horario" />
+          </Key>
+          <Property Name="ID_Horario" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Hora_Entrada" Type="Time" Nullable="false" Precision="7" />
+          <Property Name="Hora_Salida" Type="Time" Nullable="false" Precision="7" />
+          <Property Name="Especialidad" Type="String" MaxLength="80" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Profesional" Relationship="Self.FK__Profesion__Horar__4222D4EF" FromRole="Horario" ToRole="Profesional" />
+        </EntityType>
+        <EntityType Name="Nomina">
+          <Key>
+            <PropertyRef Name="ID_Nomina" />
+          </Key>
+          <Property Name="ID_Nomina" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Doc_Pro" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Salario" Type="Decimal" Precision="10" Scale="2" Nullable="false" />
+          <Property Name="Fecha_Pago" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Estado" Type="String" MaxLength="40" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Profesional" Relationship="Self.FK__Nomina__Doc_Pro__52593CB8" FromRole="Nomina" ToRole="Profesional" />
+        </EntityType>
+        <EntityType Name="Orden">
+          <Key>
+            <PropertyRef Name="Cod_Orden" />
+          </Key>
+          <Property Name="Cod_Orden" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Cod_Cita" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Diagnostico" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Medicamento" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Recomendacion" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Remision" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Cita" Relationship="Self.FK__Orden__Cod_Cita__48CFD27E" FromRole="Orden" ToRole="Cita" />
+          <NavigationProperty Name="Procedimiento" Relationship="Self.FK__Procedimi__Cod_P__4E88ABD4" FromRole="Orden" ToRole="Procedimiento" />
+          <NavigationProperty Name="Paciente" Relationship="Self.Historial_Clinico" FromRole="Orden" ToRole="Paciente" />
+        </EntityType>
+        <EntityType Name="Paciente">
+          <Key>
+            <PropertyRef Name="Doc_Paciente" />
+          </Key>
+          <Property Name="Doc_Paciente" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Tipo_documento" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Cita" Relationship="Self.FK__Cita__Doc_Pacien__44FF419A" FromRole="Paciente" ToRole="Cita" />
+          <NavigationProperty Name="Persona" Relationship="Self.FK__Paciente__Doc_Pa__3C69FB99" FromRole="Paciente" ToRole="Persona" />
+          <NavigationProperty Name="Orden" Relationship="Self.Historial_Clinico" FromRole="Paciente" ToRole="Orden" />
+        </EntityType>
+        <EntityType Name="Persona">
+          <Key>
+            <PropertyRef Name="ID_Persona" />
+          </Key>
+          <Property Name="ID_Persona" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Documento" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Fecha_Nacimiento" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Telefono" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="Correo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Contraseña" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Foto" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Tipo_Sangre" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Administrador" Relationship="Self.FK__Administr__ID_Pe__398D8EEE" FromRole="Persona" ToRole="Administrador" />
+          <NavigationProperty Name="Paciente" Relationship="Self.FK__Paciente__Doc_Pa__3C69FB99" FromRole="Persona" ToRole="Paciente" />
+          <NavigationProperty Name="Profesional" Relationship="Self.FK__Profesion__Doc_P__412EB0B6" FromRole="Persona" ToRole="Profesional" />
+        </EntityType>
+        <EntityType Name="Procedimiento">
+          <Key>
+            <PropertyRef Name="Cod_Procedimiento" />
+          </Key>
+          <Property Name="Cod_Procedimiento" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Tipo_P" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Fecha_P" Type="DateTime" Precision="0" />
+          <Property Name="Hora_P" Type="Time" Precision="7" />
+          <Property Name="Estado_P" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Pro_Asignado" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Orden" Relationship="Self.FK__Procedimi__Cod_P__4E88ABD4" FromRole="Procedimiento" ToRole="Orden" />
+          <NavigationProperty Name="Profesional" Relationship="Self.FK__Procedimi__Pro_A__4F7CD00D" FromRole="Procedimiento" ToRole="Profesional" />
+        </EntityType>
+        <EntityType Name="Profesional">
+          <Key>
+            <PropertyRef Name="Doc_Pro" />
+          </Key>
+          <Property Name="Doc_Pro" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Horario" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Cita" Relationship="Self.FK__Cita__Doc_Profes__45F365D3" FromRole="Profesional" ToRole="Cita" />
+          <NavigationProperty Name="Horario1" Relationship="Self.FK__Profesion__Horar__4222D4EF" FromRole="Profesional" ToRole="Horario" />
+          <NavigationProperty Name="Nomina" Relationship="Self.FK__Nomina__Doc_Pro__52593CB8" FromRole="Profesional" ToRole="Nomina" />
+          <NavigationProperty Name="Persona" Relationship="Self.FK__Profesion__Doc_P__412EB0B6" FromRole="Profesional" ToRole="Persona" />
+          <NavigationProperty Name="Procedimiento" Relationship="Self.FK__Procedimi__Pro_A__4F7CD00D" FromRole="Profesional" ToRole="Procedimiento" />
+        </EntityType>
+        <Association Name="FK__Administr__ID_Pe__398D8EEE">
+          <End Role="Persona" Type="Self.Persona" Multiplicity="1" />
+          <End Role="Administrador" Type="Self.Administrador" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Persona">
+              <PropertyRef Name="ID_Persona" />
+            </Principal>
+            <Dependent Role="Administrador">
+              <PropertyRef Name="ID_Persona" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Cita__Doc_Pacien__44FF419A">
+          <End Role="Paciente" Type="Self.Paciente" Multiplicity="1" />
+          <End Role="Cita" Type="Self.Cita" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Paciente">
+              <PropertyRef Name="Doc_Paciente" />
+            </Principal>
+            <Dependent Role="Cita">
+              <PropertyRef Name="Doc_Paciente" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Cita__Doc_Profes__45F365D3">
+          <End Role="Profesional" Type="Self.Profesional" Multiplicity="1" />
+          <End Role="Cita" Type="Self.Cita" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Profesional">
+              <PropertyRef Name="Doc_Pro" />
+            </Principal>
+            <Dependent Role="Cita">
+              <PropertyRef Name="Doc_Profesional" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Orden__Cod_Cita__48CFD27E">
+          <End Role="Cita" Type="Self.Cita" Multiplicity="1" />
+          <End Role="Orden" Type="Self.Orden" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cita">
+              <PropertyRef Name="Cod_Cita" />
+            </Principal>
+            <Dependent Role="Orden">
+              <PropertyRef Name="Cod_Cita" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Profesion__Horar__4222D4EF">
+          <End Role="Horario" Type="Self.Horario" Multiplicity="1" />
+          <End Role="Profesional" Type="Self.Profesional" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Horario">
+              <PropertyRef Name="ID_Horario" />
+            </Principal>
+            <Dependent Role="Profesional">
+              <PropertyRef Name="Horario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Nomina__Doc_Pro__52593CB8">
+          <End Role="Profesional" Type="Self.Profesional" Multiplicity="1" />
+          <End Role="Nomina" Type="Self.Nomina" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Profesional">
+              <PropertyRef Name="Doc_Pro" />
+            </Principal>
+            <Dependent Role="Nomina">
+              <PropertyRef Name="Doc_Pro" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Procedimi__Cod_P__4E88ABD4">
+          <End Role="Orden" Type="Self.Orden" Multiplicity="1" />
+          <End Role="Procedimiento" Type="Self.Procedimiento" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Orden">
+              <PropertyRef Name="Cod_Orden" />
+            </Principal>
+            <Dependent Role="Procedimiento">
+              <PropertyRef Name="Cod_Procedimiento" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Paciente__Doc_Pa__3C69FB99">
+          <End Role="Persona" Type="Self.Persona" Multiplicity="1" />
+          <End Role="Paciente" Type="Self.Paciente" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Persona">
+              <PropertyRef Name="ID_Persona" />
+            </Principal>
+            <Dependent Role="Paciente">
+              <PropertyRef Name="Doc_Paciente" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Profesion__Doc_P__412EB0B6">
+          <End Role="Persona" Type="Self.Persona" Multiplicity="1" />
+          <End Role="Profesional" Type="Self.Profesional" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Persona">
+              <PropertyRef Name="ID_Persona" />
+            </Principal>
+            <Dependent Role="Profesional">
+              <PropertyRef Name="Doc_Pro" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Procedimi__Pro_A__4F7CD00D">
+          <End Role="Profesional" Type="Self.Profesional" Multiplicity="1" />
+          <End Role="Procedimiento" Type="Self.Procedimiento" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Profesional">
+              <PropertyRef Name="Doc_Pro" />
+            </Principal>
+            <Dependent Role="Procedimiento">
+              <PropertyRef Name="Pro_Asignado" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Historial_Clinico">
+          <End Role="Paciente" Type="Self.Paciente" Multiplicity="*" />
+          <End Role="Orden" Type="Self.Orden" Multiplicity="*" />
+        </Association>
+        <EntityContainer Name="DB_MedicosEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Administrador" EntityType="Self.Administrador" />
+          <EntitySet Name="Cita" EntityType="Self.Cita" />
+          <EntitySet Name="Horario" EntityType="Self.Horario" />
+          <EntitySet Name="Nomina" EntityType="Self.Nomina" />
+          <EntitySet Name="Orden" EntityType="Self.Orden" />
+          <EntitySet Name="Paciente" EntityType="Self.Paciente" />
+          <EntitySet Name="Persona" EntityType="Self.Persona" />
+          <EntitySet Name="Procedimiento" EntityType="Self.Procedimiento" />
+          <EntitySet Name="Profesional" EntityType="Self.Profesional" />
+          <AssociationSet Name="FK__Administr__ID_Pe__398D8EEE" Association="Self.FK__Administr__ID_Pe__398D8EEE">
+            <End Role="Persona" EntitySet="Persona" />
+            <End Role="Administrador" EntitySet="Administrador" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Cita__Doc_Pacien__44FF419A" Association="Self.FK__Cita__Doc_Pacien__44FF419A">
+            <End Role="Paciente" EntitySet="Paciente" />
+            <End Role="Cita" EntitySet="Cita" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Cita__Doc_Profes__45F365D3" Association="Self.FK__Cita__Doc_Profes__45F365D3">
+            <End Role="Profesional" EntitySet="Profesional" />
+            <End Role="Cita" EntitySet="Cita" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Orden__Cod_Cita__48CFD27E" Association="Self.FK__Orden__Cod_Cita__48CFD27E">
+            <End Role="Cita" EntitySet="Cita" />
+            <End Role="Orden" EntitySet="Orden" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Profesion__Horar__4222D4EF" Association="Self.FK__Profesion__Horar__4222D4EF">
+            <End Role="Horario" EntitySet="Horario" />
+            <End Role="Profesional" EntitySet="Profesional" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Nomina__Doc_Pro__52593CB8" Association="Self.FK__Nomina__Doc_Pro__52593CB8">
+            <End Role="Profesional" EntitySet="Profesional" />
+            <End Role="Nomina" EntitySet="Nomina" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Procedimi__Cod_P__4E88ABD4" Association="Self.FK__Procedimi__Cod_P__4E88ABD4">
+            <End Role="Orden" EntitySet="Orden" />
+            <End Role="Procedimiento" EntitySet="Procedimiento" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Paciente__Doc_Pa__3C69FB99" Association="Self.FK__Paciente__Doc_Pa__3C69FB99">
+            <End Role="Persona" EntitySet="Persona" />
+            <End Role="Paciente" EntitySet="Paciente" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Profesion__Doc_P__412EB0B6" Association="Self.FK__Profesion__Doc_P__412EB0B6">
+            <End Role="Persona" EntitySet="Persona" />
+            <End Role="Profesional" EntitySet="Profesional" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Procedimi__Pro_A__4F7CD00D" Association="Self.FK__Procedimi__Pro_A__4F7CD00D">
+            <End Role="Profesional" EntitySet="Profesional" />
+            <End Role="Procedimiento" EntitySet="Procedimiento" />
+          </AssociationSet>
+          <AssociationSet Name="Historial_Clinico" Association="Self.Historial_Clinico">
+            <End Role="Paciente" EntitySet="Paciente" />
+            <End Role="Orden" EntitySet="Orden" />
+          </AssociationSet>
+          <FunctionImport Name="SP_Administrador_Create" ReturnType="Collection(Decimal)">
+            <Parameter Name="ID_Persona" Mode="In" Type="String" />
+            <Parameter Name="Clave" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="SP_Administrador_Delete" ReturnType="Collection(Decimal)">
+            <Parameter Name="ID_Persona" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="SP_Administrador_Index" ReturnType="Collection(DB_MedicosModel.SP_Administrador_Index_Result)" />
+          <FunctionImport Name="Sp_Administrador_Read" ReturnType="Collection(DB_MedicosModel.Sp_Administrador_Read_Result)">
+            <Parameter Name="ID_Persona" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="SP_Administrador_Update" ReturnType="Collection(Decimal)">
+            <Parameter Name="ID_Persona" Mode="In" Type="String" />
+            <Parameter Name="Clave" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="SP_Cita_Create" ReturnType="Collection(Decimal)">
+            <Parameter Name="Cod_Cita" Mode="In" Type="String" />
+            <Parameter Name="Doc_Paciente" Mode="In" Type="String" />
+            <Parameter Name="Doc_Profesional" Mode="In" Type="String" />
+            <Parameter Name="Fecha_Cita" Mode="In" Type="DateTime" />
+            <Parameter Name="Hora_Cita" Mode="In" Type="Time" />
+            <Parameter Name="Estado" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="SP_Cita_Delete" ReturnType="Collection(Decimal)">
+            <Parameter Name="Cod_Cita" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="SP_Cita_Index" ReturnType="Collection(DB_MedicosModel.SP_Cita_Index_Result)" />
+          <FunctionImport Name="SP_Cita_Read" ReturnType="Collection(DB_MedicosModel.SP_Cita_Read_Result)">
+            <Parameter Name="Cod_Cita" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="SP_Cita_Update" ReturnType="Collection(Decimal)">
+            <Parameter Name="Cod_Cita" Mode="In" Type="String" />
+            <Parameter Name="Doc_Paciente" Mode="In" Type="String" />
+            <Parameter Name="Doc_Profesional" Mode="In" Type="String" />
+            <Parameter Name="Fecha_Cita" Mode="In" Type="DateTime" />
+            <Parameter Name="Hora_Cita" Mode="In" Type="Time" />
+            <Parameter Name="Estado" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="SP_Historial_Clinico_Create" ReturnType="Collection(Decimal)">
+            <Parameter Name="Doc_Paciente" Mode="In" Type="String" />
+            <Parameter Name="Orden" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="SP_Historial_Clinico_Delete_o" ReturnType="Collection(Decimal)">
+            <Parameter Name="Orden" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="SP_Historial_Clinico_Delete_p" ReturnType="Collection(Decimal)">
+            <Parameter Name="Doc_Paciente" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="SP_Historial_Clinico_Index" ReturnType="Collection(DB_MedicosModel.SP_Historial_Clinico_Index_Result)" />
+          <FunctionImport Name="SP_Historial_Clinico_Read" ReturnType="Collection(DB_MedicosModel.SP_Historial_Clinico_Read_Result)">
+            <Parameter Name="Doc_Paciente" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="SP_Historial_Clinico_Update" ReturnType="Collection(Decimal)">
+            <Parameter Name="Doc_Paciente" Mode="In" Type="String" />
+            <Parameter Name="Orden" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="SP_Nomina_Create" ReturnType="Collection(Decimal)">
+            <Parameter Name="ID_Nomina" Mode="In" Type="String" />
+            <Parameter Name="Doc_Pro" Mode="In" Type="String" />
+            <Parameter Name="Salario" Mode="In" Type="Decimal" />
+            <Parameter Name="Fecha_Pago" Mode="In" Type="DateTime" />
+            <Parameter Name="Estado" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="SP_Nomina_Delete" ReturnType="Collection(Decimal)">
+            <Parameter Name="ID_Nomina" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="SP_Nomina_Index" ReturnType="Collection(DB_MedicosModel.SP_Nomina_Index_Result)" />
+          <FunctionImport Name="SP_Nomina_Read" ReturnType="Collection(DB_MedicosModel.SP_Nomina_Read_Result)">
+            <Parameter Name="ID_Nomina" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="SP_Nomina_Update" ReturnType="Collection(Decimal)">
+            <Parameter Name="ID_Nomina" Mode="In" Type="String" />
+            <Parameter Name="Doc_Pro" Mode="In" Type="String" />
+            <Parameter Name="Salario" Mode="In" Type="Decimal" />
+            <Parameter Name="Fecha_Pago" Mode="In" Type="DateTime" />
+            <Parameter Name="Estado" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="SP_Orden_Create" ReturnType="Collection(Decimal)">
+            <Parameter Name="Cod_Orden" Mode="In" Type="String" />
+            <Parameter Name="Cod_Cita" Mode="In" Type="String" />
+            <Parameter Name="Diagnostico" Mode="In" Type="String" />
+            <Parameter Name="Medicamento" Mode="In" Type="String" />
+            <Parameter Name="Recomendacion" Mode="In" Type="String" />
+            <Parameter Name="Remision" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="SP_Orden_Delete" ReturnType="Collection(Decimal)">
+            <Parameter Name="Cod_Orden" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="SP_Orden_Index" ReturnType="Collection(DB_MedicosModel.SP_Orden_Index_Result)" />
+          <FunctionImport Name="SP_Orden_Read" ReturnType="Collection(DB_MedicosModel.SP_Orden_Read_Result)">
+            <Parameter Name="Cod_Orden" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="SP_Orden_Update" ReturnType="Collection(Decimal)">
+            <Parameter Name="Cod_Orden" Mode="In" Type="String" />
+            <Parameter Name="Cod_Cita" Mode="In" Type="String" />
+            <Parameter Name="Diagnostico" Mode="In" Type="String" />
+            <Parameter Name="Medicamento" Mode="In" Type="String" />
+            <Parameter Name="Recomendacion" Mode="In" Type="String" />
+            <Parameter Name="Remision" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="SP_Paciente_Create" ReturnType="Collection(Decimal)">
+            <Parameter Name="Doc_Paciente" Mode="In" Type="String" />
+            <Parameter Name="Tipo_documento" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="SP_Paciente_Delete" ReturnType="Collection(Decimal)">
+            <Parameter Name="Doc_Paciente" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="SP_Paciente_Index" ReturnType="Collection(DB_MedicosModel.SP_Paciente_Index_Result)" />
+          <FunctionImport Name="SP_Paciente_Read" ReturnType="Collection(DB_MedicosModel.SP_Paciente_Read_Result)">
+            <Parameter Name="Doc_Paciente" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="SP_Paciente_Update" ReturnType="Collection(Decimal)">
+            <Parameter Name="Doc_Paciente" Mode="In" Type="String" />
+            <Parameter Name="Tipo_documento" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="SP_Persona_Create" ReturnType="Collection(Decimal)">
+            <Parameter Name="ID_Persona" Mode="In" Type="String" />
+            <Parameter Name="Documento" Mode="In" Type="String" />
+            <Parameter Name="Nombre" Mode="In" Type="String" />
+            <Parameter Name="Fecha_Nacimiento" Mode="In" Type="DateTime" />
+            <Parameter Name="Telefono" Mode="In" Type="String" />
+            <Parameter Name="Correo" Mode="In" Type="String" />
+            <Parameter Name="Contraseña" Mode="In" Type="String" />
+            <Parameter Name="Foto" Mode="In" Type="String" />
+            <Parameter Name="Tipo_Sangre" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="SP_Persona_Delete" ReturnType="Collection(Decimal)">
+            <Parameter Name="ID_Persona" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="SP_Persona_Index" ReturnType="Collection(DB_MedicosModel.SP_Persona_Index_Result)" />
+          <FunctionImport Name="Sp_Persona_Read" ReturnType="Collection(DB_MedicosModel.Sp_Persona_Read_Result)">
+            <Parameter Name="ID_Persona" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="SP_Persona_Update" ReturnType="Collection(Decimal)">
+            <Parameter Name="ID_Persona" Mode="In" Type="String" />
+            <Parameter Name="Documento" Mode="In" Type="String" />
+            <Parameter Name="Nombre" Mode="In" Type="String" />
+            <Parameter Name="Fecha_Nacimiento" Mode="In" Type="DateTime" />
+            <Parameter Name="Telefono" Mode="In" Type="String" />
+            <Parameter Name="Correo" Mode="In" Type="String" />
+            <Parameter Name="Contraseña" Mode="In" Type="String" />
+            <Parameter Name="Foto" Mode="In" Type="String" />
+            <Parameter Name="Tipo_Sangre" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="SP_Procedimiento_Create" ReturnType="Collection(Decimal)">
+            <Parameter Name="Cod_Procedimiento" Mode="In" Type="String" />
+            <Parameter Name="Tipo_P" Mode="In" Type="String" />
+            <Parameter Name="Fecha_P" Mode="In" Type="DateTime" />
+            <Parameter Name="Hora_P" Mode="In" Type="Time" />
+            <Parameter Name="Estado_P" Mode="In" Type="String" />
+            <Parameter Name="Pro_Asignado" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="SP_Procedimiento_Delete" ReturnType="Collection(Decimal)">
+            <Parameter Name="Cod_Procedimiento" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="SP_Procedimiento_Index" ReturnType="Collection(DB_MedicosModel.SP_Procedimiento_Index_Result)" />
+          <FunctionImport Name="SP_Procedimiento_Read" ReturnType="Collection(DB_MedicosModel.SP_Procedimiento_Read_Result)">
+            <Parameter Name="Cod_Procedimiento" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="SP_Procedimiento_Update" ReturnType="Collection(Decimal)">
+            <Parameter Name="Cod_Procedimiento" Mode="In" Type="String" />
+            <Parameter Name="Tipo_P" Mode="In" Type="String" />
+            <Parameter Name="Fecha_P" Mode="In" Type="DateTime" />
+            <Parameter Name="Hora_P" Mode="In" Type="Time" />
+            <Parameter Name="Estado_P" Mode="In" Type="String" />
+            <Parameter Name="Pro_Asignado" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="SP_Profesional_Create" ReturnType="Collection(Decimal)">
+            <Parameter Name="Doc_Pro" Mode="In" Type="String" />
+            <Parameter Name="Horario" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="SP_Profesional_Delete">
+            <Parameter Name="Doc_Pro" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="SP_Profesional_Index" ReturnType="Collection(DB_MedicosModel.SP_Profesional_Index_Result)" />
+          <FunctionImport Name="Sp_Profesional_Read" ReturnType="Collection(DB_MedicosModel.Sp_Profesional_Read_Result)">
+            <Parameter Name="Doc_Pro" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="SP_Profesional_Update">
+            <Parameter Name="Doc_Pro" Mode="In" Type="String" />
+            <Parameter Name="Horario" Mode="In" Type="String" />
+          </FunctionImport>
+        </EntityContainer>
+        <ComplexType Name="SP_Administrador_Index_Result">
+          <Property Type="String" Name="ID_Persona" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Clave" Nullable="false" MaxLength="50" />
+        </ComplexType>
+        <ComplexType Name="Sp_Administrador_Read_Result">
+          <Property Type="String" Name="ID_Persona" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Clave" Nullable="false" MaxLength="50" />
+        </ComplexType>
+        <ComplexType Name="SP_Cita_Index_Result">
+          <Property Type="String" Name="Cod_Cita" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Doc_Paciente" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Doc_Profesional" Nullable="false" MaxLength="50" />
+          <Property Type="DateTime" Name="Fecha_Cita" Nullable="false" />
+          <Property Type="Time" Name="Hora_Cita" Nullable="false" />
+          <Property Type="String" Name="Estado" Nullable="false" MaxLength="255" />
+        </ComplexType>
+        <ComplexType Name="SP_Cita_Read_Result">
+          <Property Type="String" Name="Cod_Cita" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Doc_Paciente" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Doc_Profesional" Nullable="false" MaxLength="50" />
+          <Property Type="DateTime" Name="Fecha_Cita" Nullable="false" />
+          <Property Type="Time" Name="Hora_Cita" Nullable="false" />
+          <Property Type="String" Name="Estado" Nullable="false" MaxLength="255" />
+        </ComplexType>
+        <ComplexType Name="SP_Historial_Clinico_Index_Result">
+          <Property Type="String" Name="Doc_Paciente" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Orden" Nullable="false" MaxLength="50" />
+        </ComplexType>
+        <ComplexType Name="SP_Historial_Clinico_Read_Result">
+          <Property Type="String" Name="Doc_Paciente" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Orden" Nullable="false" MaxLength="50" />
+        </ComplexType>
+        <ComplexType Name="SP_Nomina_Index_Result">
+          <Property Type="String" Name="ID_Nomina" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Doc_Pro" Nullable="false" MaxLength="50" />
+          <Property Type="Decimal" Name="Salario" Nullable="false" Precision="10" Scale="2" />
+          <Property Type="DateTime" Name="Fecha_Pago" Nullable="false" />
+          <Property Type="String" Name="Estado" Nullable="false" MaxLength="40" />
+        </ComplexType>
+        <ComplexType Name="SP_Nomina_Read_Result">
+          <Property Type="String" Name="ID_Nomina" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Doc_Pro" Nullable="false" MaxLength="50" />
+          <Property Type="Decimal" Name="Salario" Nullable="false" Precision="10" Scale="2" />
+          <Property Type="DateTime" Name="Fecha_Pago" Nullable="false" />
+          <Property Type="String" Name="Estado" Nullable="false" MaxLength="40" />
+        </ComplexType>
+        <ComplexType Name="SP_Orden_Index_Result">
+          <Property Type="String" Name="Cod_Orden" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Cod_Cita" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Diagnostico" Nullable="false" MaxLength="255" />
+          <Property Type="String" Name="Medicamento" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="Recomendacion" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="Remision" Nullable="true" MaxLength="255" />
+        </ComplexType>
+        <ComplexType Name="SP_Orden_Read_Result">
+          <Property Type="String" Name="Cod_Orden" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Cod_Cita" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Diagnostico" Nullable="false" MaxLength="255" />
+          <Property Type="String" Name="Medicamento" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="Recomendacion" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="Remision" Nullable="true" MaxLength="255" />
+        </ComplexType>
+        <ComplexType Name="SP_Paciente_Index_Result">
+          <Property Type="String" Name="Doc_Paciente" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Tipo_documento" Nullable="false" MaxLength="30" />
+        </ComplexType>
+        <ComplexType Name="SP_Paciente_Read_Result">
+          <Property Type="String" Name="Doc_Paciente" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Tipo_documento" Nullable="false" MaxLength="30" />
+        </ComplexType>
+        <ComplexType Name="SP_Persona_Index_Result">
+          <Property Type="String" Name="ID_Persona" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Documento" Nullable="false" MaxLength="20" />
+          <Property Type="String" Name="Nombre" Nullable="false" MaxLength="50" />
+          <Property Type="DateTime" Name="Fecha_Nacimiento" Nullable="false" />
+          <Property Type="String" Name="Telefono" Nullable="true" MaxLength="15" />
+          <Property Type="String" Name="Correo" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Contraseña" Nullable="false" MaxLength="20" />
+          <Property Type="String" Name="Foto" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="Tipo_Sangre" Nullable="true" MaxLength="10" />
+        </ComplexType>
+        <ComplexType Name="Sp_Persona_Read_Result">
+          <Property Type="String" Name="ID_Persona" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Documento" Nullable="false" MaxLength="20" />
+          <Property Type="String" Name="Nombre" Nullable="false" MaxLength="50" />
+          <Property Type="DateTime" Name="Fecha_Nacimiento" Nullable="false" />
+          <Property Type="String" Name="Telefono" Nullable="true" MaxLength="15" />
+          <Property Type="String" Name="Correo" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Contraseña" Nullable="false" MaxLength="20" />
+          <Property Type="String" Name="Foto" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="Tipo_Sangre" Nullable="true" MaxLength="10" />
+        </ComplexType>
+        <ComplexType Name="SP_Procedimiento_Index_Result">
+          <Property Type="String" Name="Cod_Procedimiento" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Tipo_P" Nullable="false" MaxLength="50" />
+          <Property Type="DateTime" Name="Fecha_P" Nullable="true" />
+          <Property Type="Time" Name="Hora_P" Nullable="true" />
+          <Property Type="String" Name="Estado_P" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Pro_Asignado" Nullable="false" MaxLength="50" />
+        </ComplexType>
+        <ComplexType Name="SP_Procedimiento_Read_Result">
+          <Property Type="String" Name="Cod_Orden" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Cod_Cita" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Diagnostico" Nullable="false" MaxLength="255" />
+          <Property Type="String" Name="Medicamento" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="Recomendacion" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="Remision" Nullable="true" MaxLength="255" />
+        </ComplexType>
+        <ComplexType Name="SP_Profesional_Index_Result">
+          <Property Type="String" Name="Doc_Pro" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Horario" Nullable="false" MaxLength="50" />
+        </ComplexType>
+        <ComplexType Name="Sp_Profesional_Read_Result">
+          <Property Type="String" Name="Doc_Pro" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Horario" Nullable="false" MaxLength="50" />
+        </ComplexType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="DB_MedicosModelStoreContainer" CdmEntityContainer="DB_MedicosEntities">
+          <EntitySetMapping Name="Administrador">
+            <EntityTypeMapping TypeName="DB_MedicosModel.Administrador">
+              <MappingFragment StoreEntitySet="Administrador">
+                <ScalarProperty Name="ID_Persona" ColumnName="ID_Persona" />
+                <ScalarProperty Name="Clave" ColumnName="Clave" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Cita">
+            <EntityTypeMapping TypeName="DB_MedicosModel.Cita">
+              <MappingFragment StoreEntitySet="Cita">
+                <ScalarProperty Name="Cod_Cita" ColumnName="Cod_Cita" />
+                <ScalarProperty Name="Doc_Paciente" ColumnName="Doc_Paciente" />
+                <ScalarProperty Name="Doc_Profesional" ColumnName="Doc_Profesional" />
+                <ScalarProperty Name="Fecha_Cita" ColumnName="Fecha_Cita" />
+                <ScalarProperty Name="Hora_Cita" ColumnName="Hora_Cita" />
+                <ScalarProperty Name="Estado" ColumnName="Estado" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Horario">
+            <EntityTypeMapping TypeName="DB_MedicosModel.Horario">
+              <MappingFragment StoreEntitySet="Horario">
+                <ScalarProperty Name="ID_Horario" ColumnName="ID_Horario" />
+                <ScalarProperty Name="Hora_Entrada" ColumnName="Hora_Entrada" />
+                <ScalarProperty Name="Hora_Salida" ColumnName="Hora_Salida" />
+                <ScalarProperty Name="Especialidad" ColumnName="Especialidad" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Nomina">
+            <EntityTypeMapping TypeName="DB_MedicosModel.Nomina">
+              <MappingFragment StoreEntitySet="Nomina">
+                <ScalarProperty Name="ID_Nomina" ColumnName="ID_Nomina" />
+                <ScalarProperty Name="Doc_Pro" ColumnName="Doc_Pro" />
+                <ScalarProperty Name="Salario" ColumnName="Salario" />
+                <ScalarProperty Name="Fecha_Pago" ColumnName="Fecha_Pago" />
+                <ScalarProperty Name="Estado" ColumnName="Estado" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Orden">
+            <EntityTypeMapping TypeName="DB_MedicosModel.Orden">
+              <MappingFragment StoreEntitySet="Orden">
+                <ScalarProperty Name="Cod_Orden" ColumnName="Cod_Orden" />
+                <ScalarProperty Name="Cod_Cita" ColumnName="Cod_Cita" />
+                <ScalarProperty Name="Diagnostico" ColumnName="Diagnostico" />
+                <ScalarProperty Name="Medicamento" ColumnName="Medicamento" />
+                <ScalarProperty Name="Recomendacion" ColumnName="Recomendacion" />
+                <ScalarProperty Name="Remision" ColumnName="Remision" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Paciente">
+            <EntityTypeMapping TypeName="DB_MedicosModel.Paciente">
+              <MappingFragment StoreEntitySet="Paciente">
+                <ScalarProperty Name="Doc_Paciente" ColumnName="Doc_Paciente" />
+                <ScalarProperty Name="Tipo_documento" ColumnName="Tipo_documento" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Persona">
+            <EntityTypeMapping TypeName="DB_MedicosModel.Persona">
+              <MappingFragment StoreEntitySet="Persona">
+                <ScalarProperty Name="ID_Persona" ColumnName="ID_Persona" />
+                <ScalarProperty Name="Documento" ColumnName="Documento" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Fecha_Nacimiento" ColumnName="Fecha_Nacimiento" />
+                <ScalarProperty Name="Telefono" ColumnName="Telefono" />
+                <ScalarProperty Name="Correo" ColumnName="Correo" />
+                <ScalarProperty Name="Contraseña" ColumnName="Contraseña" />
+                <ScalarProperty Name="Foto" ColumnName="Foto" />
+                <ScalarProperty Name="Tipo_Sangre" ColumnName="Tipo_Sangre" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Procedimiento">
+            <EntityTypeMapping TypeName="DB_MedicosModel.Procedimiento">
+              <MappingFragment StoreEntitySet="Procedimiento">
+                <ScalarProperty Name="Cod_Procedimiento" ColumnName="Cod_Procedimiento" />
+                <ScalarProperty Name="Tipo_P" ColumnName="Tipo_P" />
+                <ScalarProperty Name="Fecha_P" ColumnName="Fecha_P" />
+                <ScalarProperty Name="Hora_P" ColumnName="Hora_P" />
+                <ScalarProperty Name="Estado_P" ColumnName="Estado_P" />
+                <ScalarProperty Name="Pro_Asignado" ColumnName="Pro_Asignado" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Profesional">
+            <EntityTypeMapping TypeName="DB_MedicosModel.Profesional">
+              <MappingFragment StoreEntitySet="Profesional">
+                <ScalarProperty Name="Doc_Pro" ColumnName="Doc_Pro" />
+                <ScalarProperty Name="Horario" ColumnName="Horario" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="Historial_Clinico" TypeName="DB_MedicosModel.Historial_Clinico" StoreEntitySet="Historial_Clinico">
+            <EndProperty Name="Paciente">
+              <ScalarProperty Name="Doc_Paciente" ColumnName="Doc_Paciente" />
+            </EndProperty>
+            <EndProperty Name="Orden">
+              <ScalarProperty Name="Cod_Orden" ColumnName="Orden" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <FunctionImportMapping FunctionImportName="SP_Administrador_Create" FunctionName="DB_MedicosModel.Store.SP_Administrador_Create" />
+          <FunctionImportMapping FunctionImportName="SP_Administrador_Delete" FunctionName="DB_MedicosModel.Store.SP_Administrador_Delete" />
+          <FunctionImportMapping FunctionImportName="SP_Administrador_Index" FunctionName="DB_MedicosModel.Store.SP_Administrador_Index">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="DB_MedicosModel.SP_Administrador_Index_Result">
+                <ScalarProperty Name="ID_Persona" ColumnName="ID_Persona" />
+                <ScalarProperty Name="Clave" ColumnName="Clave" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="Sp_Administrador_Read" FunctionName="DB_MedicosModel.Store.Sp_Administrador_Read">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="DB_MedicosModel.Sp_Administrador_Read_Result">
+                <ScalarProperty Name="ID_Persona" ColumnName="ID_Persona" />
+                <ScalarProperty Name="Clave" ColumnName="Clave" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="SP_Administrador_Update" FunctionName="DB_MedicosModel.Store.SP_Administrador_Update" />
+          <FunctionImportMapping FunctionImportName="SP_Cita_Create" FunctionName="DB_MedicosModel.Store.SP_Cita_Create" />
+          <FunctionImportMapping FunctionImportName="SP_Cita_Delete" FunctionName="DB_MedicosModel.Store.SP_Cita_Delete" />
+          <FunctionImportMapping FunctionImportName="SP_Cita_Index" FunctionName="DB_MedicosModel.Store.SP_Cita_Index">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="DB_MedicosModel.SP_Cita_Index_Result">
+                <ScalarProperty Name="Cod_Cita" ColumnName="Cod_Cita" />
+                <ScalarProperty Name="Doc_Paciente" ColumnName="Doc_Paciente" />
+                <ScalarProperty Name="Doc_Profesional" ColumnName="Doc_Profesional" />
+                <ScalarProperty Name="Fecha_Cita" ColumnName="Fecha_Cita" />
+                <ScalarProperty Name="Hora_Cita" ColumnName="Hora_Cita" />
+                <ScalarProperty Name="Estado" ColumnName="Estado" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="SP_Cita_Read" FunctionName="DB_MedicosModel.Store.SP_Cita_Read">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="DB_MedicosModel.SP_Cita_Read_Result">
+                <ScalarProperty Name="Cod_Cita" ColumnName="Cod_Cita" />
+                <ScalarProperty Name="Doc_Paciente" ColumnName="Doc_Paciente" />
+                <ScalarProperty Name="Doc_Profesional" ColumnName="Doc_Profesional" />
+                <ScalarProperty Name="Fecha_Cita" ColumnName="Fecha_Cita" />
+                <ScalarProperty Name="Hora_Cita" ColumnName="Hora_Cita" />
+                <ScalarProperty Name="Estado" ColumnName="Estado" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="SP_Cita_Update" FunctionName="DB_MedicosModel.Store.SP_Cita_Update" />
+          <FunctionImportMapping FunctionImportName="SP_Historial_Clinico_Create" FunctionName="DB_MedicosModel.Store.SP_Historial_Clinico_Create" />
+          <FunctionImportMapping FunctionImportName="SP_Historial_Clinico_Delete_o" FunctionName="DB_MedicosModel.Store.SP_Historial_Clinico_Delete_o" />
+          <FunctionImportMapping FunctionImportName="SP_Historial_Clinico_Delete_p" FunctionName="DB_MedicosModel.Store.SP_Historial_Clinico_Delete_p" />
+          <FunctionImportMapping FunctionImportName="SP_Historial_Clinico_Index" FunctionName="DB_MedicosModel.Store.SP_Historial_Clinico_Index">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="DB_MedicosModel.SP_Historial_Clinico_Index_Result">
+                <ScalarProperty Name="Doc_Paciente" ColumnName="Doc_Paciente" />
+                <ScalarProperty Name="Orden" ColumnName="Orden" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="SP_Historial_Clinico_Read" FunctionName="DB_MedicosModel.Store.SP_Historial_Clinico_Read">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="DB_MedicosModel.SP_Historial_Clinico_Read_Result">
+                <ScalarProperty Name="Doc_Paciente" ColumnName="Doc_Paciente" />
+                <ScalarProperty Name="Orden" ColumnName="Orden" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="SP_Historial_Clinico_Update" FunctionName="DB_MedicosModel.Store.SP_Historial_Clinico_Update" />
+          <FunctionImportMapping FunctionImportName="SP_Nomina_Create" FunctionName="DB_MedicosModel.Store.SP_Nomina_Create" />
+          <FunctionImportMapping FunctionImportName="SP_Nomina_Delete" FunctionName="DB_MedicosModel.Store.SP_Nomina_Delete" />
+          <FunctionImportMapping FunctionImportName="SP_Nomina_Index" FunctionName="DB_MedicosModel.Store.SP_Nomina_Index">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="DB_MedicosModel.SP_Nomina_Index_Result">
+                <ScalarProperty Name="ID_Nomina" ColumnName="ID_Nomina" />
+                <ScalarProperty Name="Doc_Pro" ColumnName="Doc_Pro" />
+                <ScalarProperty Name="Salario" ColumnName="Salario" />
+                <ScalarProperty Name="Fecha_Pago" ColumnName="Fecha_Pago" />
+                <ScalarProperty Name="Estado" ColumnName="Estado" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="SP_Nomina_Read" FunctionName="DB_MedicosModel.Store.SP_Nomina_Read">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="DB_MedicosModel.SP_Nomina_Read_Result">
+                <ScalarProperty Name="ID_Nomina" ColumnName="ID_Nomina" />
+                <ScalarProperty Name="Doc_Pro" ColumnName="Doc_Pro" />
+                <ScalarProperty Name="Salario" ColumnName="Salario" />
+                <ScalarProperty Name="Fecha_Pago" ColumnName="Fecha_Pago" />
+                <ScalarProperty Name="Estado" ColumnName="Estado" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="SP_Nomina_Update" FunctionName="DB_MedicosModel.Store.SP_Nomina_Update" />
+          <FunctionImportMapping FunctionImportName="SP_Orden_Create" FunctionName="DB_MedicosModel.Store.SP_Orden_Create" />
+          <FunctionImportMapping FunctionImportName="SP_Orden_Delete" FunctionName="DB_MedicosModel.Store.SP_Orden_Delete" />
+          <FunctionImportMapping FunctionImportName="SP_Orden_Index" FunctionName="DB_MedicosModel.Store.SP_Orden_Index">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="DB_MedicosModel.SP_Orden_Index_Result">
+                <ScalarProperty Name="Cod_Orden" ColumnName="Cod_Orden" />
+                <ScalarProperty Name="Cod_Cita" ColumnName="Cod_Cita" />
+                <ScalarProperty Name="Diagnostico" ColumnName="Diagnostico" />
+                <ScalarProperty Name="Medicamento" ColumnName="Medicamento" />
+                <ScalarProperty Name="Recomendacion" ColumnName="Recomendacion" />
+                <ScalarProperty Name="Remision" ColumnName="Remision" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="SP_Orden_Read" FunctionName="DB_MedicosModel.Store.SP_Orden_Read">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="DB_MedicosModel.SP_Orden_Read_Result">
+                <ScalarProperty Name="Cod_Orden" ColumnName="Cod_Orden" />
+                <ScalarProperty Name="Cod_Cita" ColumnName="Cod_Cita" />
+                <ScalarProperty Name="Diagnostico" ColumnName="Diagnostico" />
+                <ScalarProperty Name="Medicamento" ColumnName="Medicamento" />
+                <ScalarProperty Name="Recomendacion" ColumnName="Recomendacion" />
+                <ScalarProperty Name="Remision" ColumnName="Remision" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="SP_Orden_Update" FunctionName="DB_MedicosModel.Store.SP_Orden_Update" />
+          <FunctionImportMapping FunctionImportName="SP_Paciente_Create" FunctionName="DB_MedicosModel.Store.SP_Paciente_Create" />
+          <FunctionImportMapping FunctionImportName="SP_Paciente_Delete" FunctionName="DB_MedicosModel.Store.SP_Paciente_Delete" />
+          <FunctionImportMapping FunctionImportName="SP_Paciente_Index" FunctionName="DB_MedicosModel.Store.SP_Paciente_Index">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="DB_MedicosModel.SP_Paciente_Index_Result">
+                <ScalarProperty Name="Doc_Paciente" ColumnName="Doc_Paciente" />
+                <ScalarProperty Name="Tipo_documento" ColumnName="Tipo_documento" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="SP_Paciente_Read" FunctionName="DB_MedicosModel.Store.SP_Paciente_Read">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="DB_MedicosModel.SP_Paciente_Read_Result">
+                <ScalarProperty Name="Doc_Paciente" ColumnName="Doc_Paciente" />
+                <ScalarProperty Name="Tipo_documento" ColumnName="Tipo_documento" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="SP_Paciente_Update" FunctionName="DB_MedicosModel.Store.SP_Paciente_Update" />
+          <FunctionImportMapping FunctionImportName="SP_Persona_Create" FunctionName="DB_MedicosModel.Store.SP_Persona_Create" />
+          <FunctionImportMapping FunctionImportName="SP_Persona_Delete" FunctionName="DB_MedicosModel.Store.SP_Persona_Delete" />
+          <FunctionImportMapping FunctionImportName="SP_Persona_Index" FunctionName="DB_MedicosModel.Store.SP_Persona_Index">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="DB_MedicosModel.SP_Persona_Index_Result">
+                <ScalarProperty Name="ID_Persona" ColumnName="ID_Persona" />
+                <ScalarProperty Name="Documento" ColumnName="Documento" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Fecha_Nacimiento" ColumnName="Fecha_Nacimiento" />
+                <ScalarProperty Name="Telefono" ColumnName="Telefono" />
+                <ScalarProperty Name="Correo" ColumnName="Correo" />
+                <ScalarProperty Name="Contraseña" ColumnName="Contraseña" />
+                <ScalarProperty Name="Foto" ColumnName="Foto" />
+                <ScalarProperty Name="Tipo_Sangre" ColumnName="Tipo_Sangre" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="Sp_Persona_Read" FunctionName="DB_MedicosModel.Store.Sp_Persona_Read">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="DB_MedicosModel.Sp_Persona_Read_Result">
+                <ScalarProperty Name="ID_Persona" ColumnName="ID_Persona" />
+                <ScalarProperty Name="Documento" ColumnName="Documento" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Fecha_Nacimiento" ColumnName="Fecha_Nacimiento" />
+                <ScalarProperty Name="Telefono" ColumnName="Telefono" />
+                <ScalarProperty Name="Correo" ColumnName="Correo" />
+                <ScalarProperty Name="Contraseña" ColumnName="Contraseña" />
+                <ScalarProperty Name="Foto" ColumnName="Foto" />
+                <ScalarProperty Name="Tipo_Sangre" ColumnName="Tipo_Sangre" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="SP_Persona_Update" FunctionName="DB_MedicosModel.Store.SP_Persona_Update" />
+          <FunctionImportMapping FunctionImportName="SP_Procedimiento_Create" FunctionName="DB_MedicosModel.Store.SP_Procedimiento_Create" />
+          <FunctionImportMapping FunctionImportName="SP_Procedimiento_Delete" FunctionName="DB_MedicosModel.Store.SP_Procedimiento_Delete" />
+          <FunctionImportMapping FunctionImportName="SP_Procedimiento_Index" FunctionName="DB_MedicosModel.Store.SP_Procedimiento_Index">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="DB_MedicosModel.SP_Procedimiento_Index_Result">
+                <ScalarProperty Name="Cod_Procedimiento" ColumnName="Cod_Procedimiento" />
+                <ScalarProperty Name="Tipo_P" ColumnName="Tipo_P" />
+                <ScalarProperty Name="Fecha_P" ColumnName="Fecha_P" />
+                <ScalarProperty Name="Hora_P" ColumnName="Hora_P" />
+                <ScalarProperty Name="Estado_P" ColumnName="Estado_P" />
+                <ScalarProperty Name="Pro_Asignado" ColumnName="Pro_Asignado" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="SP_Procedimiento_Read" FunctionName="DB_MedicosModel.Store.SP_Procedimiento_Read">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="DB_MedicosModel.SP_Procedimiento_Read_Result">
+                <ScalarProperty Name="Cod_Orden" ColumnName="Cod_Orden" />
+                <ScalarProperty Name="Cod_Cita" ColumnName="Cod_Cita" />
+                <ScalarProperty Name="Diagnostico" ColumnName="Diagnostico" />
+                <ScalarProperty Name="Medicamento" ColumnName="Medicamento" />
+                <ScalarProperty Name="Recomendacion" ColumnName="Recomendacion" />
+                <ScalarProperty Name="Remision" ColumnName="Remision" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="SP_Procedimiento_Update" FunctionName="DB_MedicosModel.Store.SP_Procedimiento_Update" />
+          <FunctionImportMapping FunctionImportName="SP_Profesional_Create" FunctionName="DB_MedicosModel.Store.SP_Profesional_Create" />
+          <FunctionImportMapping FunctionImportName="SP_Profesional_Delete" FunctionName="DB_MedicosModel.Store.SP_Profesional_Delete" />
+          <FunctionImportMapping FunctionImportName="SP_Profesional_Index" FunctionName="DB_MedicosModel.Store.SP_Profesional_Index">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="DB_MedicosModel.SP_Profesional_Index_Result">
+                <ScalarProperty Name="Doc_Pro" ColumnName="Doc_Pro" />
+                <ScalarProperty Name="Horario" ColumnName="Horario" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="Sp_Profesional_Read" FunctionName="DB_MedicosModel.Store.Sp_Profesional_Read">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="DB_MedicosModel.Sp_Profesional_Read_Result">
+                <ScalarProperty Name="Doc_Pro" ColumnName="Doc_Pro" />
+                <ScalarProperty Name="Horario" ColumnName="Horario" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="SP_Profesional_Update" FunctionName="DB_MedicosModel.Store.SP_Profesional_Update" />
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Ninguno" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

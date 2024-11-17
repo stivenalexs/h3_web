@@ -1,0 +1,65 @@
+﻿@model IEnumerable<h3_web.Models.Cita>
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+</head>
+<body>
+    <p>
+        @Html.ActionLink("Create New", "Create")
+    </p>
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Fecha_Cita)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Hora_Cita)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Estado)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Paciente.Tipo_documento)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Profesional.Horario)
+            </th>
+            <th></th>
+        </tr>
+    
+    @foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Fecha_Cita)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Hora_Cita)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Estado)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Paciente.Tipo_documento)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Profesional.Horario)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id=item.Cod_Cita }) |
+                @Html.ActionLink("Details", "Details", new { id=item.Cod_Cita }) |
+                @Html.ActionLink("Delete", "Delete", new { id=item.Cod_Cita })
+            </td>
+        </tr>
+    }
+    
+    </table>
+</body>
+</html>

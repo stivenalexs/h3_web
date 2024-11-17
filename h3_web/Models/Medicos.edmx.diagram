@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="7ae63641e83e4f319f1a4256ec01390c" Name="Diagram1">
+        <EntityTypeShape EntityType="DB_MedicosModel.Administrador" Width="1.5" PointX="3" PointY="3.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="DB_MedicosModel.Cita" Width="1.5" PointX="5.25" PointY="5.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="DB_MedicosModel.Horario" Width="1.5" PointX="3.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DB_MedicosModel.Nomina" Width="1.5" PointX="8.25" PointY="1.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="DB_MedicosModel.Orden" Width="1.5" PointX="7.5" PointY="5.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="DB_MedicosModel.Paciente" Width="1.5" PointX="3" PointY="5.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="DB_MedicosModel.Persona" Width="1.5" PointX="0.75" PointY="4.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="DB_MedicosModel.Procedimiento" Width="1.5" PointX="9.75" PointY="4.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="DB_MedicosModel.Profesional" Width="1.5" PointX="6" PointY="1.5" IsExpanded="true" />
+        <AssociationConnector Association="DB_MedicosModel.FK__Administr__ID_Pe__398D8EEE" ManuallyRouted="false" />
+        <AssociationConnector Association="DB_MedicosModel.FK__Cita__Doc_Pacien__44FF419A" ManuallyRouted="false" />
+        <AssociationConnector Association="DB_MedicosModel.FK__Cita__Doc_Profes__45F365D3" ManuallyRouted="false" />
+        <AssociationConnector Association="DB_MedicosModel.FK__Orden__Cod_Cita__48CFD27E" ManuallyRouted="false" />
+        <AssociationConnector Association="DB_MedicosModel.FK__Profesion__Horar__4222D4EF" ManuallyRouted="false" />
+        <AssociationConnector Association="DB_MedicosModel.FK__Nomina__Doc_Pro__52593CB8" ManuallyRouted="false" />
+        <AssociationConnector Association="DB_MedicosModel.FK__Procedimi__Cod_P__4E88ABD4" ManuallyRouted="false" />
+        <AssociationConnector Association="DB_MedicosModel.FK__Paciente__Doc_Pa__3C69FB99" ManuallyRouted="false" />
+        <AssociationConnector Association="DB_MedicosModel.FK__Profesion__Doc_P__412EB0B6" ManuallyRouted="false" />
+        <AssociationConnector Association="DB_MedicosModel.FK__Procedimi__Pro_A__4F7CD00D" ManuallyRouted="false" />
+        <AssociationConnector Association="DB_MedicosModel.Historial_Clinico" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
