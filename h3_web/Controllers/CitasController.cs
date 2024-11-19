@@ -7,7 +7,6 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using h3_web.Models;
-using EntityState = System.Data.EntityState;
 
 namespace h3_web.Controllers
 {
