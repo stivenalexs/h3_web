@@ -1,83 +1,63 @@
-* {
-    padding: 0;
-    margin: 0;
-    box-sizing: border-box;
+/* Incluye aquí el CSS que proporcionaste */
+body,a {
+    background: linear-gradient(27deg, #34495e 50%, #2c3e50 50%);
+    color:white;
 }
-body{
-    display: flex;
-    align-items: center;
-    justify-content:center;
-    height: 100vh;
-    font-family: Arial, Helvetica, sans-serif;
-    background: linear-gradient(27deg,#34495e 50%,#2c3e50 50%);
+
+.register {
+    margin-top: 3%;
+    padding: 3%;
 }
-.front-body{
-    width: 400px;
-    min-width: 300px;
-    border-radius: 10px;
-    border-top-left-radius: 50px;
-    border-top-right-radius: 50px;
-    border: solid 1px #298bd9;
-    margin: 10px;
-}
-.front-body img {
-    width: 150px;
-    display: block;
-    margin: 20px auto;
-}
-.text{
+
+.register-left {
     text-align: center;
-    font-size: 1.5rem;
+    color: #fff;
+    margin-top: 4%;
+}
+
+.register-right {
+    background: #f8f9fa;
+    border-top-left-radius: 10% 50%;
+    border-bottom-left-radius: 10% 50%;
+}
+
+.register-left img {
+    margin-top: 15%;
+    margin-bottom: 5%;
+    width: 25%;
+    animation: mover 1s infinite alternate;
+}
+
+@keyframes mover {
+    0% {
+        transform: translateY(0);
+    }
+
+    100% {
+        transform: translateY(-20px);
+    }
+}
+
+.register .register-form {
+    padding: 10%;
+    margin-top: 10%;
+}
+
+.btnRegister {
+    float: right;
+    margin-top: 10%;
+    border: none;
+    border-radius: 1.5rem;
+    padding: 2%;
+    background: #0062cc;
+    color: #fff;
     font-weight: 600;
-    color: #fff;
-    margin-bottom: 25px;
-}
-.front-body input{
-    display: block;
-    margin: auto;
-    height: 48px;
-    width: 75%;
-    padding-left: 10px;
-    color: #fff;
-    border: 1px solid #fff;
-    border-radius: 2px;
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
-    background-color: transparent;
-    border-top-left-radius: 10px;
-    border-bottom-right-radius: 10px;
-    font-size: 1rem;
-    outline: none;
-}
-.front-body input[type="password"]{
-    margin-top: 20px;
-}
-::placeholder{
-    font-size: 1rem;
-    color: rgba(255,255,255,.596);
-}
-.front-body input:hover{
-    transition: .5s;
-    border: 1px solid #2980b9;
-    color: #2498db;
-}
-.front-body button{
-    display: block;
-    margin: auto;
-    margin-top:25px;
-    margin-bottom:30px;
-    height: 40px;
-    width: 78%;
-    background: transparent;
-    color: #b9c4c6;
-    border-radius: 2px;
+    width: 50%;
     cursor: pointer;
-    outline: none;
-    border: 2px solid #2980db;
-    transition: all .5s ease;
 }
-.front-body button:hover{
-    color: #d5dbdd;
-    border: 2px solid #3498db;
-    background:linear-gradient(#34495e,#2c3e50) ;
-    
+
+.register-heading {
+    text-align: center;
+    margin-top: 8%;
+    color: #495057;
 }
