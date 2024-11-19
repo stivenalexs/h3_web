@@ -13,7 +13,7 @@ namespace h3_web.Models
     
     public partial class SP_Nomina_Index_Result
     {
-        public string ID_Nomina { get; set; }
+        public int ID_Nomina { get; set; }
         public string Doc_Pro { get; set; }
         public decimal Salario { get; set; }
         public System.DateTime Fecha_Pago { get; set; }

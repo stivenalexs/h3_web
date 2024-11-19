@@ -16,7 +16,7 @@
           <Key>
             <PropertyRef Name="Cod_Cita" />
           </Key>
-          <Property Name="Cod_Cita" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Cod_Cita" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Doc_Paciente" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="Doc_Profesional" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="Fecha_Cita" Type="date" Nullable="false" />
@@ -31,7 +31,7 @@ advertencia 6002: La tabla o vista 'DB_Medicos.dbo.Historial_Clinico' no tiene d
             <PropertyRef Name="Orden" />
           </Key>
           <Property Name="Doc_Paciente" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="Orden" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Orden" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Horario">
           <Key>
@@ -46,7 +46,7 @@ advertencia 6002: La tabla o vista 'DB_Medicos.dbo.Historial_Clinico' no tiene d
           <Key>
             <PropertyRef Name="ID_Nomina" />
           </Key>
-          <Property Name="ID_Nomina" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="ID_Nomina" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Doc_Pro" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="Salario" Type="decimal" Precision="10" Scale="2" Nullable="false" />
           <Property Name="Fecha_Pago" Type="date" Nullable="false" />
@@ -56,8 +56,8 @@ advertencia 6002: La tabla o vista 'DB_Medicos.dbo.Historial_Clinico' no tiene d
           <Key>
             <PropertyRef Name="Cod_Orden" />
           </Key>
-          <Property Name="Cod_Orden" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="Cod_Cita" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Cod_Orden" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Cod_Cita" Type="int" Nullable="false" />
           <Property Name="Diagnostico" Type="varchar" MaxLength="255" Nullable="false" />
           <Property Name="Medicamento" Type="varchar" MaxLength="255" />
           <Property Name="Recomendacion" Type="varchar" MaxLength="255" />
@@ -88,7 +88,7 @@ advertencia 6002: La tabla o vista 'DB_Medicos.dbo.Historial_Clinico' no tiene d
           <Key>
             <PropertyRef Name="Cod_Procedimiento" />
           </Key>
-          <Property Name="Cod_Procedimiento" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Cod_Procedimiento" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Tipo_P" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="Fecha_P" Type="date" />
           <Property Name="Hora_P" Type="time" Precision="7" />
@@ -101,6 +101,16 @@ advertencia 6002: La tabla o vista 'DB_Medicos.dbo.Historial_Clinico' no tiene d
           </Key>
           <Property Name="Doc_Pro" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="Horario" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
         </EntityType>
         <Association Name="FK__Administr__ID_Pe__398D8EEE">
           <End Role="Persona" Type="Self.Persona" Multiplicity="1" />
@@ -246,23 +256,32 @@ advertencia 6002: La tabla o vista 'DB_Medicos.dbo.Historial_Clinico' no tiene d
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Function Name="SP_Administrador_Create" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="ID_Persona" Type="varchar" Mode="In" />
-          <Parameter Name="Clave" Type="varchar" Mode="In" />
+        <Function Name="fn_diagramobjects" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int" />
+        <Function Name="sp_alterdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+          <Parameter Name="version" Type="int" Mode="In" />
+          <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
         </Function>
-        <Function Name="SP_Administrador_Delete" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="ID_Persona" Type="varchar" Mode="In" />
+        <Function Name="SP_Asignar_Horario" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Especialidad" Type="varchar" Mode="In" />
         </Function>
-        <Function Name="SP_Administrador_Index" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
-        <Function Name="Sp_Administrador_Read" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="ID_Persona" Type="varchar" Mode="In" />
+        <Function Name="SP_Buscar_Cita_Pro" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Doc_Paciente" Type="varchar" Mode="In" />
         </Function>
-        <Function Name="SP_Administrador_Update" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="ID_Persona" Type="varchar" Mode="In" />
-          <Parameter Name="Clave" Type="varchar" Mode="In" />
+        <Function Name="SP_Buscar_CitaEsp" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Cod_Cita" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="SP_Buscar_CitaPa" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Doc_Paciente" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="SP_Buscar_DocPro" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Nombre" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="SP_Buscar_Profesional" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Especialidad" Type="varchar" Mode="In" />
         </Function>
         <Function Name="SP_Cita_Create" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="Cod_Cita" Type="varchar" Mode="In" />
           <Parameter Name="Doc_Paciente" Type="varchar" Mode="In" />
           <Parameter Name="Doc_Profesional" Type="varchar" Mode="In" />
           <Parameter Name="Fecha_Cita" Type="date" Mode="In" />
@@ -270,26 +289,49 @@ advertencia 6002: La tabla o vista 'DB_Medicos.dbo.Historial_Clinico' no tiene d
           <Parameter Name="Estado" Type="varchar" Mode="In" />
         </Function>
         <Function Name="SP_Cita_Delete" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="Cod_Cita" Type="varchar" Mode="In" />
+          <Parameter Name="Cod_Cita" Type="int" Mode="In" />
         </Function>
         <Function Name="SP_Cita_Index" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="SP_Cita_Read" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="Cod_Cita" Type="varchar" Mode="In" />
+          <Parameter Name="Cod_Cita" Type="int" Mode="In" />
+        </Function>
+        <Function Name="SP_Cita_Reprogramar" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Cod_Cita" Type="int" Mode="In" />
+          <Parameter Name="Fecha_Cita" Type="date" Mode="In" />
+          <Parameter Name="Hora_Cita" Type="time" Mode="In" />
         </Function>
         <Function Name="SP_Cita_Update" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="Cod_Cita" Type="varchar" Mode="In" />
+          <Parameter Name="Cod_Cita" Type="int" Mode="In" />
           <Parameter Name="Doc_Paciente" Type="varchar" Mode="In" />
           <Parameter Name="Doc_Profesional" Type="varchar" Mode="In" />
           <Parameter Name="Fecha_Cita" Type="date" Mode="In" />
           <Parameter Name="Hora_Cita" Type="time" Mode="In" />
           <Parameter Name="Estado" Type="varchar" Mode="In" />
         </Function>
+        <Function Name="sp_creatediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+          <Parameter Name="version" Type="int" Mode="In" />
+          <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
+        </Function>
+        <Function Name="sp_dropdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_helpdiagramdefinition" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_helpdiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+        </Function>
         <Function Name="SP_Historial_Clinico_Create" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="Doc_Paciente" Type="varchar" Mode="In" />
-          <Parameter Name="Orden" Type="varchar" Mode="In" />
+          <Parameter Name="Orden" Type="int" Mode="In" />
         </Function>
         <Function Name="SP_Historial_Clinico_Delete_o" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="Orden" Type="varchar" Mode="In" />
+          <Parameter Name="Orden" Type="int" Mode="In" />
         </Function>
         <Function Name="SP_Historial_Clinico_Delete_p" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="Doc_Paciente" Type="varchar" Mode="In" />
@@ -300,14 +342,11 @@ advertencia 6002: La tabla o vista 'DB_Medicos.dbo.Historial_Clinico' no tiene d
         </Function>
         <Function Name="SP_Historial_Clinico_Update" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="Doc_Paciente" Type="varchar" Mode="In" />
-          <Parameter Name="Orden" Type="varchar" Mode="In" />
+          <Parameter Name="Orden" Type="int" Mode="In" />
         </Function>
-        <Function Name="SP_Nomina_Create" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="ID_Nomina" Type="varchar" Mode="In" />
-          <Parameter Name="Doc_Pro" Type="varchar" Mode="In" />
-          <Parameter Name="Salario" Type="decimal" Mode="In" />
-          <Parameter Name="Fecha_Pago" Type="date" Mode="In" />
-          <Parameter Name="Estado" Type="varchar" Mode="In" />
+        <Function Name="SP_Iniciar_Sesion" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Correo" Type="varchar" Mode="In" />
+          <Parameter Name="Contraseña" Type="varchar" Mode="In" />
         </Function>
         <Function Name="SP_Nomina_Delete" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="ID_Nomina" Type="varchar" Mode="In" />
@@ -323,24 +362,16 @@ advertencia 6002: La tabla o vista 'DB_Medicos.dbo.Historial_Clinico' no tiene d
           <Parameter Name="Fecha_Pago" Type="date" Mode="In" />
           <Parameter Name="Estado" Type="varchar" Mode="In" />
         </Function>
-        <Function Name="SP_Orden_Create" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="Cod_Orden" Type="varchar" Mode="In" />
-          <Parameter Name="Cod_Cita" Type="varchar" Mode="In" />
-          <Parameter Name="Diagnostico" Type="varchar" Mode="In" />
-          <Parameter Name="Medicamento" Type="varchar" Mode="In" />
-          <Parameter Name="Recomendacion" Type="varchar" Mode="In" />
-          <Parameter Name="Remision" Type="varchar" Mode="In" />
-        </Function>
         <Function Name="SP_Orden_Delete" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="Cod_Orden" Type="varchar" Mode="In" />
+          <Parameter Name="Cod_Orden" Type="int" Mode="In" />
         </Function>
         <Function Name="SP_Orden_Index" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="SP_Orden_Read" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="Cod_Orden" Type="varchar" Mode="In" />
+          <Parameter Name="Cod_Orden" Type="int" Mode="In" />
         </Function>
         <Function Name="SP_Orden_Update" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="Cod_Orden" Type="varchar" Mode="In" />
-          <Parameter Name="Cod_Cita" Type="varchar" Mode="In" />
+          <Parameter Name="Cod_Orden" Type="int" Mode="In" />
+          <Parameter Name="Cod_Cita" Type="int" Mode="In" />
           <Parameter Name="Diagnostico" Type="varchar" Mode="In" />
           <Parameter Name="Medicamento" Type="varchar" Mode="In" />
           <Parameter Name="Recomendacion" Type="varchar" Mode="In" />
@@ -390,23 +421,12 @@ advertencia 6002: La tabla o vista 'DB_Medicos.dbo.Historial_Clinico' no tiene d
           <Parameter Name="Foto" Type="varchar" Mode="In" />
           <Parameter Name="Tipo_Sangre" Type="varchar" Mode="In" />
         </Function>
-        <Function Name="SP_Procedimiento_Create" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="Cod_Procedimiento" Type="varchar" Mode="In" />
-          <Parameter Name="Tipo_P" Type="varchar" Mode="In" />
-          <Parameter Name="Fecha_P" Type="date" Mode="In" />
-          <Parameter Name="Hora_P" Type="time" Mode="In" />
-          <Parameter Name="Estado_P" Type="varchar" Mode="In" />
-          <Parameter Name="Pro_Asignado" Type="varchar" Mode="In" />
-        </Function>
         <Function Name="SP_Procedimiento_Delete" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="Cod_Procedimiento" Type="varchar" Mode="In" />
         </Function>
         <Function Name="SP_Procedimiento_Index" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
-        <Function Name="SP_Procedimiento_Read" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="Cod_Procedimiento" Type="varchar" Mode="In" />
-        </Function>
         <Function Name="SP_Procedimiento_Update" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="Cod_Procedimiento" Type="varchar" Mode="In" />
+          <Parameter Name="Cod_Procedimiento" Type="int" Mode="In" />
           <Parameter Name="Tipo_P" Type="varchar" Mode="In" />
           <Parameter Name="Fecha_P" Type="date" Mode="In" />
           <Parameter Name="Hora_P" Type="time" Mode="In" />
@@ -428,6 +448,12 @@ advertencia 6002: La tabla o vista 'DB_Medicos.dbo.Historial_Clinico' no tiene d
           <Parameter Name="Doc_Pro" Type="varchar" Mode="In" />
           <Parameter Name="Horario" Type="varchar" Mode="In" />
         </Function>
+        <Function Name="sp_renamediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+          <Parameter Name="new_diagramname" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="sp_upgraddiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <EntityContainer Name="DB_MedicosModelStoreContainer">
           <EntitySet Name="Administrador" EntityType="Self.Administrador" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Cita" EntityType="Self.Cita" Schema="dbo" store:Type="Tables" />
@@ -438,6 +464,7 @@ advertencia 6002: La tabla o vista 'DB_Medicos.dbo.Historial_Clinico' no tiene d
           <EntitySet Name="Persona" EntityType="Self.Persona" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Procedimiento" EntityType="Self.Procedimiento" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Profesional" EntityType="Self.Profesional" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Historial_Clinico" EntityType="Self.Historial_Clinico" store:Type="Tables" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [Historial_Clinico].[Doc_Paciente] AS [Doc_Paciente], 
@@ -510,7 +537,7 @@ advertencia 6002: La tabla o vista 'DB_Medicos.dbo.Historial_Clinico' no tiene d
           <Key>
             <PropertyRef Name="Cod_Cita" />
           </Key>
-          <Property Name="Cod_Cita" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Cod_Cita" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Doc_Paciente" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Doc_Profesional" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Fecha_Cita" Type="DateTime" Nullable="false" Precision="0" />
@@ -534,7 +561,7 @@ advertencia 6002: La tabla o vista 'DB_Medicos.dbo.Historial_Clinico' no tiene d
           <Key>
             <PropertyRef Name="ID_Nomina" />
           </Key>
-          <Property Name="ID_Nomina" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ID_Nomina" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Doc_Pro" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Salario" Type="Decimal" Precision="10" Scale="2" Nullable="false" />
           <Property Name="Fecha_Pago" Type="DateTime" Nullable="false" Precision="0" />
@@ -545,8 +572,8 @@ advertencia 6002: La tabla o vista 'DB_Medicos.dbo.Historial_Clinico' no tiene d
           <Key>
             <PropertyRef Name="Cod_Orden" />
           </Key>
-          <Property Name="Cod_Orden" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Cod_Cita" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Cod_Orden" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Cod_Cita" Type="Int32" Nullable="false" />
           <Property Name="Diagnostico" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Medicamento" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="Recomendacion" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
@@ -586,7 +613,7 @@ advertencia 6002: La tabla o vista 'DB_Medicos.dbo.Historial_Clinico' no tiene d
           <Key>
             <PropertyRef Name="Cod_Procedimiento" />
           </Key>
-          <Property Name="Cod_Procedimiento" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Cod_Procedimiento" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Tipo_P" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Fecha_P" Type="DateTime" Precision="0" />
           <Property Name="Hora_P" Type="Time" Precision="7" />
@@ -606,6 +633,16 @@ advertencia 6002: La tabla o vista 'DB_Medicos.dbo.Historial_Clinico' no tiene d
           <NavigationProperty Name="Nomina" Relationship="Self.FK__Nomina__Doc_Pro__52593CB8" FromRole="Profesional" ToRole="Nomina" />
           <NavigationProperty Name="Persona" Relationship="Self.FK__Profesion__Doc_P__412EB0B6" FromRole="Profesional" ToRole="Persona" />
           <NavigationProperty Name="Procedimiento" Relationship="Self.FK__Procedimi__Pro_A__4F7CD00D" FromRole="Profesional" ToRole="Procedimiento" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
         </EntityType>
         <Association Name="FK__Administr__ID_Pe__398D8EEE">
           <End Role="Persona" Type="Self.Persona" Multiplicity="1" />
@@ -731,7 +768,7 @@ advertencia 6002: La tabla o vista 'DB_Medicos.dbo.Historial_Clinico' no tiene d
           <End Role="Paciente" Type="Self.Paciente" Multiplicity="*" />
           <End Role="Orden" Type="Self.Orden" Multiplicity="*" />
         </Association>
-        <EntityContainer Name="DB_MedicosEntities" annotation:LazyLoadingEnabled="true">
+        <EntityContainer Name="DB_MedicosEntities1" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Administrador" EntityType="Self.Administrador" />
           <EntitySet Name="Cita" EntityType="Self.Cita" />
           <EntitySet Name="Horario" EntityType="Self.Horario" />
@@ -741,6 +778,7 @@ advertencia 6002: La tabla o vista 'DB_Medicos.dbo.Historial_Clinico' no tiene d
           <EntitySet Name="Persona" EntityType="Self.Persona" />
           <EntitySet Name="Procedimiento" EntityType="Self.Procedimiento" />
           <EntitySet Name="Profesional" EntityType="Self.Profesional" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
           <AssociationSet Name="FK__Administr__ID_Pe__398D8EEE" Association="Self.FK__Administr__ID_Pe__398D8EEE">
             <End Role="Persona" EntitySet="Persona" />
             <End Role="Administrador" EntitySet="Administrador" />
@@ -785,23 +823,31 @@ advertencia 6002: La tabla o vista 'DB_Medicos.dbo.Historial_Clinico' no tiene d
             <End Role="Paciente" EntitySet="Paciente" />
             <End Role="Orden" EntitySet="Orden" />
           </AssociationSet>
-          <FunctionImport Name="SP_Administrador_Create" ReturnType="Collection(Decimal)">
-            <Parameter Name="ID_Persona" Mode="In" Type="String" />
-            <Parameter Name="Clave" Mode="In" Type="String" />
+          <FunctionImport Name="sp_alterdiagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+            <Parameter Name="version" Mode="In" Type="Int32" />
+            <Parameter Name="definition" Mode="In" Type="Binary" />
           </FunctionImport>
-          <FunctionImport Name="SP_Administrador_Delete" ReturnType="Collection(Decimal)">
-            <Parameter Name="ID_Persona" Mode="In" Type="String" />
+          <FunctionImport Name="SP_Asignar_Horario" ReturnType="Collection(String)">
+            <Parameter Name="Especialidad" Mode="In" Type="String" />
           </FunctionImport>
-          <FunctionImport Name="SP_Administrador_Index" ReturnType="Collection(DB_MedicosModel.SP_Administrador_Index_Result)" />
-          <FunctionImport Name="Sp_Administrador_Read" ReturnType="Collection(DB_MedicosModel.Sp_Administrador_Read_Result)">
-            <Parameter Name="ID_Persona" Mode="In" Type="String" />
+          <FunctionImport Name="SP_Buscar_Cita_Pro" ReturnType="Collection(DB_MedicosModel.SP_Buscar_Cita_Pro_Result)">
+            <Parameter Name="Doc_Paciente" Mode="In" Type="String" />
           </FunctionImport>
-          <FunctionImport Name="SP_Administrador_Update" ReturnType="Collection(Decimal)">
-            <Parameter Name="ID_Persona" Mode="In" Type="String" />
-            <Parameter Name="Clave" Mode="In" Type="String" />
+          <FunctionImport Name="SP_Buscar_CitaEsp" ReturnType="Collection(String)">
+            <Parameter Name="Cod_Cita" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="SP_Buscar_CitaPa" ReturnType="Collection(DB_MedicosModel.SP_Buscar_CitaPa_Result)">
+            <Parameter Name="Doc_Paciente" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="SP_Buscar_DocPro" ReturnType="Collection(DB_MedicosModel.SP_Buscar_DocPro_Result)">
+            <Parameter Name="Nombre" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="SP_Buscar_Profesional" ReturnType="Collection(DB_MedicosModel.SP_Buscar_Profesional_Result)">
+            <Parameter Name="Especialidad" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="SP_Cita_Create" ReturnType="Collection(Decimal)">
-            <Parameter Name="Cod_Cita" Mode="In" Type="String" />
             <Parameter Name="Doc_Paciente" Mode="In" Type="String" />
             <Parameter Name="Doc_Profesional" Mode="In" Type="String" />
             <Parameter Name="Fecha_Cita" Mode="In" Type="DateTime" />
@@ -809,26 +855,49 @@ advertencia 6002: La tabla o vista 'DB_Medicos.dbo.Historial_Clinico' no tiene d
             <Parameter Name="Estado" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="SP_Cita_Delete" ReturnType="Collection(Decimal)">
-            <Parameter Name="Cod_Cita" Mode="In" Type="String" />
+            <Parameter Name="Cod_Cita" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="SP_Cita_Index" ReturnType="Collection(DB_MedicosModel.SP_Cita_Index_Result)" />
           <FunctionImport Name="SP_Cita_Read" ReturnType="Collection(DB_MedicosModel.SP_Cita_Read_Result)">
-            <Parameter Name="Cod_Cita" Mode="In" Type="String" />
+            <Parameter Name="Cod_Cita" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="SP_Cita_Reprogramar" ReturnType="Collection(Decimal)">
+            <Parameter Name="Cod_Cita" Mode="In" Type="Int32" />
+            <Parameter Name="Fecha_Cita" Mode="In" Type="DateTime" />
+            <Parameter Name="Hora_Cita" Mode="In" Type="Time" />
           </FunctionImport>
           <FunctionImport Name="SP_Cita_Update" ReturnType="Collection(Decimal)">
-            <Parameter Name="Cod_Cita" Mode="In" Type="String" />
+            <Parameter Name="Cod_Cita" Mode="In" Type="Int32" />
             <Parameter Name="Doc_Paciente" Mode="In" Type="String" />
             <Parameter Name="Doc_Profesional" Mode="In" Type="String" />
             <Parameter Name="Fecha_Cita" Mode="In" Type="DateTime" />
             <Parameter Name="Hora_Cita" Mode="In" Type="Time" />
             <Parameter Name="Estado" Mode="In" Type="String" />
           </FunctionImport>
+          <FunctionImport Name="sp_creatediagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+            <Parameter Name="version" Mode="In" Type="Int32" />
+            <Parameter Name="definition" Mode="In" Type="Binary" />
+          </FunctionImport>
+          <FunctionImport Name="sp_dropdiagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_helpdiagramdefinition" ReturnType="Collection(DB_MedicosModel.sp_helpdiagramdefinition_Result)">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_helpdiagrams" ReturnType="Collection(DB_MedicosModel.sp_helpdiagrams_Result)">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+          </FunctionImport>
           <FunctionImport Name="SP_Historial_Clinico_Create" ReturnType="Collection(Decimal)">
             <Parameter Name="Doc_Paciente" Mode="In" Type="String" />
-            <Parameter Name="Orden" Mode="In" Type="String" />
+            <Parameter Name="Orden" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="SP_Historial_Clinico_Delete_o" ReturnType="Collection(Decimal)">
-            <Parameter Name="Orden" Mode="In" Type="String" />
+            <Parameter Name="Orden" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="SP_Historial_Clinico_Delete_p" ReturnType="Collection(Decimal)">
             <Parameter Name="Doc_Paciente" Mode="In" Type="String" />
@@ -839,14 +908,11 @@ advertencia 6002: La tabla o vista 'DB_Medicos.dbo.Historial_Clinico' no tiene d
           </FunctionImport>
           <FunctionImport Name="SP_Historial_Clinico_Update" ReturnType="Collection(Decimal)">
             <Parameter Name="Doc_Paciente" Mode="In" Type="String" />
-            <Parameter Name="Orden" Mode="In" Type="String" />
+            <Parameter Name="Orden" Mode="In" Type="Int32" />
           </FunctionImport>
-          <FunctionImport Name="SP_Nomina_Create" ReturnType="Collection(Decimal)">
-            <Parameter Name="ID_Nomina" Mode="In" Type="String" />
-            <Parameter Name="Doc_Pro" Mode="In" Type="String" />
-            <Parameter Name="Salario" Mode="In" Type="Decimal" />
-            <Parameter Name="Fecha_Pago" Mode="In" Type="DateTime" />
-            <Parameter Name="Estado" Mode="In" Type="String" />
+          <FunctionImport Name="SP_Iniciar_Sesion" ReturnType="Collection(DB_MedicosModel.SP_Iniciar_Sesion_Result)">
+            <Parameter Name="Correo" Mode="In" Type="String" />
+            <Parameter Name="Contraseña" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="SP_Nomina_Delete" ReturnType="Collection(Decimal)">
             <Parameter Name="ID_Nomina" Mode="In" Type="String" />
@@ -862,24 +928,16 @@ advertencia 6002: La tabla o vista 'DB_Medicos.dbo.Historial_Clinico' no tiene d
             <Parameter Name="Fecha_Pago" Mode="In" Type="DateTime" />
             <Parameter Name="Estado" Mode="In" Type="String" />
           </FunctionImport>
-          <FunctionImport Name="SP_Orden_Create" ReturnType="Collection(Decimal)">
-            <Parameter Name="Cod_Orden" Mode="In" Type="String" />
-            <Parameter Name="Cod_Cita" Mode="In" Type="String" />
-            <Parameter Name="Diagnostico" Mode="In" Type="String" />
-            <Parameter Name="Medicamento" Mode="In" Type="String" />
-            <Parameter Name="Recomendacion" Mode="In" Type="String" />
-            <Parameter Name="Remision" Mode="In" Type="String" />
-          </FunctionImport>
           <FunctionImport Name="SP_Orden_Delete" ReturnType="Collection(Decimal)">
-            <Parameter Name="Cod_Orden" Mode="In" Type="String" />
+            <Parameter Name="Cod_Orden" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="SP_Orden_Index" ReturnType="Collection(DB_MedicosModel.SP_Orden_Index_Result)" />
           <FunctionImport Name="SP_Orden_Read" ReturnType="Collection(DB_MedicosModel.SP_Orden_Read_Result)">
-            <Parameter Name="Cod_Orden" Mode="In" Type="String" />
+            <Parameter Name="Cod_Orden" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="SP_Orden_Update" ReturnType="Collection(Decimal)">
-            <Parameter Name="Cod_Orden" Mode="In" Type="String" />
-            <Parameter Name="Cod_Cita" Mode="In" Type="String" />
+            <Parameter Name="Cod_Orden" Mode="In" Type="Int32" />
+            <Parameter Name="Cod_Cita" Mode="In" Type="Int32" />
             <Parameter Name="Diagnostico" Mode="In" Type="String" />
             <Parameter Name="Medicamento" Mode="In" Type="String" />
             <Parameter Name="Recomendacion" Mode="In" Type="String" />
@@ -929,23 +987,12 @@ advertencia 6002: La tabla o vista 'DB_Medicos.dbo.Historial_Clinico' no tiene d
             <Parameter Name="Foto" Mode="In" Type="String" />
             <Parameter Name="Tipo_Sangre" Mode="In" Type="String" />
           </FunctionImport>
-          <FunctionImport Name="SP_Procedimiento_Create" ReturnType="Collection(Decimal)">
-            <Parameter Name="Cod_Procedimiento" Mode="In" Type="String" />
-            <Parameter Name="Tipo_P" Mode="In" Type="String" />
-            <Parameter Name="Fecha_P" Mode="In" Type="DateTime" />
-            <Parameter Name="Hora_P" Mode="In" Type="Time" />
-            <Parameter Name="Estado_P" Mode="In" Type="String" />
-            <Parameter Name="Pro_Asignado" Mode="In" Type="String" />
-          </FunctionImport>
           <FunctionImport Name="SP_Procedimiento_Delete" ReturnType="Collection(Decimal)">
             <Parameter Name="Cod_Procedimiento" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="SP_Procedimiento_Index" ReturnType="Collection(DB_MedicosModel.SP_Procedimiento_Index_Result)" />
-          <FunctionImport Name="SP_Procedimiento_Read" ReturnType="Collection(DB_MedicosModel.SP_Procedimiento_Read_Result)">
-            <Parameter Name="Cod_Procedimiento" Mode="In" Type="String" />
-          </FunctionImport>
           <FunctionImport Name="SP_Procedimiento_Update" ReturnType="Collection(Decimal)">
-            <Parameter Name="Cod_Procedimiento" Mode="In" Type="String" />
+            <Parameter Name="Cod_Procedimiento" Mode="In" Type="Int32" />
             <Parameter Name="Tipo_P" Mode="In" Type="String" />
             <Parameter Name="Fecha_P" Mode="In" Type="DateTime" />
             <Parameter Name="Hora_P" Mode="In" Type="Time" />
@@ -956,28 +1003,57 @@ advertencia 6002: La tabla o vista 'DB_Medicos.dbo.Historial_Clinico' no tiene d
             <Parameter Name="Doc_Pro" Mode="In" Type="String" />
             <Parameter Name="Horario" Mode="In" Type="String" />
           </FunctionImport>
-          <FunctionImport Name="SP_Profesional_Delete">
+          <FunctionImport Name="SP_Profesional_Delete" ReturnType="Collection(Decimal)">
             <Parameter Name="Doc_Pro" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="SP_Profesional_Index" ReturnType="Collection(DB_MedicosModel.SP_Profesional_Index_Result)" />
           <FunctionImport Name="Sp_Profesional_Read" ReturnType="Collection(DB_MedicosModel.Sp_Profesional_Read_Result)">
             <Parameter Name="Doc_Pro" Mode="In" Type="String" />
           </FunctionImport>
-          <FunctionImport Name="SP_Profesional_Update">
+          <FunctionImport Name="SP_Profesional_Update" ReturnType="Collection(Decimal)">
             <Parameter Name="Doc_Pro" Mode="In" Type="String" />
             <Parameter Name="Horario" Mode="In" Type="String" />
           </FunctionImport>
+          <FunctionImport Name="sp_renamediagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+            <Parameter Name="new_diagramname" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_upgraddiagrams" />
         </EntityContainer>
-        <ComplexType Name="SP_Administrador_Index_Result">
-          <Property Type="String" Name="ID_Persona" Nullable="false" MaxLength="50" />
-          <Property Type="String" Name="Clave" Nullable="false" MaxLength="50" />
+        <ComplexType Name="SP_Buscar_Cita_Pro_Result">
+          <Property Type="Int32" Name="Cod_Cita" Nullable="false" />
+          <Property Type="String" Name="Doc_Paciente" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Doc_Profesional" Nullable="false" MaxLength="50" />
+          <Property Type="DateTime" Name="Fecha_Cita" Nullable="false" />
+          <Property Type="Time" Name="Hora_Cita" Nullable="false" />
+          <Property Type="String" Name="Estado" Nullable="false" MaxLength="255" />
+          <Property Type="String" Name="Doc_Pro" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Horario" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="ID_Horario" Nullable="false" MaxLength="50" />
+          <Property Type="Time" Name="Hora_Entrada" Nullable="false" />
+          <Property Type="Time" Name="Hora_Salida" Nullable="false" />
+          <Property Type="String" Name="Especialidad" Nullable="false" MaxLength="80" />
         </ComplexType>
-        <ComplexType Name="Sp_Administrador_Read_Result">
-          <Property Type="String" Name="ID_Persona" Nullable="false" MaxLength="50" />
-          <Property Type="String" Name="Clave" Nullable="false" MaxLength="50" />
+        <ComplexType Name="SP_Buscar_CitaPa_Result">
+          <Property Type="String" Name="profesional" Nullable="false" MaxLength="50" />
+          <Property Type="Int32" Name="Cod_Cita" Nullable="false" />
+          <Property Type="String" Name="Doc_Paciente" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Doc_Profesional" Nullable="false" MaxLength="50" />
+          <Property Type="DateTime" Name="Fecha_Cita" Nullable="false" />
+          <Property Type="Time" Name="Hora_Cita" Nullable="false" />
+          <Property Type="String" Name="Estado" Nullable="false" MaxLength="255" />
+        </ComplexType>
+        <ComplexType Name="SP_Buscar_DocPro_Result">
+          <Property Type="String" Name="Doc_Pro" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Horario" Nullable="false" MaxLength="50" />
+        </ComplexType>
+        <ComplexType Name="SP_Buscar_Profesional_Result">
+          <Property Type="String" Name="Nombre" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Especialidad" Nullable="false" MaxLength="80" />
         </ComplexType>
         <ComplexType Name="SP_Cita_Index_Result">
-          <Property Type="String" Name="Cod_Cita" Nullable="false" MaxLength="50" />
+          <Property Type="Int32" Name="Cod_Cita" Nullable="false" />
           <Property Type="String" Name="Doc_Paciente" Nullable="false" MaxLength="50" />
           <Property Type="String" Name="Doc_Profesional" Nullable="false" MaxLength="50" />
           <Property Type="DateTime" Name="Fecha_Cita" Nullable="false" />
@@ -985,46 +1061,68 @@ advertencia 6002: La tabla o vista 'DB_Medicos.dbo.Historial_Clinico' no tiene d
           <Property Type="String" Name="Estado" Nullable="false" MaxLength="255" />
         </ComplexType>
         <ComplexType Name="SP_Cita_Read_Result">
-          <Property Type="String" Name="Cod_Cita" Nullable="false" MaxLength="50" />
+          <Property Type="Int32" Name="Cod_Cita" Nullable="false" />
           <Property Type="String" Name="Doc_Paciente" Nullable="false" MaxLength="50" />
           <Property Type="String" Name="Doc_Profesional" Nullable="false" MaxLength="50" />
           <Property Type="DateTime" Name="Fecha_Cita" Nullable="false" />
           <Property Type="Time" Name="Hora_Cita" Nullable="false" />
           <Property Type="String" Name="Estado" Nullable="false" MaxLength="255" />
         </ComplexType>
+        <ComplexType Name="sp_helpdiagramdefinition_Result">
+          <Property Type="Int32" Name="version" Nullable="true" />
+          <Property Type="Binary" Name="definition" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="sp_helpdiagrams_Result">
+          <Property Type="String" Name="Database" Nullable="true" MaxLength="128" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="128" />
+          <Property Type="Int32" Name="ID" Nullable="false" />
+          <Property Type="String" Name="Owner" Nullable="true" MaxLength="128" />
+          <Property Type="Int32" Name="OwnerID" Nullable="false" />
+        </ComplexType>
         <ComplexType Name="SP_Historial_Clinico_Index_Result">
           <Property Type="String" Name="Doc_Paciente" Nullable="false" MaxLength="50" />
-          <Property Type="String" Name="Orden" Nullable="false" MaxLength="50" />
+          <Property Type="Int32" Name="Orden" Nullable="false" />
         </ComplexType>
         <ComplexType Name="SP_Historial_Clinico_Read_Result">
           <Property Type="String" Name="Doc_Paciente" Nullable="false" MaxLength="50" />
-          <Property Type="String" Name="Orden" Nullable="false" MaxLength="50" />
+          <Property Type="Int32" Name="Orden" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="SP_Iniciar_Sesion_Result">
+          <Property Type="String" Name="ID_Persona" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Documento" Nullable="false" MaxLength="20" />
+          <Property Type="String" Name="Nombre" Nullable="false" MaxLength="50" />
+          <Property Type="DateTime" Name="Fecha_Nacimiento" Nullable="false" />
+          <Property Type="String" Name="Telefono" Nullable="true" MaxLength="15" />
+          <Property Type="String" Name="Correo" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Contraseña" Nullable="false" MaxLength="20" />
+          <Property Type="String" Name="Foto" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="Tipo_Sangre" Nullable="true" MaxLength="10" />
         </ComplexType>
         <ComplexType Name="SP_Nomina_Index_Result">
-          <Property Type="String" Name="ID_Nomina" Nullable="false" MaxLength="50" />
+          <Property Type="Int32" Name="ID_Nomina" Nullable="false" />
           <Property Type="String" Name="Doc_Pro" Nullable="false" MaxLength="50" />
           <Property Type="Decimal" Name="Salario" Nullable="false" Precision="10" Scale="2" />
           <Property Type="DateTime" Name="Fecha_Pago" Nullable="false" />
           <Property Type="String" Name="Estado" Nullable="false" MaxLength="40" />
         </ComplexType>
         <ComplexType Name="SP_Nomina_Read_Result">
-          <Property Type="String" Name="ID_Nomina" Nullable="false" MaxLength="50" />
+          <Property Type="Int32" Name="ID_Nomina" Nullable="false" />
           <Property Type="String" Name="Doc_Pro" Nullable="false" MaxLength="50" />
           <Property Type="Decimal" Name="Salario" Nullable="false" Precision="10" Scale="2" />
           <Property Type="DateTime" Name="Fecha_Pago" Nullable="false" />
           <Property Type="String" Name="Estado" Nullable="false" MaxLength="40" />
         </ComplexType>
         <ComplexType Name="SP_Orden_Index_Result">
-          <Property Type="String" Name="Cod_Orden" Nullable="false" MaxLength="50" />
-          <Property Type="String" Name="Cod_Cita" Nullable="false" MaxLength="50" />
+          <Property Type="Int32" Name="Cod_Orden" Nullable="false" />
+          <Property Type="Int32" Name="Cod_Cita" Nullable="false" />
           <Property Type="String" Name="Diagnostico" Nullable="false" MaxLength="255" />
           <Property Type="String" Name="Medicamento" Nullable="true" MaxLength="255" />
           <Property Type="String" Name="Recomendacion" Nullable="true" MaxLength="255" />
           <Property Type="String" Name="Remision" Nullable="true" MaxLength="255" />
         </ComplexType>
         <ComplexType Name="SP_Orden_Read_Result">
-          <Property Type="String" Name="Cod_Orden" Nullable="false" MaxLength="50" />
-          <Property Type="String" Name="Cod_Cita" Nullable="false" MaxLength="50" />
+          <Property Type="Int32" Name="Cod_Orden" Nullable="false" />
+          <Property Type="Int32" Name="Cod_Cita" Nullable="false" />
           <Property Type="String" Name="Diagnostico" Nullable="false" MaxLength="255" />
           <Property Type="String" Name="Medicamento" Nullable="true" MaxLength="255" />
           <Property Type="String" Name="Recomendacion" Nullable="true" MaxLength="255" />
@@ -1061,20 +1159,12 @@ advertencia 6002: La tabla o vista 'DB_Medicos.dbo.Historial_Clinico' no tiene d
           <Property Type="String" Name="Tipo_Sangre" Nullable="true" MaxLength="10" />
         </ComplexType>
         <ComplexType Name="SP_Procedimiento_Index_Result">
-          <Property Type="String" Name="Cod_Procedimiento" Nullable="false" MaxLength="50" />
+          <Property Type="Int32" Name="Cod_Procedimiento" Nullable="false" />
           <Property Type="String" Name="Tipo_P" Nullable="false" MaxLength="50" />
           <Property Type="DateTime" Name="Fecha_P" Nullable="true" />
           <Property Type="Time" Name="Hora_P" Nullable="true" />
           <Property Type="String" Name="Estado_P" Nullable="false" MaxLength="50" />
           <Property Type="String" Name="Pro_Asignado" Nullable="false" MaxLength="50" />
-        </ComplexType>
-        <ComplexType Name="SP_Procedimiento_Read_Result">
-          <Property Type="String" Name="Cod_Orden" Nullable="false" MaxLength="50" />
-          <Property Type="String" Name="Cod_Cita" Nullable="false" MaxLength="50" />
-          <Property Type="String" Name="Diagnostico" Nullable="false" MaxLength="255" />
-          <Property Type="String" Name="Medicamento" Nullable="true" MaxLength="255" />
-          <Property Type="String" Name="Recomendacion" Nullable="true" MaxLength="255" />
-          <Property Type="String" Name="Remision" Nullable="true" MaxLength="255" />
         </ComplexType>
         <ComplexType Name="SP_Profesional_Index_Result">
           <Property Type="String" Name="Doc_Pro" Nullable="false" MaxLength="50" />
@@ -1089,7 +1179,7 @@ advertencia 6002: La tabla o vista 'DB_Medicos.dbo.Historial_Clinico' no tiene d
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="DB_MedicosModelStoreContainer" CdmEntityContainer="DB_MedicosEntities">
+        <EntityContainerMapping StorageEntityContainer="DB_MedicosModelStoreContainer" CdmEntityContainer="DB_MedicosEntities1">
           <EntitySetMapping Name="Administrador">
             <EntityTypeMapping TypeName="DB_MedicosModel.Administrador">
               <MappingFragment StoreEntitySet="Administrador">
@@ -1186,6 +1276,17 @@ advertencia 6002: La tabla o vista 'DB_Medicos.dbo.Historial_Clinico' no tiene d
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="DB_MedicosModel.sysdiagrams">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <AssociationSetMapping Name="Historial_Clinico" TypeName="DB_MedicosModel.Historial_Clinico" StoreEntitySet="Historial_Clinico">
             <EndProperty Name="Paciente">
               <ScalarProperty Name="Doc_Paciente" ColumnName="Doc_Paciente" />
@@ -1194,25 +1295,56 @@ advertencia 6002: La tabla o vista 'DB_Medicos.dbo.Historial_Clinico' no tiene d
               <ScalarProperty Name="Cod_Orden" ColumnName="Orden" />
             </EndProperty>
           </AssociationSetMapping>
-          <FunctionImportMapping FunctionImportName="SP_Administrador_Create" FunctionName="DB_MedicosModel.Store.SP_Administrador_Create" />
-          <FunctionImportMapping FunctionImportName="SP_Administrador_Delete" FunctionName="DB_MedicosModel.Store.SP_Administrador_Delete" />
-          <FunctionImportMapping FunctionImportName="SP_Administrador_Index" FunctionName="DB_MedicosModel.Store.SP_Administrador_Index">
+          <FunctionImportMapping FunctionImportName="sp_alterdiagram" FunctionName="DB_MedicosModel.Store.sp_alterdiagram" />
+          <FunctionImportMapping FunctionImportName="SP_Asignar_Horario" FunctionName="DB_MedicosModel.Store.SP_Asignar_Horario" />
+          <FunctionImportMapping FunctionImportName="SP_Buscar_Cita_Pro" FunctionName="DB_MedicosModel.Store.SP_Buscar_Cita_Pro">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="DB_MedicosModel.SP_Administrador_Index_Result">
-                <ScalarProperty Name="ID_Persona" ColumnName="ID_Persona" />
-                <ScalarProperty Name="Clave" ColumnName="Clave" />
+              <ComplexTypeMapping TypeName="DB_MedicosModel.SP_Buscar_Cita_Pro_Result">
+                <ScalarProperty Name="Cod_Cita" ColumnName="Cod_Cita" />
+                <ScalarProperty Name="Doc_Paciente" ColumnName="Doc_Paciente" />
+                <ScalarProperty Name="Doc_Profesional" ColumnName="Doc_Profesional" />
+                <ScalarProperty Name="Fecha_Cita" ColumnName="Fecha_Cita" />
+                <ScalarProperty Name="Hora_Cita" ColumnName="Hora_Cita" />
+                <ScalarProperty Name="Estado" ColumnName="Estado" />
+                <ScalarProperty Name="Doc_Pro" ColumnName="Doc_Pro" />
+                <ScalarProperty Name="Horario" ColumnName="Horario" />
+                <ScalarProperty Name="ID_Horario" ColumnName="ID_Horario" />
+                <ScalarProperty Name="Hora_Entrada" ColumnName="Hora_Entrada" />
+                <ScalarProperty Name="Hora_Salida" ColumnName="Hora_Salida" />
+                <ScalarProperty Name="Especialidad" ColumnName="Especialidad" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="Sp_Administrador_Read" FunctionName="DB_MedicosModel.Store.Sp_Administrador_Read">
+          <FunctionImportMapping FunctionImportName="SP_Buscar_CitaEsp" FunctionName="DB_MedicosModel.Store.SP_Buscar_CitaEsp" />
+          <FunctionImportMapping FunctionImportName="SP_Buscar_CitaPa" FunctionName="DB_MedicosModel.Store.SP_Buscar_CitaPa">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="DB_MedicosModel.Sp_Administrador_Read_Result">
-                <ScalarProperty Name="ID_Persona" ColumnName="ID_Persona" />
-                <ScalarProperty Name="Clave" ColumnName="Clave" />
+              <ComplexTypeMapping TypeName="DB_MedicosModel.SP_Buscar_CitaPa_Result">
+                <ScalarProperty Name="profesional" ColumnName="profesional" />
+                <ScalarProperty Name="Cod_Cita" ColumnName="Cod_Cita" />
+                <ScalarProperty Name="Doc_Paciente" ColumnName="Doc_Paciente" />
+                <ScalarProperty Name="Doc_Profesional" ColumnName="Doc_Profesional" />
+                <ScalarProperty Name="Fecha_Cita" ColumnName="Fecha_Cita" />
+                <ScalarProperty Name="Hora_Cita" ColumnName="Hora_Cita" />
+                <ScalarProperty Name="Estado" ColumnName="Estado" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="SP_Administrador_Update" FunctionName="DB_MedicosModel.Store.SP_Administrador_Update" />
+          <FunctionImportMapping FunctionImportName="SP_Buscar_DocPro" FunctionName="DB_MedicosModel.Store.SP_Buscar_DocPro">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="DB_MedicosModel.SP_Buscar_DocPro_Result">
+                <ScalarProperty Name="Doc_Pro" ColumnName="Doc_Pro" />
+                <ScalarProperty Name="Horario" ColumnName="Horario" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="SP_Buscar_Profesional" FunctionName="DB_MedicosModel.Store.SP_Buscar_Profesional">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="DB_MedicosModel.SP_Buscar_Profesional_Result">
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Especialidad" ColumnName="Especialidad" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="SP_Cita_Create" FunctionName="DB_MedicosModel.Store.SP_Cita_Create" />
           <FunctionImportMapping FunctionImportName="SP_Cita_Delete" FunctionName="DB_MedicosModel.Store.SP_Cita_Delete" />
           <FunctionImportMapping FunctionImportName="SP_Cita_Index" FunctionName="DB_MedicosModel.Store.SP_Cita_Index">
@@ -1239,7 +1371,29 @@ advertencia 6002: La tabla o vista 'DB_Medicos.dbo.Historial_Clinico' no tiene d
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="SP_Cita_Reprogramar" FunctionName="DB_MedicosModel.Store.SP_Cita_Reprogramar" />
           <FunctionImportMapping FunctionImportName="SP_Cita_Update" FunctionName="DB_MedicosModel.Store.SP_Cita_Update" />
+          <FunctionImportMapping FunctionImportName="sp_creatediagram" FunctionName="DB_MedicosModel.Store.sp_creatediagram" />
+          <FunctionImportMapping FunctionImportName="sp_dropdiagram" FunctionName="DB_MedicosModel.Store.sp_dropdiagram" />
+          <FunctionImportMapping FunctionImportName="sp_helpdiagramdefinition" FunctionName="DB_MedicosModel.Store.sp_helpdiagramdefinition">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="DB_MedicosModel.sp_helpdiagramdefinition_Result">
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_helpdiagrams" FunctionName="DB_MedicosModel.Store.sp_helpdiagrams">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="DB_MedicosModel.sp_helpdiagrams_Result">
+                <ScalarProperty Name="Database" ColumnName="Database" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Owner" ColumnName="Owner" />
+                <ScalarProperty Name="OwnerID" ColumnName="OwnerID" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="SP_Historial_Clinico_Create" FunctionName="DB_MedicosModel.Store.SP_Historial_Clinico_Create" />
           <FunctionImportMapping FunctionImportName="SP_Historial_Clinico_Delete_o" FunctionName="DB_MedicosModel.Store.SP_Historial_Clinico_Delete_o" />
           <FunctionImportMapping FunctionImportName="SP_Historial_Clinico_Delete_p" FunctionName="DB_MedicosModel.Store.SP_Historial_Clinico_Delete_p" />
@@ -1260,7 +1414,21 @@ advertencia 6002: La tabla o vista 'DB_Medicos.dbo.Historial_Clinico' no tiene d
             </ResultMapping>
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="SP_Historial_Clinico_Update" FunctionName="DB_MedicosModel.Store.SP_Historial_Clinico_Update" />
-          <FunctionImportMapping FunctionImportName="SP_Nomina_Create" FunctionName="DB_MedicosModel.Store.SP_Nomina_Create" />
+          <FunctionImportMapping FunctionImportName="SP_Iniciar_Sesion" FunctionName="DB_MedicosModel.Store.SP_Iniciar_Sesion">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="DB_MedicosModel.SP_Iniciar_Sesion_Result">
+                <ScalarProperty Name="ID_Persona" ColumnName="ID_Persona" />
+                <ScalarProperty Name="Documento" ColumnName="Documento" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Fecha_Nacimiento" ColumnName="Fecha_Nacimiento" />
+                <ScalarProperty Name="Telefono" ColumnName="Telefono" />
+                <ScalarProperty Name="Correo" ColumnName="Correo" />
+                <ScalarProperty Name="Contraseña" ColumnName="Contraseña" />
+                <ScalarProperty Name="Foto" ColumnName="Foto" />
+                <ScalarProperty Name="Tipo_Sangre" ColumnName="Tipo_Sangre" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="SP_Nomina_Delete" FunctionName="DB_MedicosModel.Store.SP_Nomina_Delete" />
           <FunctionImportMapping FunctionImportName="SP_Nomina_Index" FunctionName="DB_MedicosModel.Store.SP_Nomina_Index">
             <ResultMapping>
@@ -1285,7 +1453,6 @@ advertencia 6002: La tabla o vista 'DB_Medicos.dbo.Historial_Clinico' no tiene d
             </ResultMapping>
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="SP_Nomina_Update" FunctionName="DB_MedicosModel.Store.SP_Nomina_Update" />
-          <FunctionImportMapping FunctionImportName="SP_Orden_Create" FunctionName="DB_MedicosModel.Store.SP_Orden_Create" />
           <FunctionImportMapping FunctionImportName="SP_Orden_Delete" FunctionName="DB_MedicosModel.Store.SP_Orden_Delete" />
           <FunctionImportMapping FunctionImportName="SP_Orden_Index" FunctionName="DB_MedicosModel.Store.SP_Orden_Index">
             <ResultMapping>
@@ -1364,7 +1531,6 @@ advertencia 6002: La tabla o vista 'DB_Medicos.dbo.Historial_Clinico' no tiene d
             </ResultMapping>
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="SP_Persona_Update" FunctionName="DB_MedicosModel.Store.SP_Persona_Update" />
-          <FunctionImportMapping FunctionImportName="SP_Procedimiento_Create" FunctionName="DB_MedicosModel.Store.SP_Procedimiento_Create" />
           <FunctionImportMapping FunctionImportName="SP_Procedimiento_Delete" FunctionName="DB_MedicosModel.Store.SP_Procedimiento_Delete" />
           <FunctionImportMapping FunctionImportName="SP_Procedimiento_Index" FunctionName="DB_MedicosModel.Store.SP_Procedimiento_Index">
             <ResultMapping>
@@ -1375,18 +1541,6 @@ advertencia 6002: La tabla o vista 'DB_Medicos.dbo.Historial_Clinico' no tiene d
                 <ScalarProperty Name="Hora_P" ColumnName="Hora_P" />
                 <ScalarProperty Name="Estado_P" ColumnName="Estado_P" />
                 <ScalarProperty Name="Pro_Asignado" ColumnName="Pro_Asignado" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="SP_Procedimiento_Read" FunctionName="DB_MedicosModel.Store.SP_Procedimiento_Read">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="DB_MedicosModel.SP_Procedimiento_Read_Result">
-                <ScalarProperty Name="Cod_Orden" ColumnName="Cod_Orden" />
-                <ScalarProperty Name="Cod_Cita" ColumnName="Cod_Cita" />
-                <ScalarProperty Name="Diagnostico" ColumnName="Diagnostico" />
-                <ScalarProperty Name="Medicamento" ColumnName="Medicamento" />
-                <ScalarProperty Name="Recomendacion" ColumnName="Recomendacion" />
-                <ScalarProperty Name="Remision" ColumnName="Remision" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
@@ -1410,6 +1564,8 @@ advertencia 6002: La tabla o vista 'DB_Medicos.dbo.Historial_Clinico' no tiene d
             </ResultMapping>
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="SP_Profesional_Update" FunctionName="DB_MedicosModel.Store.SP_Profesional_Update" />
+          <FunctionImportMapping FunctionImportName="sp_renamediagram" FunctionName="DB_MedicosModel.Store.sp_renamediagram" />
+          <FunctionImportMapping FunctionImportName="sp_upgraddiagrams" FunctionName="DB_MedicosModel.Store.sp_upgraddiagrams" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

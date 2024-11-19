@@ -20,7 +20,7 @@ namespace h3_web.Models
             this.Orden = new HashSet<Orden>();
         }
     
-        public string Cod_Cita { get; set; }
+        public int Cod_Cita { get; set; }
         public string Doc_Paciente { get; set; }
         public string Doc_Profesional { get; set; }
         public System.DateTime Fecha_Cita { get; set; }

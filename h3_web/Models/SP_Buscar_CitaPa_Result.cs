@@ -11,9 +11,14 @@ namespace h3_web.Models
 {
     using System;
     
-    public partial class SP_Administrador_Index_Result
+    public partial class SP_Buscar_CitaPa_Result
     {
-        public string ID_Persona { get; set; }
-        public string Clave { get; set; }
+        public string profesional { get; set; }
+        public int Cod_Cita { get; set; }
+        public string Doc_Paciente { get; set; }
+        public string Doc_Profesional { get; set; }
+        public System.DateTime Fecha_Cita { get; set; }
+        public System.TimeSpan Hora_Cita { get; set; }
+        public string Estado { get; set; }
     }
 }

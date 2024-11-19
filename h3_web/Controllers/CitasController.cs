@@ -12,7 +12,7 @@ namespace h3_web.Controllers
 {
     public class CitasController : Controller
     {
-        private DB_MedicosEntities db = new DB_MedicosEntities();
+        private DB_MedicosEntities1 db = new DB_MedicosEntities1();
 
         // GET: Citas
         public ActionResult Index()
@@ -22,7 +22,7 @@ namespace h3_web.Controllers
         }
 
         // GET: Citas/Details/5
-        public ActionResult Details(string id)
+        public ActionResult Details(int? id)
         {
             if (id == null)
             {
@@ -39,8 +39,8 @@ namespace h3_web.Controllers
         // GET: Citas/Create
         public ActionResult Create()
         {
-            ViewBag.Doc_Paciente = new SelectList(db.Paciente, "Doc_Paciente", "Tipo_documento");
-            ViewBag.Doc_Profesional = new SelectList(db.Profesional, "Doc_Pro", "Horario");
+            ViewBag.Doc_Paciente = new SelectList(db.Paciente, "Doc_Paciente", "Doc_Paciente");
+            ViewBag.Doc_Profesional = new SelectList(db.Profesional, "Doc_Pro", "Doc_Pro");
             return View();
         }
 
@@ -58,13 +58,13 @@ namespace h3_web.Controllers
                 return RedirectToAction("Index");
             }
 
-            ViewBag.Doc_Paciente = new SelectList(db.Paciente, "Doc_Paciente", "Tipo_documento", cita.Doc_Paciente);
-            ViewBag.Doc_Profesional = new SelectList(db.Profesional, "Doc_Pro", "Horario", cita.Doc_Profesional);
+            ViewBag.Doc_Paciente = new SelectList(db.Paciente, "Doc_Paciente", "Doc_Paciente", cita.Doc_Paciente);
+            ViewBag.Doc_Profesional = new SelectList(db.Profesional, "Doc_Pro", "Doc_Pro", cita.Doc_Profesional);
             return View(cita);
         }
 
         // GET: Citas/Edit/5
-        public ActionResult Edit(string id)
+        public ActionResult Edit(int? id)
         {
             if (id == null)
             {
@@ -75,8 +75,8 @@ namespace h3_web.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.Doc_Paciente = new SelectList(db.Paciente, "Doc_Paciente", "Tipo_documento", cita.Doc_Paciente);
-            ViewBag.Doc_Profesional = new SelectList(db.Profesional, "Doc_Pro", "Horario", cita.Doc_Profesional);
+            ViewBag.Doc_Paciente = new SelectList(db.Paciente, "Doc_Paciente", "Doc_Paciente", cita.Doc_Paciente);
+            ViewBag.Doc_Profesional = new SelectList(db.Profesional, "Doc_Pro", "Doc_Pro", cita.Doc_Profesional);
             return View(cita);
         }
 
@@ -89,17 +89,17 @@ namespace h3_web.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(cita).State = (System.Data.Entity.EntityState)EntityState.Modified;
+                db.Entry(cita).State = (System.Data.Entity.EntityState)System.Data.EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.Doc_Paciente = new SelectList(db.Paciente, "Doc_Paciente", "Tipo_documento", cita.Doc_Paciente);
-            ViewBag.Doc_Profesional = new SelectList(db.Profesional, "Doc_Pro", "Horario", cita.Doc_Profesional);
+            ViewBag.Doc_Paciente = new SelectList(db.Paciente, "Doc_Paciente", "Doc_Paciente", cita.Doc_Paciente);
+            ViewBag.Doc_Profesional = new SelectList(db.Profesional, "Doc_Pro", "Doc_Pro", cita.Doc_Profesional);
             return View(cita);
         }
 
         // GET: Citas/Delete/5
-        public ActionResult Delete(string id)
+        public ActionResult Delete(int? id)
         {
             if (id == null)
             {
@@ -116,7 +116,7 @@ namespace h3_web.Controllers
         // POST: Citas/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(string id)
+        public ActionResult DeleteConfirmed(int id)
         {
             Cita cita = db.Cita.Find(id);
             db.Cita.Remove(cita);

@@ -13,7 +13,7 @@ namespace h3_web.Models
     
     public partial class SP_Procedimiento_Index_Result
     {
-        public string Cod_Procedimiento { get; set; }
+        public int Cod_Procedimiento { get; set; }
         public string Tipo_P { get; set; }
         public Nullable<System.DateTime> Fecha_P { get; set; }
         public Nullable<System.TimeSpan> Hora_P { get; set; }

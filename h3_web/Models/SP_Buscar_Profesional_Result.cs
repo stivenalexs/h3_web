@@ -11,9 +11,9 @@ namespace h3_web.Models
 {
     using System;
     
-    public partial class Sp_Administrador_Read_Result
+    public partial class SP_Buscar_Profesional_Result
     {
-        public string ID_Persona { get; set; }
-        public string Clave { get; set; }
+        public string Nombre { get; set; }
+        public string Especialidad { get; set; }
     }
 }

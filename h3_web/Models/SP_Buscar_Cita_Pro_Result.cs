@@ -11,7 +11,7 @@ namespace h3_web.Models
 {
     using System;
     
-    public partial class SP_Cita_Read_Result
+    public partial class SP_Buscar_Cita_Pro_Result
     {
         public int Cod_Cita { get; set; }
         public string Doc_Paciente { get; set; }
@@ -19,5 +19,11 @@ namespace h3_web.Models
         public System.DateTime Fecha_Cita { get; set; }
         public System.TimeSpan Hora_Cita { get; set; }
         public string Estado { get; set; }
+        public string Doc_Pro { get; set; }
+        public string Horario { get; set; }
+        public string ID_Horario { get; set; }
+        public System.TimeSpan Hora_Entrada { get; set; }
+        public System.TimeSpan Hora_Salida { get; set; }
+        public string Especialidad { get; set; }
     }
 }

@@ -14,6 +14,6 @@ namespace h3_web.Models
     public partial class SP_Historial_Clinico_Index_Result
     {
         public string Doc_Paciente { get; set; }
-        public string Orden { get; set; }
+        public int Orden { get; set; }
     }
 }

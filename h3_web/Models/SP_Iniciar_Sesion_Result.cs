@@ -11,13 +11,16 @@ namespace h3_web.Models
 {
     using System;
     
-    public partial class SP_Cita_Read_Result
+    public partial class SP_Iniciar_Sesion_Result
     {
-        public int Cod_Cita { get; set; }
-        public string Doc_Paciente { get; set; }
-        public string Doc_Profesional { get; set; }
-        public System.DateTime Fecha_Cita { get; set; }
-        public System.TimeSpan Hora_Cita { get; set; }
-        public string Estado { get; set; }
+        public string ID_Persona { get; set; }
+        public string Documento { get; set; }
+        public string Nombre { get; set; }
+        public System.DateTime Fecha_Nacimiento { get; set; }
+        public string Telefono { get; set; }
+        public string Correo { get; set; }
+        public string Contraseña { get; set; }
+        public string Foto { get; set; }
+        public string Tipo_Sangre { get; set; }
     }
 }

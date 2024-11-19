@@ -11,13 +11,9 @@ namespace h3_web.Models
 {
     using System;
     
-    public partial class SP_Procedimiento_Read_Result
+    public partial class sp_helpdiagramdefinition_Result
     {
-        public string Cod_Orden { get; set; }
-        public string Cod_Cita { get; set; }
-        public string Diagnostico { get; set; }
-        public string Medicamento { get; set; }
-        public string Recomendacion { get; set; }
-        public string Remision { get; set; }
+        public Nullable<int> version { get; set; }
+        public byte[] definition { get; set; }
     }
 }

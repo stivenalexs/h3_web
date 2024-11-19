@@ -10,14 +10,14 @@
 namespace h3_web.Models
 {
     using System;
+    using System.Collections.Generic;
     
-    public partial class SP_Cita_Read_Result
+    public partial class sysdiagrams
     {
-        public int Cod_Cita { get; set; }
-        public string Doc_Paciente { get; set; }
-        public string Doc_Profesional { get; set; }
-        public System.DateTime Fecha_Cita { get; set; }
-        public System.TimeSpan Hora_Cita { get; set; }
-        public string Estado { get; set; }
+        public string name { get; set; }
+        public int principal_id { get; set; }
+        public int diagram_id { get; set; }
+        public Nullable<int> version { get; set; }
+        public byte[] definition { get; set; }
     }
 }

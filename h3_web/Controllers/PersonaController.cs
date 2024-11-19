@@ -10,18 +10,18 @@ using h3_web.Models;
 
 namespace h3_web.Controllers
 {
-    public class PersonasController : Controller
+    public class PersonaController : Controller
     {
-        private DB_MedicosEntities db = new DB_MedicosEntities();
+        private DB_MedicosEntities1 db = new DB_MedicosEntities1();
 
-        // GET: Personas
+        // GET: Persona
         public ActionResult Index()
         {
             var persona = db.Persona.Include(p => p.Administrador).Include(p => p.Paciente).Include(p => p.Profesional);
             return View(persona.ToList());
         }
 
-        // GET: Personas/Details/5
+        // GET: Persona/Details/5
         public ActionResult Details(string id)
         {
             if (id == null)
@@ -36,7 +36,7 @@ namespace h3_web.Controllers
             return View(persona);
         }
 
-        // GET: Personas/Create
+        // GET: Persona/Create
         public ActionResult Create()
         {
             ViewBag.ID_Persona = new SelectList(db.Administrador, "ID_Persona", "Clave");
@@ -45,7 +45,7 @@ namespace h3_web.Controllers
             return View();
         }
 
-        // POST: Personas/Create
+        // POST: Persona/Create
         // Para protegerse de ataques de publicación excesiva, habilite las propiedades específicas a las que quiere enlazarse. Para obtener 
         // más detalles, vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -65,7 +65,7 @@ namespace h3_web.Controllers
             return View(persona);
         }
 
-        // GET: Personas/Edit/5
+        // GET: Persona/Edit/5
         public ActionResult Edit(string id)
         {
             if (id == null)
@@ -83,7 +83,7 @@ namespace h3_web.Controllers
             return View(persona);
         }
 
-        // POST: Personas/Edit/5
+        // POST: Persona/Edit/5
         // Para protegerse de ataques de publicación excesiva, habilite las propiedades específicas a las que quiere enlazarse. Para obtener 
         // más detalles, vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -102,7 +102,7 @@ namespace h3_web.Controllers
             return View(persona);
         }
 
-        // GET: Personas/Delete/5
+        // GET: Persona/Delete/5
         public ActionResult Delete(string id)
         {
             if (id == null)
@@ -117,7 +117,7 @@ namespace h3_web.Controllers
             return View(persona);
         }
 
-        // POST: Personas/Delete/5
+        // POST: Persona/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(string id)

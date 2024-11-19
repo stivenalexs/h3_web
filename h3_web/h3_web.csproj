@@ -18,7 +18,7 @@
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
-    <Use64BitIISExpress />
+    <Use64BitIISExpress>false</Use64BitIISExpress>
     <IISExpressSSLPort>44367</IISExpressSSLPort>
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
@@ -132,10 +132,9 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\CitasController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\HorariosController.cs" />
-    <Compile Include="Controllers\PacientesController.cs" />
-    <Compile Include="Controllers\PersonasController.cs" />
-    <Compile Include="Controllers\ProfesionalsController.cs" />
+    <Compile Include="Controllers\PacienteController.cs" />
+    <Compile Include="Controllers\PersonaController.cs" />
+    <Compile Include="Controllers\ProfesionalController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -181,10 +180,16 @@
     <Compile Include="Models\Profesional.cs">
       <DependentUpon>Medicos.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\SP_Administrador_Index_Result.cs">
+    <Compile Include="Models\SP_Buscar_CitaPa_Result.cs">
       <DependentUpon>Medicos.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\Sp_Administrador_Read_Result.cs">
+    <Compile Include="Models\SP_Buscar_Cita_Pro_Result.cs">
+      <DependentUpon>Medicos.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SP_Buscar_DocPro_Result.cs">
+      <DependentUpon>Medicos.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SP_Buscar_Profesional_Result.cs">
       <DependentUpon>Medicos.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\SP_Cita_Index_Result.cs">
@@ -193,10 +198,19 @@
     <Compile Include="Models\SP_Cita_Read_Result.cs">
       <DependentUpon>Medicos.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\sp_helpdiagramdefinition_Result.cs">
+      <DependentUpon>Medicos.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\sp_helpdiagrams_Result.cs">
+      <DependentUpon>Medicos.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\SP_Historial_Clinico_Index_Result.cs">
       <DependentUpon>Medicos.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\SP_Historial_Clinico_Read_Result.cs">
+      <DependentUpon>Medicos.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SP_Iniciar_Sesion_Result.cs">
       <DependentUpon>Medicos.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\SP_Nomina_Index_Result.cs">
@@ -226,13 +240,13 @@
     <Compile Include="Models\SP_Procedimiento_Index_Result.cs">
       <DependentUpon>Medicos.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\SP_Procedimiento_Read_Result.cs">
-      <DependentUpon>Medicos.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\SP_Profesional_Index_Result.cs">
       <DependentUpon>Medicos.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Sp_Profesional_Read_Result.cs">
+      <DependentUpon>Medicos.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\sysdiagrams.cs">
       <DependentUpon>Medicos.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -254,12 +268,13 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\bootstrap.rtl.css" />
     <Content Include="Content\bootstrap.rtl.min.css" />
+    <Content Include="Content\css\styles.css" />
     <Content Include="Content\registro.css" />
     <Content Include="Content\styles.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
-    <Content Include="img\user-icon.png" />
+    <Content Include="img\logo.jpg" />
     <Content Include="Models\Medicos.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>Medicos.edmx</DependentUpon>
@@ -335,26 +350,21 @@
     <Content Include="Views\Citas\Details.cshtml" />
     <Content Include="Views\Citas\Edit.cshtml" />
     <Content Include="Views\Citas\Index.cshtml" />
-    <Content Include="Views\Personas\Create.cshtml" />
-    <Content Include="Views\Personas\Delete.cshtml" />
-    <Content Include="Views\Personas\Details.cshtml" />
-    <Content Include="Views\Personas\Edit.cshtml" />
-    <Content Include="Views\Personas\Index.cshtml" />
-    <Content Include="Views\Pacientes\Create.cshtml" />
-    <Content Include="Views\Pacientes\Delete.cshtml" />
-    <Content Include="Views\Pacientes\Details.cshtml" />
-    <Content Include="Views\Pacientes\Edit.cshtml" />
-    <Content Include="Views\Pacientes\Index.cshtml" />
-    <Content Include="Views\Profesionals\Create.cshtml" />
-    <Content Include="Views\Profesionals\Delete.cshtml" />
-    <Content Include="Views\Profesionals\Details.cshtml" />
-    <Content Include="Views\Profesionals\Edit.cshtml" />
-    <Content Include="Views\Profesionals\Index.cshtml" />
-    <Content Include="Views\Horarios\Create.cshtml" />
-    <Content Include="Views\Horarios\Delete.cshtml" />
-    <Content Include="Views\Horarios\Details.cshtml" />
-    <Content Include="Views\Horarios\Edit.cshtml" />
-    <Content Include="Views\Horarios\Index.cshtml" />
+    <Content Include="Views\Persona\Create.cshtml" />
+    <Content Include="Views\Persona\Delete.cshtml" />
+    <Content Include="Views\Persona\Details.cshtml" />
+    <Content Include="Views\Persona\Edit.cshtml" />
+    <Content Include="Views\Persona\Index.cshtml" />
+    <Content Include="Views\Paciente\Create.cshtml" />
+    <Content Include="Views\Paciente\Delete.cshtml" />
+    <Content Include="Views\Paciente\Details.cshtml" />
+    <Content Include="Views\Paciente\Edit.cshtml" />
+    <Content Include="Views\Paciente\Index.cshtml" />
+    <Content Include="Views\Profesional\Create.cshtml" />
+    <Content Include="Views\Profesional\Delete.cshtml" />
+    <Content Include="Views\Profesional\Details.cshtml" />
+    <Content Include="Views\Profesional\Edit.cshtml" />
+    <Content Include="Views\Profesional\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

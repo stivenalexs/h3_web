@@ -13,7 +13,7 @@ namespace h3_web.Models
     
     public partial class SP_Cita_Index_Result
     {
-        public string Cod_Cita { get; set; }
+        public int Cod_Cita { get; set; }
         public string Doc_Paciente { get; set; }
         public string Doc_Profesional { get; set; }
         public System.DateTime Fecha_Cita { get; set; }

@@ -11,13 +11,12 @@ namespace h3_web.Models
 {
     using System;
     
-    public partial class SP_Cita_Read_Result
+    public partial class sp_helpdiagrams_Result
     {
-        public int Cod_Cita { get; set; }
-        public string Doc_Paciente { get; set; }
-        public string Doc_Profesional { get; set; }
-        public System.DateTime Fecha_Cita { get; set; }
-        public System.TimeSpan Hora_Cita { get; set; }
-        public string Estado { get; set; }
+        public string Database { get; set; }
+        public string Name { get; set; }
+        public int ID { get; set; }
+        public string Owner { get; set; }
+        public int OwnerID { get; set; }
     }
 }

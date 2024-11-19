@@ -15,10 +15,10 @@ namespace h3_web.Models
     using System.Data.Entity.Core.Objects;
     using System.Linq;
     
-    public partial class DB_MedicosEntities : DbContext
+    public partial class DB_MedicosEntities1 : DbContext
     {
-        public DB_MedicosEntities()
-            : base("name=DB_MedicosEntities")
+        public DB_MedicosEntities1()
+            : base("name=DB_MedicosEntities1")
         {
         }
     
@@ -36,62 +36,85 @@ namespace h3_web.Models
         public virtual DbSet<Persona> Persona { get; set; }
         public virtual DbSet<Procedimiento> Procedimiento { get; set; }
         public virtual DbSet<Profesional> Profesional { get; set; }
+        public virtual DbSet<sysdiagrams> sysdiagrams { get; set; }
     
-        public virtual ObjectResult<Nullable<decimal>> SP_Administrador_Create(string iD_Persona, string clave)
+        public virtual int sp_alterdiagram(string diagramname, Nullable<int> owner_id, Nullable<int> version, byte[] definition)
         {
-            var iD_PersonaParameter = iD_Persona != null ?
-                new ObjectParameter("ID_Persona", iD_Persona) :
-                new ObjectParameter("ID_Persona", typeof(string));
+            var diagramnameParameter = diagramname != null ?
+                new ObjectParameter("diagramname", diagramname) :
+                new ObjectParameter("diagramname", typeof(string));
     
-            var claveParameter = clave != null ?
-                new ObjectParameter("Clave", clave) :
-                new ObjectParameter("Clave", typeof(string));
+            var owner_idParameter = owner_id.HasValue ?
+                new ObjectParameter("owner_id", owner_id) :
+                new ObjectParameter("owner_id", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<decimal>>("SP_Administrador_Create", iD_PersonaParameter, claveParameter);
+            var versionParameter = version.HasValue ?
+                new ObjectParameter("version", version) :
+                new ObjectParameter("version", typeof(int));
+    
+            var definitionParameter = definition != null ?
+                new ObjectParameter("definition", definition) :
+                new ObjectParameter("definition", typeof(byte[]));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_alterdiagram", diagramnameParameter, owner_idParameter, versionParameter, definitionParameter);
         }
     
-        public virtual ObjectResult<Nullable<decimal>> SP_Administrador_Delete(string iD_Persona)
+        public virtual ObjectResult<string> SP_Asignar_Horario(string especialidad)
         {
-            var iD_PersonaParameter = iD_Persona != null ?
-                new ObjectParameter("ID_Persona", iD_Persona) :
-                new ObjectParameter("ID_Persona", typeof(string));
+            var especialidadParameter = especialidad != null ?
+                new ObjectParameter("Especialidad", especialidad) :
+                new ObjectParameter("Especialidad", typeof(string));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<decimal>>("SP_Administrador_Delete", iD_PersonaParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("SP_Asignar_Horario", especialidadParameter);
         }
     
-        public virtual ObjectResult<SP_Administrador_Index_Result> SP_Administrador_Index()
+        public virtual ObjectResult<SP_Buscar_Cita_Pro_Result> SP_Buscar_Cita_Pro(string doc_Paciente)
         {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_Administrador_Index_Result>("SP_Administrador_Index");
+            var doc_PacienteParameter = doc_Paciente != null ?
+                new ObjectParameter("Doc_Paciente", doc_Paciente) :
+                new ObjectParameter("Doc_Paciente", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_Buscar_Cita_Pro_Result>("SP_Buscar_Cita_Pro", doc_PacienteParameter);
         }
     
-        public virtual ObjectResult<Sp_Administrador_Read_Result> Sp_Administrador_Read(string iD_Persona)
-        {
-            var iD_PersonaParameter = iD_Persona != null ?
-                new ObjectParameter("ID_Persona", iD_Persona) :
-                new ObjectParameter("ID_Persona", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Sp_Administrador_Read_Result>("Sp_Administrador_Read", iD_PersonaParameter);
-        }
-    
-        public virtual ObjectResult<Nullable<decimal>> SP_Administrador_Update(string iD_Persona, string clave)
-        {
-            var iD_PersonaParameter = iD_Persona != null ?
-                new ObjectParameter("ID_Persona", iD_Persona) :
-                new ObjectParameter("ID_Persona", typeof(string));
-    
-            var claveParameter = clave != null ?
-                new ObjectParameter("Clave", clave) :
-                new ObjectParameter("Clave", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<decimal>>("SP_Administrador_Update", iD_PersonaParameter, claveParameter);
-        }
-    
-        public virtual ObjectResult<Nullable<decimal>> SP_Cita_Create(string cod_Cita, string doc_Paciente, string doc_Profesional, Nullable<System.DateTime> fecha_Cita, Nullable<System.TimeSpan> hora_Cita, string estado)
+        public virtual ObjectResult<string> SP_Buscar_CitaEsp(string cod_Cita)
         {
             var cod_CitaParameter = cod_Cita != null ?
                 new ObjectParameter("Cod_Cita", cod_Cita) :
                 new ObjectParameter("Cod_Cita", typeof(string));
     
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("SP_Buscar_CitaEsp", cod_CitaParameter);
+        }
+    
+        public virtual ObjectResult<SP_Buscar_CitaPa_Result> SP_Buscar_CitaPa(string doc_Paciente)
+        {
+            var doc_PacienteParameter = doc_Paciente != null ?
+                new ObjectParameter("Doc_Paciente", doc_Paciente) :
+                new ObjectParameter("Doc_Paciente", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_Buscar_CitaPa_Result>("SP_Buscar_CitaPa", doc_PacienteParameter);
+        }
+    
+        public virtual ObjectResult<SP_Buscar_DocPro_Result> SP_Buscar_DocPro(string nombre)
+        {
+            var nombreParameter = nombre != null ?
+                new ObjectParameter("Nombre", nombre) :
+                new ObjectParameter("Nombre", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_Buscar_DocPro_Result>("SP_Buscar_DocPro", nombreParameter);
+        }
+    
+        public virtual ObjectResult<SP_Buscar_Profesional_Result> SP_Buscar_Profesional(string especialidad)
+        {
+            var especialidadParameter = especialidad != null ?
+                new ObjectParameter("Especialidad", especialidad) :
+                new ObjectParameter("Especialidad", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_Buscar_Profesional_Result>("SP_Buscar_Profesional", especialidadParameter);
+        }
+    
+        public virtual ObjectResult<Nullable<decimal>> SP_Cita_Create(string doc_Paciente, string doc_Profesional, Nullable<System.DateTime> fecha_Cita, Nullable<System.TimeSpan> hora_Cita, string estado)
+        {
             var doc_PacienteParameter = doc_Paciente != null ?
                 new ObjectParameter("Doc_Paciente", doc_Paciente) :
                 new ObjectParameter("Doc_Paciente", typeof(string));
@@ -112,14 +135,14 @@ namespace h3_web.Models
                 new ObjectParameter("Estado", estado) :
                 new ObjectParameter("Estado", typeof(string));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<decimal>>("SP_Cita_Create", cod_CitaParameter, doc_PacienteParameter, doc_ProfesionalParameter, fecha_CitaParameter, hora_CitaParameter, estadoParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<decimal>>("SP_Cita_Create", doc_PacienteParameter, doc_ProfesionalParameter, fecha_CitaParameter, hora_CitaParameter, estadoParameter);
         }
     
-        public virtual ObjectResult<Nullable<decimal>> SP_Cita_Delete(string cod_Cita)
+        public virtual ObjectResult<Nullable<decimal>> SP_Cita_Delete(Nullable<int> cod_Cita)
         {
-            var cod_CitaParameter = cod_Cita != null ?
+            var cod_CitaParameter = cod_Cita.HasValue ?
                 new ObjectParameter("Cod_Cita", cod_Cita) :
-                new ObjectParameter("Cod_Cita", typeof(string));
+                new ObjectParameter("Cod_Cita", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<decimal>>("SP_Cita_Delete", cod_CitaParameter);
         }
@@ -129,20 +152,37 @@ namespace h3_web.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_Cita_Index_Result>("SP_Cita_Index");
         }
     
-        public virtual ObjectResult<SP_Cita_Read_Result> SP_Cita_Read(string cod_Cita)
+        public virtual ObjectResult<SP_Cita_Read_Result> SP_Cita_Read(Nullable<int> cod_Cita)
         {
-            var cod_CitaParameter = cod_Cita != null ?
+            var cod_CitaParameter = cod_Cita.HasValue ?
                 new ObjectParameter("Cod_Cita", cod_Cita) :
-                new ObjectParameter("Cod_Cita", typeof(string));
+                new ObjectParameter("Cod_Cita", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_Cita_Read_Result>("SP_Cita_Read", cod_CitaParameter);
         }
     
-        public virtual ObjectResult<Nullable<decimal>> SP_Cita_Update(string cod_Cita, string doc_Paciente, string doc_Profesional, Nullable<System.DateTime> fecha_Cita, Nullable<System.TimeSpan> hora_Cita, string estado)
+        public virtual ObjectResult<Nullable<decimal>> SP_Cita_Reprogramar(Nullable<int> cod_Cita, Nullable<System.DateTime> fecha_Cita, Nullable<System.TimeSpan> hora_Cita)
         {
-            var cod_CitaParameter = cod_Cita != null ?
+            var cod_CitaParameter = cod_Cita.HasValue ?
                 new ObjectParameter("Cod_Cita", cod_Cita) :
-                new ObjectParameter("Cod_Cita", typeof(string));
+                new ObjectParameter("Cod_Cita", typeof(int));
+    
+            var fecha_CitaParameter = fecha_Cita.HasValue ?
+                new ObjectParameter("Fecha_Cita", fecha_Cita) :
+                new ObjectParameter("Fecha_Cita", typeof(System.DateTime));
+    
+            var hora_CitaParameter = hora_Cita.HasValue ?
+                new ObjectParameter("Hora_Cita", hora_Cita) :
+                new ObjectParameter("Hora_Cita", typeof(System.TimeSpan));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<decimal>>("SP_Cita_Reprogramar", cod_CitaParameter, fecha_CitaParameter, hora_CitaParameter);
+        }
+    
+        public virtual ObjectResult<Nullable<decimal>> SP_Cita_Update(Nullable<int> cod_Cita, string doc_Paciente, string doc_Profesional, Nullable<System.DateTime> fecha_Cita, Nullable<System.TimeSpan> hora_Cita, string estado)
+        {
+            var cod_CitaParameter = cod_Cita.HasValue ?
+                new ObjectParameter("Cod_Cita", cod_Cita) :
+                new ObjectParameter("Cod_Cita", typeof(int));
     
             var doc_PacienteParameter = doc_Paciente != null ?
                 new ObjectParameter("Doc_Paciente", doc_Paciente) :
@@ -167,24 +207,84 @@ namespace h3_web.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<decimal>>("SP_Cita_Update", cod_CitaParameter, doc_PacienteParameter, doc_ProfesionalParameter, fecha_CitaParameter, hora_CitaParameter, estadoParameter);
         }
     
-        public virtual ObjectResult<Nullable<decimal>> SP_Historial_Clinico_Create(string doc_Paciente, string orden)
+        public virtual int sp_creatediagram(string diagramname, Nullable<int> owner_id, Nullable<int> version, byte[] definition)
+        {
+            var diagramnameParameter = diagramname != null ?
+                new ObjectParameter("diagramname", diagramname) :
+                new ObjectParameter("diagramname", typeof(string));
+    
+            var owner_idParameter = owner_id.HasValue ?
+                new ObjectParameter("owner_id", owner_id) :
+                new ObjectParameter("owner_id", typeof(int));
+    
+            var versionParameter = version.HasValue ?
+                new ObjectParameter("version", version) :
+                new ObjectParameter("version", typeof(int));
+    
+            var definitionParameter = definition != null ?
+                new ObjectParameter("definition", definition) :
+                new ObjectParameter("definition", typeof(byte[]));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_creatediagram", diagramnameParameter, owner_idParameter, versionParameter, definitionParameter);
+        }
+    
+        public virtual int sp_dropdiagram(string diagramname, Nullable<int> owner_id)
+        {
+            var diagramnameParameter = diagramname != null ?
+                new ObjectParameter("diagramname", diagramname) :
+                new ObjectParameter("diagramname", typeof(string));
+    
+            var owner_idParameter = owner_id.HasValue ?
+                new ObjectParameter("owner_id", owner_id) :
+                new ObjectParameter("owner_id", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_dropdiagram", diagramnameParameter, owner_idParameter);
+        }
+    
+        public virtual ObjectResult<sp_helpdiagramdefinition_Result> sp_helpdiagramdefinition(string diagramname, Nullable<int> owner_id)
+        {
+            var diagramnameParameter = diagramname != null ?
+                new ObjectParameter("diagramname", diagramname) :
+                new ObjectParameter("diagramname", typeof(string));
+    
+            var owner_idParameter = owner_id.HasValue ?
+                new ObjectParameter("owner_id", owner_id) :
+                new ObjectParameter("owner_id", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_helpdiagramdefinition_Result>("sp_helpdiagramdefinition", diagramnameParameter, owner_idParameter);
+        }
+    
+        public virtual ObjectResult<sp_helpdiagrams_Result> sp_helpdiagrams(string diagramname, Nullable<int> owner_id)
+        {
+            var diagramnameParameter = diagramname != null ?
+                new ObjectParameter("diagramname", diagramname) :
+                new ObjectParameter("diagramname", typeof(string));
+    
+            var owner_idParameter = owner_id.HasValue ?
+                new ObjectParameter("owner_id", owner_id) :
+                new ObjectParameter("owner_id", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_helpdiagrams_Result>("sp_helpdiagrams", diagramnameParameter, owner_idParameter);
+        }
+    
+        public virtual ObjectResult<Nullable<decimal>> SP_Historial_Clinico_Create(string doc_Paciente, Nullable<int> orden)
         {
             var doc_PacienteParameter = doc_Paciente != null ?
                 new ObjectParameter("Doc_Paciente", doc_Paciente) :
                 new ObjectParameter("Doc_Paciente", typeof(string));
     
-            var ordenParameter = orden != null ?
+            var ordenParameter = orden.HasValue ?
                 new ObjectParameter("Orden", orden) :
-                new ObjectParameter("Orden", typeof(string));
+                new ObjectParameter("Orden", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<decimal>>("SP_Historial_Clinico_Create", doc_PacienteParameter, ordenParameter);
         }
     
-        public virtual ObjectResult<Nullable<decimal>> SP_Historial_Clinico_Delete_o(string orden)
+        public virtual ObjectResult<Nullable<decimal>> SP_Historial_Clinico_Delete_o(Nullable<int> orden)
         {
-            var ordenParameter = orden != null ?
+            var ordenParameter = orden.HasValue ?
                 new ObjectParameter("Orden", orden) :
-                new ObjectParameter("Orden", typeof(string));
+                new ObjectParameter("Orden", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<decimal>>("SP_Historial_Clinico_Delete_o", ordenParameter);
         }
@@ -212,42 +312,30 @@ namespace h3_web.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_Historial_Clinico_Read_Result>("SP_Historial_Clinico_Read", doc_PacienteParameter);
         }
     
-        public virtual ObjectResult<Nullable<decimal>> SP_Historial_Clinico_Update(string doc_Paciente, string orden)
+        public virtual ObjectResult<Nullable<decimal>> SP_Historial_Clinico_Update(string doc_Paciente, Nullable<int> orden)
         {
             var doc_PacienteParameter = doc_Paciente != null ?
                 new ObjectParameter("Doc_Paciente", doc_Paciente) :
                 new ObjectParameter("Doc_Paciente", typeof(string));
     
-            var ordenParameter = orden != null ?
+            var ordenParameter = orden.HasValue ?
                 new ObjectParameter("Orden", orden) :
-                new ObjectParameter("Orden", typeof(string));
+                new ObjectParameter("Orden", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<decimal>>("SP_Historial_Clinico_Update", doc_PacienteParameter, ordenParameter);
         }
     
-        public virtual ObjectResult<Nullable<decimal>> SP_Nomina_Create(string iD_Nomina, string doc_Pro, Nullable<decimal> salario, Nullable<System.DateTime> fecha_Pago, string estado)
+        public virtual ObjectResult<SP_Iniciar_Sesion_Result> SP_Iniciar_Sesion(string correo, string contraseña)
         {
-            var iD_NominaParameter = iD_Nomina != null ?
-                new ObjectParameter("ID_Nomina", iD_Nomina) :
-                new ObjectParameter("ID_Nomina", typeof(string));
+            var correoParameter = correo != null ?
+                new ObjectParameter("Correo", correo) :
+                new ObjectParameter("Correo", typeof(string));
     
-            var doc_ProParameter = doc_Pro != null ?
-                new ObjectParameter("Doc_Pro", doc_Pro) :
-                new ObjectParameter("Doc_Pro", typeof(string));
+            var contraseñaParameter = contraseña != null ?
+                new ObjectParameter("Contraseña", contraseña) :
+                new ObjectParameter("Contraseña", typeof(string));
     
-            var salarioParameter = salario.HasValue ?
-                new ObjectParameter("Salario", salario) :
-                new ObjectParameter("Salario", typeof(decimal));
-    
-            var fecha_PagoParameter = fecha_Pago.HasValue ?
-                new ObjectParameter("Fecha_Pago", fecha_Pago) :
-                new ObjectParameter("Fecha_Pago", typeof(System.DateTime));
-    
-            var estadoParameter = estado != null ?
-                new ObjectParameter("Estado", estado) :
-                new ObjectParameter("Estado", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<decimal>>("SP_Nomina_Create", iD_NominaParameter, doc_ProParameter, salarioParameter, fecha_PagoParameter, estadoParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_Iniciar_Sesion_Result>("SP_Iniciar_Sesion", correoParameter, contraseñaParameter);
         }
     
         public virtual ObjectResult<Nullable<decimal>> SP_Nomina_Delete(string iD_Nomina)
@@ -298,40 +386,11 @@ namespace h3_web.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<decimal>>("SP_Nomina_Update", iD_NominaParameter, doc_ProParameter, salarioParameter, fecha_PagoParameter, estadoParameter);
         }
     
-        public virtual ObjectResult<Nullable<decimal>> SP_Orden_Create(string cod_Orden, string cod_Cita, string diagnostico, string medicamento, string recomendacion, string remision)
+        public virtual ObjectResult<Nullable<decimal>> SP_Orden_Delete(Nullable<int> cod_Orden)
         {
-            var cod_OrdenParameter = cod_Orden != null ?
+            var cod_OrdenParameter = cod_Orden.HasValue ?
                 new ObjectParameter("Cod_Orden", cod_Orden) :
-                new ObjectParameter("Cod_Orden", typeof(string));
-    
-            var cod_CitaParameter = cod_Cita != null ?
-                new ObjectParameter("Cod_Cita", cod_Cita) :
-                new ObjectParameter("Cod_Cita", typeof(string));
-    
-            var diagnosticoParameter = diagnostico != null ?
-                new ObjectParameter("Diagnostico", diagnostico) :
-                new ObjectParameter("Diagnostico", typeof(string));
-    
-            var medicamentoParameter = medicamento != null ?
-                new ObjectParameter("Medicamento", medicamento) :
-                new ObjectParameter("Medicamento", typeof(string));
-    
-            var recomendacionParameter = recomendacion != null ?
-                new ObjectParameter("Recomendacion", recomendacion) :
-                new ObjectParameter("Recomendacion", typeof(string));
-    
-            var remisionParameter = remision != null ?
-                new ObjectParameter("Remision", remision) :
-                new ObjectParameter("Remision", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<decimal>>("SP_Orden_Create", cod_OrdenParameter, cod_CitaParameter, diagnosticoParameter, medicamentoParameter, recomendacionParameter, remisionParameter);
-        }
-    
-        public virtual ObjectResult<Nullable<decimal>> SP_Orden_Delete(string cod_Orden)
-        {
-            var cod_OrdenParameter = cod_Orden != null ?
-                new ObjectParameter("Cod_Orden", cod_Orden) :
-                new ObjectParameter("Cod_Orden", typeof(string));
+                new ObjectParameter("Cod_Orden", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<decimal>>("SP_Orden_Delete", cod_OrdenParameter);
         }
@@ -341,24 +400,24 @@ namespace h3_web.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_Orden_Index_Result>("SP_Orden_Index");
         }
     
-        public virtual ObjectResult<SP_Orden_Read_Result> SP_Orden_Read(string cod_Orden)
+        public virtual ObjectResult<SP_Orden_Read_Result> SP_Orden_Read(Nullable<int> cod_Orden)
         {
-            var cod_OrdenParameter = cod_Orden != null ?
+            var cod_OrdenParameter = cod_Orden.HasValue ?
                 new ObjectParameter("Cod_Orden", cod_Orden) :
-                new ObjectParameter("Cod_Orden", typeof(string));
+                new ObjectParameter("Cod_Orden", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_Orden_Read_Result>("SP_Orden_Read", cod_OrdenParameter);
         }
     
-        public virtual ObjectResult<Nullable<decimal>> SP_Orden_Update(string cod_Orden, string cod_Cita, string diagnostico, string medicamento, string recomendacion, string remision)
+        public virtual ObjectResult<Nullable<decimal>> SP_Orden_Update(Nullable<int> cod_Orden, Nullable<int> cod_Cita, string diagnostico, string medicamento, string recomendacion, string remision)
         {
-            var cod_OrdenParameter = cod_Orden != null ?
+            var cod_OrdenParameter = cod_Orden.HasValue ?
                 new ObjectParameter("Cod_Orden", cod_Orden) :
-                new ObjectParameter("Cod_Orden", typeof(string));
+                new ObjectParameter("Cod_Orden", typeof(int));
     
-            var cod_CitaParameter = cod_Cita != null ?
+            var cod_CitaParameter = cod_Cita.HasValue ?
                 new ObjectParameter("Cod_Cita", cod_Cita) :
-                new ObjectParameter("Cod_Cita", typeof(string));
+                new ObjectParameter("Cod_Cita", typeof(int));
     
             var diagnosticoParameter = diagnostico != null ?
                 new ObjectParameter("Diagnostico", diagnostico) :
@@ -533,35 +592,6 @@ namespace h3_web.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<decimal>>("SP_Persona_Update", iD_PersonaParameter, documentoParameter, nombreParameter, fecha_NacimientoParameter, telefonoParameter, correoParameter, contraseñaParameter, fotoParameter, tipo_SangreParameter);
         }
     
-        public virtual ObjectResult<Nullable<decimal>> SP_Procedimiento_Create(string cod_Procedimiento, string tipo_P, Nullable<System.DateTime> fecha_P, Nullable<System.TimeSpan> hora_P, string estado_P, string pro_Asignado)
-        {
-            var cod_ProcedimientoParameter = cod_Procedimiento != null ?
-                new ObjectParameter("Cod_Procedimiento", cod_Procedimiento) :
-                new ObjectParameter("Cod_Procedimiento", typeof(string));
-    
-            var tipo_PParameter = tipo_P != null ?
-                new ObjectParameter("Tipo_P", tipo_P) :
-                new ObjectParameter("Tipo_P", typeof(string));
-    
-            var fecha_PParameter = fecha_P.HasValue ?
-                new ObjectParameter("Fecha_P", fecha_P) :
-                new ObjectParameter("Fecha_P", typeof(System.DateTime));
-    
-            var hora_PParameter = hora_P.HasValue ?
-                new ObjectParameter("Hora_P", hora_P) :
-                new ObjectParameter("Hora_P", typeof(System.TimeSpan));
-    
-            var estado_PParameter = estado_P != null ?
-                new ObjectParameter("Estado_P", estado_P) :
-                new ObjectParameter("Estado_P", typeof(string));
-    
-            var pro_AsignadoParameter = pro_Asignado != null ?
-                new ObjectParameter("Pro_Asignado", pro_Asignado) :
-                new ObjectParameter("Pro_Asignado", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<decimal>>("SP_Procedimiento_Create", cod_ProcedimientoParameter, tipo_PParameter, fecha_PParameter, hora_PParameter, estado_PParameter, pro_AsignadoParameter);
-        }
-    
         public virtual ObjectResult<Nullable<decimal>> SP_Procedimiento_Delete(string cod_Procedimiento)
         {
             var cod_ProcedimientoParameter = cod_Procedimiento != null ?
@@ -576,20 +606,11 @@ namespace h3_web.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_Procedimiento_Index_Result>("SP_Procedimiento_Index");
         }
     
-        public virtual ObjectResult<SP_Procedimiento_Read_Result> SP_Procedimiento_Read(string cod_Procedimiento)
+        public virtual ObjectResult<Nullable<decimal>> SP_Procedimiento_Update(Nullable<int> cod_Procedimiento, string tipo_P, Nullable<System.DateTime> fecha_P, Nullable<System.TimeSpan> hora_P, string estado_P, string pro_Asignado)
         {
-            var cod_ProcedimientoParameter = cod_Procedimiento != null ?
+            var cod_ProcedimientoParameter = cod_Procedimiento.HasValue ?
                 new ObjectParameter("Cod_Procedimiento", cod_Procedimiento) :
-                new ObjectParameter("Cod_Procedimiento", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_Procedimiento_Read_Result>("SP_Procedimiento_Read", cod_ProcedimientoParameter);
-        }
-    
-        public virtual ObjectResult<Nullable<decimal>> SP_Procedimiento_Update(string cod_Procedimiento, string tipo_P, Nullable<System.DateTime> fecha_P, Nullable<System.TimeSpan> hora_P, string estado_P, string pro_Asignado)
-        {
-            var cod_ProcedimientoParameter = cod_Procedimiento != null ?
-                new ObjectParameter("Cod_Procedimiento", cod_Procedimiento) :
-                new ObjectParameter("Cod_Procedimiento", typeof(string));
+                new ObjectParameter("Cod_Procedimiento", typeof(int));
     
             var tipo_PParameter = tipo_P != null ?
                 new ObjectParameter("Tipo_P", tipo_P) :
@@ -627,13 +648,13 @@ namespace h3_web.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<decimal>>("SP_Profesional_Create", doc_ProParameter, horarioParameter);
         }
     
-        public virtual int SP_Profesional_Delete(string doc_Pro)
+        public virtual ObjectResult<Nullable<decimal>> SP_Profesional_Delete(string doc_Pro)
         {
             var doc_ProParameter = doc_Pro != null ?
                 new ObjectParameter("Doc_Pro", doc_Pro) :
                 new ObjectParameter("Doc_Pro", typeof(string));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SP_Profesional_Delete", doc_ProParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<decimal>>("SP_Profesional_Delete", doc_ProParameter);
         }
     
         public virtual ObjectResult<SP_Profesional_Index_Result> SP_Profesional_Index()
@@ -650,7 +671,7 @@ namespace h3_web.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Sp_Profesional_Read_Result>("Sp_Profesional_Read", doc_ProParameter);
         }
     
-        public virtual int SP_Profesional_Update(string doc_Pro, string horario)
+        public virtual ObjectResult<Nullable<decimal>> SP_Profesional_Update(string doc_Pro, string horario)
         {
             var doc_ProParameter = doc_Pro != null ?
                 new ObjectParameter("Doc_Pro", doc_Pro) :
@@ -660,7 +681,29 @@ namespace h3_web.Models
                 new ObjectParameter("Horario", horario) :
                 new ObjectParameter("Horario", typeof(string));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SP_Profesional_Update", doc_ProParameter, horarioParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<decimal>>("SP_Profesional_Update", doc_ProParameter, horarioParameter);
+        }
+    
+        public virtual int sp_renamediagram(string diagramname, Nullable<int> owner_id, string new_diagramname)
+        {
+            var diagramnameParameter = diagramname != null ?
+                new ObjectParameter("diagramname", diagramname) :
+                new ObjectParameter("diagramname", typeof(string));
+    
+            var owner_idParameter = owner_id.HasValue ?
+                new ObjectParameter("owner_id", owner_id) :
+                new ObjectParameter("owner_id", typeof(int));
+    
+            var new_diagramnameParameter = new_diagramname != null ?
+                new ObjectParameter("new_diagramname", new_diagramname) :
+                new ObjectParameter("new_diagramname", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_renamediagram", diagramnameParameter, owner_idParameter, new_diagramnameParameter);
+        }
+    
+        public virtual int sp_upgraddiagrams()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_upgraddiagrams");
         }
     }
 }

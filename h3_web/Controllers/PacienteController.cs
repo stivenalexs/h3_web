@@ -10,107 +10,112 @@ using h3_web.Models;
 
 namespace h3_web.Controllers
 {
-    public class HorariosController : Controller
+    public class PacienteController : Controller
     {
-        private DB_MedicosEntities db = new DB_MedicosEntities();
+        private DB_MedicosEntities1 db = new DB_MedicosEntities1();
 
-        // GET: Horarios
+        // GET: Paciente
         public ActionResult Index()
         {
-            return View(db.Horario.ToList());
+            var paciente = db.Paciente.Include(p => p.Persona);
+            return View(paciente.ToList());
         }
 
-        // GET: Horarios/Details/5
+        // GET: Paciente/Details/5
         public ActionResult Details(string id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Horario horario = db.Horario.Find(id);
-            if (horario == null)
+            Paciente paciente = db.Paciente.Find(id);
+            if (paciente == null)
             {
                 return HttpNotFound();
             }
-            return View(horario);
+            return View(paciente);
         }
 
-        // GET: Horarios/Create
+        // GET: Paciente/Create
         public ActionResult Create()
         {
+            ViewBag.Doc_Paciente = new SelectList(db.Persona, "ID_Persona", "Documento");
             return View();
         }
 
-        // POST: Horarios/Create
+        // POST: Paciente/Create
         // Para protegerse de ataques de publicación excesiva, habilite las propiedades específicas a las que quiere enlazarse. Para obtener 
         // más detalles, vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID_Horario,Hora_Entrada,Hora_Salida,Especialidad")] Horario horario)
+        public ActionResult Create([Bind(Include = "Doc_Paciente,Tipo_documento")] Paciente paciente)
         {
             if (ModelState.IsValid)
             {
-                db.Horario.Add(horario);
+                db.Paciente.Add(paciente);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            return View(horario);
+            ViewBag.Doc_Paciente = new SelectList(db.Persona, "ID_Persona", "Documento", paciente.Doc_Paciente);
+            return View(paciente);
         }
 
-        // GET: Horarios/Edit/5
+        // GET: Paciente/Edit/5
         public ActionResult Edit(string id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Horario horario = db.Horario.Find(id);
-            if (horario == null)
+            Paciente paciente = db.Paciente.Find(id);
+            if (paciente == null)
             {
                 return HttpNotFound();
             }
-            return View(horario);
+            ViewBag.Doc_Paciente = new SelectList(db.Persona, "ID_Persona", "Documento", paciente.Doc_Paciente);
+            return View(paciente);
         }
 
-        // POST: Horarios/Edit/5
+        // POST: Paciente/Edit/5
         // Para protegerse de ataques de publicación excesiva, habilite las propiedades específicas a las que quiere enlazarse. Para obtener 
         // más detalles, vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID_Horario,Hora_Entrada,Hora_Salida,Especialidad")] Horario horario)
+        public ActionResult Edit([Bind(Include = "Doc_Paciente,Tipo_documento")] Paciente paciente)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(horario).State = (System.Data.Entity.EntityState)System.Data.EntityState.Modified;
+                db.Entry(paciente).State = (System.Data.Entity.EntityState)System.Data.EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(horario);
+            ViewBag.Doc_Paciente = new SelectList(db.Persona, "ID_Persona", "Documento", paciente.Doc_Paciente);
+            return View(paciente);
         }
 
-        // GET: Horarios/Delete/5
+        // GET: Paciente/Delete/5
         public ActionResult Delete(string id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Horario horario = db.Horario.Find(id);
-            if (horario == null)
+            Paciente paciente = db.Paciente.Find(id);
+            if (paciente == null)
             {
                 return HttpNotFound();
             }
-            return View(horario);
+            return View(paciente);
         }
 
-        // POST: Horarios/Delete/5
+        // POST: Paciente/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(string id)
         {
-            Horario horario = db.Horario.Find(id);
-            db.Horario.Remove(horario);
+            Paciente paciente = db.Paciente.Find(id);
+            db.Paciente.Remove(paciente);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

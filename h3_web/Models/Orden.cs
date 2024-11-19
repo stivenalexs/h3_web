@@ -20,8 +20,8 @@ namespace h3_web.Models
             this.Paciente = new HashSet<Paciente>();
         }
     
-        public string Cod_Orden { get; set; }
-        public string Cod_Cita { get; set; }
+        public int Cod_Orden { get; set; }
+        public int Cod_Cita { get; set; }
         public string Diagnostico { get; set; }
         public string Medicamento { get; set; }
         public string Recomendacion { get; set; }

@@ -10,112 +10,116 @@ using h3_web.Models;
 
 namespace h3_web.Controllers
 {
-    public class PacientesController : Controller
+    public class ProfesionalController : Controller
     {
-        private DB_MedicosEntities db = new DB_MedicosEntities();
+        private DB_MedicosEntities1 db = new DB_MedicosEntities1();
 
-        // GET: Pacientes
+        // GET: Profesional
         public ActionResult Index()
         {
-            var paciente = db.Paciente.Include(p => p.Persona);
-            return View(paciente.ToList());
+            var profesional = db.Profesional.Include(p => p.Horario1).Include(p => p.Persona);
+            return View(profesional.ToList());
         }
 
-        // GET: Pacientes/Details/5
+        // GET: Profesional/Details/5
         public ActionResult Details(string id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Paciente paciente = db.Paciente.Find(id);
-            if (paciente == null)
+            Profesional profesional = db.Profesional.Find(id);
+            if (profesional == null)
             {
                 return HttpNotFound();
             }
-            return View(paciente);
+            return View(profesional);
         }
 
-        // GET: Pacientes/Create
+        // GET: Profesional/Create
         public ActionResult Create()
         {
-            ViewBag.Doc_Paciente = new SelectList(db.Persona, "ID_Persona", "Documento");
+            ViewBag.Horario = new SelectList(db.Horario, "ID_Horario", "Especialidad");
+            ViewBag.Doc_Pro = new SelectList(db.Persona, "ID_Persona", "Documento");
             return View();
         }
 
-        // POST: Pacientes/Create
+        // POST: Profesional/Create
         // Para protegerse de ataques de publicación excesiva, habilite las propiedades específicas a las que quiere enlazarse. Para obtener 
         // más detalles, vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Doc_Paciente,Tipo_documento")] Paciente paciente)
+        public ActionResult Create([Bind(Include = "Doc_Pro,Horario")] Profesional profesional)
         {
             if (ModelState.IsValid)
             {
-                db.Paciente.Add(paciente);
+                db.Profesional.Add(profesional);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            ViewBag.Doc_Paciente = new SelectList(db.Persona, "ID_Persona", "Documento", paciente.Doc_Paciente);
-            return View(paciente);
+            ViewBag.Horario = new SelectList(db.Horario, "ID_Horario", "Especialidad", profesional.Horario);
+            ViewBag.Doc_Pro = new SelectList(db.Persona, "ID_Persona", "Documento", profesional.Doc_Pro);
+            return View(profesional);
         }
 
-        // GET: Pacientes/Edit/5
+        // GET: Profesional/Edit/5
         public ActionResult Edit(string id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Paciente paciente = db.Paciente.Find(id);
-            if (paciente == null)
+            Profesional profesional = db.Profesional.Find(id);
+            if (profesional == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.Doc_Paciente = new SelectList(db.Persona, "ID_Persona", "Documento", paciente.Doc_Paciente);
-            return View(paciente);
+            ViewBag.Horario = new SelectList(db.Horario, "ID_Horario", "Especialidad", profesional.Horario);
+            ViewBag.Doc_Pro = new SelectList(db.Persona, "ID_Persona", "Documento", profesional.Doc_Pro);
+            return View(profesional);
         }
 
-        // POST: Pacientes/Edit/5
+        // POST: Profesional/Edit/5
         // Para protegerse de ataques de publicación excesiva, habilite las propiedades específicas a las que quiere enlazarse. Para obtener 
         // más detalles, vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Doc_Paciente,Tipo_documento")] Paciente paciente)
+        public ActionResult Edit([Bind(Include = "Doc_Pro,Horario")] Profesional profesional)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(paciente).State = (System.Data.Entity.EntityState)System.Data.EntityState.Modified;
+                db.Entry(profesional).State = (System.Data.Entity.EntityState)System.Data.EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.Doc_Paciente = new SelectList(db.Persona, "ID_Persona", "Documento", paciente.Doc_Paciente);
-            return View(paciente);
+            ViewBag.Horario = new SelectList(db.Horario, "ID_Horario", "Especialidad", profesional.Horario);
+            ViewBag.Doc_Pro = new SelectList(db.Persona, "ID_Persona", "Documento", profesional.Doc_Pro);
+            return View(profesional);
         }
 
-        // GET: Pacientes/Delete/5
+        // GET: Profesional/Delete/5
         public ActionResult Delete(string id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Paciente paciente = db.Paciente.Find(id);
-            if (paciente == null)
+            Profesional profesional = db.Profesional.Find(id);
+            if (profesional == null)
             {
                 return HttpNotFound();
             }
-            return View(paciente);
+            return View(profesional);
         }
 
-        // POST: Pacientes/Delete/5
+        // POST: Profesional/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(string id)
         {
-            Paciente paciente = db.Paciente.Find(id);
-            db.Paciente.Remove(paciente);
+            Profesional profesional = db.Profesional.Find(id);
+            db.Profesional.Remove(profesional);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

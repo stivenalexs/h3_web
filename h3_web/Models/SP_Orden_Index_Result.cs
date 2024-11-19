@@ -13,8 +13,8 @@ namespace h3_web.Models
     
     public partial class SP_Orden_Index_Result
     {
-        public string Cod_Orden { get; set; }
-        public string Cod_Cita { get; set; }
+        public int Cod_Orden { get; set; }
+        public int Cod_Cita { get; set; }
         public string Diagnostico { get; set; }
         public string Medicamento { get; set; }
         public string Recomendacion { get; set; }

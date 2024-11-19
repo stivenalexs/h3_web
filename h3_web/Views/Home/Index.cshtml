@@ -4,22 +4,26 @@
 }
 
 <!DOCTYPE html>
-<html lang="es-co">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inicio de sesion</title>
-    <link rel="stylesheet" href="~/Content/styles.css" as="styles">
+    <link rel="stylesheet" href="~/Content/css/styles.css" as="styles">
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+
 </head>
 <body>
     <div class="front-body">
-        <img src="img/user-icon.png" alt="user-icon">
+        <img src="~/img/logo.jpg" alt="user-icon">
         <p class="text">Bienvenido</p>
-        <form class="login-front">
-            <input type="text" placeholder="Ingrese email nombre de usuario">
-            <input type="password" placeholder="Contraseña">
-            <button onclick="alert('hola')">Iniciar Sesion</button>
+        <form class="login-front" action="@Url.Action("Index","Home")" method="post">
+            <input type="text" placeholder="Ingrese email nombre de usuario" name="correo" id="correo">
+            <input type="password" placeholder="Contraseña" name="Contraseña" id="Contraseña">
+            <button type="submit" name="button" class="btn login_btn">Iniciar sesión</button>
         </form>
     </div>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+
 </body>
 </html>
